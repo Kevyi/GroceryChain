@@ -1,10 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import axios from 'axios';
 
 function App() {
   const [count, setCount] = useState(0)
+
+  //On input with argument (), activate arrow function.
+    //async means asynchronously, so will do it in the meantime despite other processes.
+
+ 
+  const fetchAPI = async () => {
+      //Gets data from /api which is found in server backend
+      const response = await axios.get("http://localhost:8080/api");
+
+      //Prints out received response. Can make a try/except to make sure response is heard?
+      console.log(response.data.random);
+  };
+
+  //Call function on intial render of webpage
+    useEffect(() => {
+      fetchAPI()
+    }, []);
+
+    //Something to note, is that React has a specialized router that routes to different webpages.
+      
+
+
 
   return (
     <>
