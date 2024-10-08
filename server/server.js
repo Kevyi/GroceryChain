@@ -5,6 +5,19 @@ const app = express();
 
 const cors = require("cors");
 
+
+// Import routes from different files
+const groceryRoute = require("./pagesBackend/groceryPage");
+const homeRoute = require("./pagesBackend/homePage");
+const registerLoginRoute = require("./pagesBackend/registerLoginPage");
+const shoppingCartRoute = require("./pagesBackend/shoppingCartPage");
+
+app.use("/home", homeRoute);
+app.use("/grocery-page", groceryRoute);
+app.use("/shopping-cart", shoppingCartRoute);
+app.use("/register-login", registerLoginRoute);
+
+
 //Listens to requires made from this website (origin). Not sure if we have to specify extended url like localhost:5173/groceryItems.
                     //Make different JS files and import it to this main server if possible.
                         //Parameters would take app (our express instance) and maybe cors (but you can define it in individual files).
