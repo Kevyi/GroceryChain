@@ -3,10 +3,15 @@ export default function GroceryPage(){
     return (
 
         <>
-        <NavbarTop></NavbarTop>
-        <div>This is the grocery page</div>
         
-        
+        <div id = "main">
+
+            <p>This is the GroceryPage</p>
+
+
+
+        </div>
+
         </>
 
     )

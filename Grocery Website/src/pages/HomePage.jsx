@@ -1,22 +1,29 @@
-import "../styles/home.css"
+import styles from "../styles/home.module.css"
 
 export default function Home(){
 
 
-    const footerText = "Testing.";
+    const footerText = "Testing2131231.";
 return (
     <>    
-    <div className = "homeMain">
+    <div id = "main">
 
     
-        <div className = {"header"}>
-            <h1 style={{fontSize: "100px", margin : 0}}><b>Grocery Store</b></h1>
-            <div><p>Testing12345</p></div>
+        <div className = {styles["header"]}>
+            <h1 style={{fontSize: "100px", margin : 0, textAlign:"center"}}><b>Grocery Store</b></h1>
+            <iframe src="" title="description" style = {{height:"60vh"}}></iframe>
         </div>
 
         <div className = {"footer"}>
 
+            <p>This is the footer with Overflow capabilities</p>
             <p>{footerText}</p>
+            <p>{footerText}</p>
+            <p>{footerText}</p>
+            <p>{footerText}</p>
+            <p>{footerText}</p>
+
+
         </div>
     </div>  
     </>

@@ -1,0 +1,82 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+
+button {
+  border: 0;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+
+.navbar {
+  border: solid grey 1px;
+  box-shadow: 2px 2px rgb(173, 168, 168);
+  width: auto;
+
+  height: 90px;
+  background-color: hsl(0, 0%, 100%);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo a{
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin-left: 12px;
+}
+
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.menu-links {
+  display: flex;
+  gap: 24px;
+  border-right: 3px solid #999999;
+  padding-inline: 24px;
+}
+
+.menu-links a {
+  font-weight: 500;
+  color: #000000;
+  font-size: 20px;
+  padding: 8px 16px;
+}
+.menu-links a:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(213, 213, 213);
+  border-radius: 10px;
+}
+.log-in {
+  font-weight: 500;
+  font-size: 20px;
+  padding: 12px 22px;
+  background-color: transparent;
+  color: #000000;
+  border-radius: 10px;
+  border: 2px solid #0aa5ff;
+  transition: 0.2s;
+}
+.log-in:hover {
+  background-color: #0aa5ff;
+  color: white;
+}
+

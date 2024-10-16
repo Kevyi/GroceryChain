@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
-import './App.css'
 import axios from 'axios';
 import GroceryPage from './pages/GroceryPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import ShoppingCartPage from './pages/ShoppingCartPage.jsx'
 import RegisterLoginPage from './pages/RegisterLoginPage.jsx'
+import TestingPage1 from './pages/TestingPage1.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -43,6 +43,7 @@ function App() {
             <Route path = "/grocery-page" element = {<GroceryPage/>}></Route>
             <Route path = "/shopping-cart" element = {<ShoppingCartPage/>}></Route>
             <Route path = "/register-login" element = {<RegisterLoginPage/>}></Route>
+            <Route path = "/testing1" element = {<TestingPage1/>}></Route>
           </Routes>
       </Router>
     </>
