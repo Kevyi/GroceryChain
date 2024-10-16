@@ -1,4 +1,3 @@
-import NavbarTop from '../components/NavbarTop.jsx'
 export default function GroceryPage(){
     return (
 

@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage.jsx'
 import ShoppingCartPage from './pages/ShoppingCartPage.jsx'
 import RegisterLoginPage from './pages/RegisterLoginPage.jsx'
 import TestingPage1 from './pages/TestingPage1.jsx'
-
+import NavbarTop from './components/NavbarTop.jsx'
 function App() {
   const [count, setCount] = useState(0)
 
@@ -35,7 +35,7 @@ function App() {
   return (
     <>
         {/*Creates set routes/pages for people to go to*/}
-      
+      <NavbarTop></NavbarTop>
       <Router>
           <Routes>
             <Route index element = {<HomePage></HomePage>}></Route> 
