@@ -11,9 +11,9 @@
 }
 
 .login-box {
-    margin-top: -10vw;
+    margin: -10%;
     width: 40%;
-    height: 33vw;
+    height: 33%;
     border: 0.4vw solid black;
     background-color: rgba(0, 0, 0, 0.9); 
     display: flex;
@@ -184,6 +184,10 @@ input[type="password"].inputBox {
 
 .spacingForTextBlocks{
     margin: 4%;
+}
+
+.spacingForSpecificTextBlock{
+    margin: 2%;
 }
 
 .registrationButton {
