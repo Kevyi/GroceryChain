@@ -85,7 +85,7 @@ input[type="password"] {
 } */
 
 .spacing{
-    margin-top: -1vw;
+    margin-top: 0vw;
 }
 
 .inLineText{
@@ -186,9 +186,6 @@ input[type="password"].inputBox {
     margin: 4%;
 }
 
-.spacingForSpecificTextBlock{
-    margin: 2%;
-}
 
 .registrationButton {
     width: 97%; /* Set width similar to text and password fields */

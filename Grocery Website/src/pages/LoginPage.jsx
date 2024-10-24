@@ -22,7 +22,7 @@ export default function RegisterLoginPage() {
                 </div>
                 <label htmlFor="username"><h2>Username: </h2></label>
                 <input type="text" name="username"></input>
-                <div className={styles.spacingForSpecificTextBlock}></div>
+                <div className={styles.spacing}></div>
                 
                 <label htmlFor="password"><h2>Password: </h2></label>
                 <input type="password" name="Password"></input>
