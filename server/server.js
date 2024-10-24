@@ -1,10 +1,25 @@
 //Imports Framework
 const express = require("express");
+
+const mysql = require('mysql12');
 //Calls the express() function or basically constructor and makes instance of express().
 const app = express();
 
 const cors = require("cors");
 
+const db = mysql.createConnection({
+    host : 'localhost',
+    user : 'root', // Default XAMPP User
+    password: '', // Blank unless you set a password
+    database: 'grocery_store' // Matches db name created in apache mysql
+});
+
+db.connect((err)=> {
+    if (err) { 
+        console.error('Error connecting to mysql: ', err)
+        return;}
+    console.log('Connected to MySQL Database');
+});
 
 // Import routes from different files
 const groceryRoute = require("./pagesBackend/groceryPage");

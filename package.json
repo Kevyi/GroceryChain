@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "i": "^0.3.7"
+  },
+  "name": "grocerychain",
+  "version": "1.0.0",
+  "description": "Full-Stack website pertaining to an grocery chain with  check out capabilities.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node app.jsx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
