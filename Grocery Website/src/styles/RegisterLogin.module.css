@@ -13,7 +13,7 @@
 .login-box {
     margin-top: -10vw;
     width: 40%;
-    height: 33vw;
+    height: 70%;
     border: 0.4vw solid black;
     background-color: rgba(0, 0, 0, 0.9); 
     display: flex;
@@ -35,9 +35,6 @@
 
 }
 
-.buttonSpacing{
-    margin-top: 2vw;
-}
 
 ::placeholder {
     color: rgb(255, 255, 255,.5); /* Transparent black text */
@@ -53,7 +50,7 @@ input[type="text"],
 input[type="password"] {
     width: 70%;
     padding: 10px;
-    margin-bottom: 15px; 
+    margin-bottom: 0%; 
     border: 2px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
@@ -143,7 +140,7 @@ input[type="password"] {
     border-radius: 5%;
     position: relative;
     width: 27%;
-    height: 75%;
+    height: 100%;
 }
 
 .closeButton {
