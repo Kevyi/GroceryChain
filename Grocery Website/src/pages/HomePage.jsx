@@ -6,7 +6,7 @@ export default function Home(){
     const footerText = "Testing2131231.";
 return (
     <>    
-    <div id = "main">
+    <div id = {styles["main"]}>
 
     
         <div className = {styles["header"]}>

@@ -1,0 +1,21 @@
+.grocery-table {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* overflow-y: auto; Allow scrolling if content overflows */
+    flex-grow: 1;
+    flex-shrink: 1;
+    /*Sets the size before it shrinks*/
+    flex-basis: auto;
+    /* height: auto; */
+
+    width: auto;
+    /*Allows items to go down*/
+    flex-wrap: wrap;
+    margin-right: 20px;
+
+    
+  }

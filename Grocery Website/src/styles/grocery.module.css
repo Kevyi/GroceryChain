@@ -1,0 +1,27 @@
+.page{
+    display: flex;
+}
+
+#main{
+    display:flex;
+    height: auto;
+}
+.table{
+    display: flex;
+    flex-direction: column;
+}
+
+.column {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+
+    width: 25%;
+    height: fill;
+    min-height: 1000px;
+    /*Allows items to go down*/
+    flex-wrap: wrap;
+  }

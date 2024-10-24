@@ -1,0 +1,14 @@
+.box{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 400px;
+    /*height: auto;*/
+    border: 2px solid red;
+    margin-right: auto;
+    padding: 10px;
+}
+
+.image{
+    border: 1px solid red;
+}

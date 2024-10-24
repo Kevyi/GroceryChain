@@ -1,4 +1,4 @@
-import styles from "../styles/navbar.module.css"
+import styles from "./componentsStyle/navbar.module.css"
 import logo from "../assets/react.svg"
 
 export default function NavbarTop(){
