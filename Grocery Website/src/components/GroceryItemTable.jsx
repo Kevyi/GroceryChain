@@ -2,7 +2,7 @@ import styles from "./componentsStyle/groceryTable.module.css"
 import GroceryItemBox from "./GroceryItemBox.jsx"
 //This will hold the groceryItemBoxes in a table. 
 
-//Should take an array of groceryItems
+//Should take an array of groceryItems (image, name, description, price)
 
         //The {} usually means an object, but here it means object destructuring.
             //Don't have to do this and get one object as argument and access values inside through paramName.value to be selected;

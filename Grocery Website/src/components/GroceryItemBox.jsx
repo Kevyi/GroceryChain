@@ -22,12 +22,19 @@ export default function GroceryItemBox({groceryItem}){
                 Do something that expands the box when clicked.
         */}
          <div className = {styles["box"]}>
+
             <div className = {styles["image"]}> 
                 {groceryItem.image}
             </div>
+
             <p><strong>{groceryItem.name}</strong></p>
+
             <div>
             {groceryItem.description}
+            </div>
+
+            <div>
+            {groceryItem.price}
             </div>
 
         </div>  
