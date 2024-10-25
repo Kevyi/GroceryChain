@@ -1,0 +1,19 @@
+#id{
+    display:flex;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+}
+
+.buttons-div{
+    border: 1px solid red;
+    padding: 20px;
+}
+
+
+.details{
+    display: flex;
+    flex-direction: column;
+}

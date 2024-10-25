@@ -1,0 +1,32 @@
+#main{
+    display:flex;
+    flex-direction: row;
+    height: auto;
+}
+
+.item-display{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    
+    min-height: 700px;
+    flex-grow: 2;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cart{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    height: 500px;
+    
+    min-width: 25%;
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

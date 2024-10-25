@@ -14,7 +14,8 @@ export default function GroceryPage(){
         {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b"},
         {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b"}
     ]
-
+            //Store Items inside the localstorage!!!! 
+                //Find out how to use it if not.
 
     return (
 
