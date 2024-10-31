@@ -6,6 +6,11 @@ const app = express();
 const cors = require("cors");
 
 
+
+
+//Learn about middleware.
+
+
 // Import routes from different files
 const groceryRoute = require("./pagesBackend/groceryPage");
 const homeRoute = require("./pagesBackend/homePage");
