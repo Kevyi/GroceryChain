@@ -11,7 +11,6 @@
 }
 
 .login-box {
-    margin-top: -10vw;
     width: 40%;
     height: 70%;
     border: 0.4vw solid black;
@@ -23,11 +22,12 @@
 }
 
 .login-box h1 {
-    margin: -.5vw;
+    margin: -5%;
     color: white;
-    font-size: 5vw;
-    margin-bottom: 0vw;
+    font-size: 600%;
+    margin-bottom: 0%;
 }
+
 
 .login-box h2 {
 
@@ -43,7 +43,7 @@
 input {
     align-items: center;
     width: 100%;
-    height: 3vw;
+    height: 10%;
 }
 
 input[type="text"],
@@ -59,7 +59,7 @@ input[type="password"] {
 
 /* Add this class to style the submit button */
 .submitButton {
-    width: 20vw; /* Set width similar to text and password fields */
+    width: 500%; /* Set width similar to text and password fields */
     height: 3.5vw; /* Make the button slightly larger */
     padding: 10px; /* Add some padding */
     font-size: 1.2rem; /* Increase font size */
@@ -77,13 +77,16 @@ input[type="password"] {
 
 /* Adjust margin for spacing around the button */
 .buttonSpacing {
-    margin-top: 2vw;
+    margin-top: 5%;
     display: flex;
     justify-content: center;
 }
 
+.submitButton{
+    width: 20vw;
+}
 .spacing{
-    margin-top: -1vw;
+    margin-top: -1%;
 }
 
 .inLineText{
@@ -111,7 +114,7 @@ input[type="password"] {
     color: black;
 }
 .login-box {
-    margin-top: -10vw;
+    margin-top: -10%;
     width: 40vw;
     height: 33vw;
     border: 0.4vw solid black;
@@ -124,8 +127,8 @@ input[type="password"] {
 
 .modalOverlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0%;
+    left: 0%;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -161,7 +164,7 @@ input[type="password"] {
 .centerRegistration {
     text-align: center;
     color: white;
-    font-size: 2vw;
+    font-size: 200%;
 }
 
 
@@ -186,7 +189,7 @@ input[type="password"].inputBox {
 
 .registrationButton {
     width: 97%; /* Set width similar to text and password fields */
-    height: 3.5vw; /* Make the button slightly larger */
+    height: 10%; /* Make the button slightly larger */
     padding: 10px; /* Add some padding */
     font-size: 1.2rem; /* Increase font size */
     background-color: rgba(1, 36, 20, 0.75); /* Customize button color */
