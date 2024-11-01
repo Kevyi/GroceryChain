@@ -7,6 +7,7 @@ import ShoppingCartPage from './pages/ShoppingCartPage.jsx'
 import RegisterLoginPage from './pages/RegisterLoginPage.jsx'
 import TestingPage1 from './pages/TestingPage1.jsx'
 import NavbarTop from './components/NavbarTop.jsx'
+import LoginPage from './pages/LoginPage.jsx'
 function App() {
   const [count, setCount] = useState(0)
 
@@ -44,6 +45,7 @@ function App() {
             <Route path = "/shopping-cart" element = {<ShoppingCartPage/>}></Route>
             <Route path = "/register-login" element = {<RegisterLoginPage/>}></Route>
             <Route path = "/testing1" element = {<TestingPage1/>}></Route>
+            <Route path = "/login-page" element = {<LoginPage/>}></Route>
           </Routes>
       </Router>
     </>

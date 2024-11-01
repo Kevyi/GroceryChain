@@ -1,5 +1,10 @@
 import styles from "./componentsStyle/navbar.module.css"
 import logo from "../assets/react.svg"
+import { FaShoppingCart } from "react-icons/fa"
+import { BiFoodMenu } from "react-icons/bi";
+import { IoIosLogIn } from "react-icons/io";
+import { GiForkKnifeSpoon } from "react-icons/gi";
+import { FaBars } from "react-icons/fa6";
 
 export default function NavbarTop(){
     return (
@@ -8,7 +13,7 @@ export default function NavbarTop(){
     <nav class={styles["navbar"]}>
       <div>
         <a href="/home">
-          <img src = {logo}></img>
+          <GiForkKnifeSpoon class = {styles["logo"]}/>
         </a>
       </div>
 
@@ -19,23 +24,23 @@ export default function NavbarTop(){
           
 
           <a href="/grocery-page">
-            <img src = {logo}></img>
-              Grocery Items
+            <FaBars />
+            <div>Shop</div>
           </a>
           <a href="/shopping-cart">
-            <img src = {logo}></img>
-              Shopping Cart
+            <FaShoppingCart />
+            <div>Shopping Cart</div>
           </a>
-            <p>Test text</p>
         </div>
 
         <button class={styles["log-in"]}>
-          <a href = "/register-login">Log In</a>
+          <a href = "/login-page">
+            <IoIosLogIn />
+            <div>Login</div>
+          </a>
         </button>
 
       </div>
-
-      
   </nav>
         </>
 

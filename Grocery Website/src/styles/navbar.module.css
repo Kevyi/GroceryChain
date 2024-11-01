@@ -8,23 +8,9 @@ a {
   text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
-a div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: center;
-  padding-left: 10px;
-  line-height:normal;
-}
 
-a .logo
-{
-  height: 50px;
-  width: 50px;
-}
 button {
   border: 0;
   outline: none;
@@ -48,13 +34,12 @@ button {
 }
 
 .navbar .logo a{
-  height: 100px;
-  width: 100px;
-  font-size: 100px;
+  font-size: 24px;
   font-weight: 700;
   color: white;
   margin-left: 12px;
 }
+
 
 .menu {
   display: flex;
@@ -71,13 +56,13 @@ button {
 
 .menu-links a {
   font-weight: 500;
-  color: #7373ff;
+  color: #000000;
   font-size: 20px;
   padding: 8px 16px;
 }
 .menu-links a:hover {
-  color: #7373ff;
-  background-color: #7373ff19;
+  color: rgb(255, 255, 255);
+  background-color: rgb(213, 213, 213);
   border-radius: 10px;
 }
 .log-in {
@@ -85,12 +70,13 @@ button {
   font-size: 20px;
   padding: 12px 22px;
   background-color: transparent;
-  color: #7373ff;
+  color: #000000;
   border-radius: 10px;
+  border: 2px solid #0aa5ff;
   transition: 0.2s;
 }
 .log-in:hover {
-  background-color: #7373ff19;
-  color: #7373ff;
+  background-color: #0aa5ff;
+  color: white;
 }
 

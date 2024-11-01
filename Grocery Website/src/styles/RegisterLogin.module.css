@@ -1,0 +1,203 @@
+.main {
+    display: flex;
+    flex-direction: column;   
+    justify-content: center; 
+    align-items: center;      
+    height: 100vh;
+    background-image: url('../images/fruitsAndVeges.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.login-box {
+    margin: -10%;
+    width: 40%;
+    height: 33%;
+    border: 0.4vw solid black;
+    background-color: rgba(0, 0, 0, 0.9); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5%;
+}
+
+.login-box h1 {
+    margin: -.5vw;
+    color: white;
+    font-size: 5vw;
+    margin-bottom: 0vw;
+}
+
+.login-box h2 {
+
+    color: white;
+
+}
+
+.buttonSpacing{
+    margin-top: 2vw;
+}
+
+::placeholder {
+    color: rgb(255, 255, 255,.5); /* Transparent black text */
+}
+
+input {
+    align-items: center;
+    width: 100%;
+    height: 3vw;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 70%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box; 
+}
+
+/* Add this class to style the submit button */
+.submitButton {
+    width: 20vw; /* Set width similar to text and password fields */
+    height: 3.5vw; /* Make the button slightly larger */
+    padding: 10px; /* Add some padding */
+    font-size: 1.2rem; /* Increase font size */
+    background-color: rgba(1, 36, 20, 0.75); /* Customize button color */
+    color: white; /* Text color */
+    border: 2px solid green; /* Add a border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.submitButton:hover {
+    background-color: #0056b3; /* Darker background on hover */
+}
+
+/* Adjust margin for spacing around the button */
+/* .buttonSpacing {
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+} */
+
+.spacing{
+    margin-top: 0vw;
+}
+
+.inLineText{
+    display: inline;
+    text-decoration: underline;
+    color:inherit;
+}
+
+/* Modal Overlay (background dimming) */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Make sure it's above other content */
+}
+
+.centerRegistration{
+    text-align: center;
+    color: black;
+}
+.login-box {
+    margin-top: -10vw;
+    width: 40vw;
+    height: 33vw;
+    border: 0.4vw solid black;
+    background-color: rgba(0, 0, 0, 0.9); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5%;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background-color: rgb(0, 0, 0);
+    padding: 40px;
+    border-radius: 5%;
+    position: relative;
+    width: 27%;
+    height: 95%;
+}
+
+.closeButton {
+    position: absolute;
+    top: -1%;
+    right: 0px;
+    background: none;
+    border: none;
+    font-size: 250%;
+    cursor: pointer;
+    color:darkred
+}
+
+.closeButton:hover {
+    color: red;
+}
+
+.centerRegistration {
+    text-align: center;
+    color: white;
+    font-size: 2vw;
+}
+
+
+
+
+input[type="text"].inputBox,
+input[type="date"].inputBox,
+input[type="password"].inputBox {
+    width: 97%;
+    padding: 2%;
+    border: 1px solid #333; 
+    border-radius: 3%; 
+    font-size: 1.2rem;
+    display: block; /* Make the input block-level */
+    margin: 0 auto;
+    
+}
+
+.spacingForTextBlocks{
+    margin: 4%;
+}
+
+
+.registrationButton {
+    width: 97%; /* Set width similar to text and password fields */
+    height: 3.5vw; /* Make the button slightly larger */
+    padding: 10px; /* Add some padding */
+    font-size: 1.2rem; /* Increase font size */
+    background-color: rgba(1, 36, 20, 0.75); /* Customize button color */
+    color: white; /* Text color */
+    border: 2px solid green; /* Add a border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    display: block; /* Make the input block-level */
+    margin: 0 auto;
+}
