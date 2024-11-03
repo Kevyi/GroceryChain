@@ -1,3 +1,8 @@
+:root
+{
+  --colorscheme: #7373ff;
+}
+/*#7373ff;*/
 *,
 *::before,
 *::after {
@@ -22,6 +27,7 @@ a div {
 
 a .logo
 {
+  color: var(--colorscheme);
   height: 50px;
   width: 50px;
 }
@@ -35,16 +41,15 @@ button {
 
 
 .navbar {
-  border: solid grey 1px;
-  box-shadow: 2px 2px rgb(173, 168, 168);
-  width: auto;
-
-  height: 90px;
-  background-color: hsl(0, 0%, 100%);
-  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: solid grey 1px;
+  box-shadow: 2px 2px rgb(173, 168, 168);
+  width: auto;
+  height: 90px;
+  background-color: hsl(0, 0%, 100%);
+  padding: 20px 40px;
 }
 
 .navbar .logo a{
@@ -64,33 +69,75 @@ button {
 
 .menu-links {
   display: flex;
-  gap: 24px;
-  border-right: 3px solid #999999;
+  gap:20px;
   padding-inline: 24px;
 }
 
 .menu-links a {
   font-weight: 500;
-  color: #7373ff;
+  color: var(--colorscheme);
   font-size: 20px;
-  padding: 8px 16px;
+  padding: 0px 20px;
+  text-wrap:nowrap;
 }
 .menu-links a:hover {
-  color: #7373ff;
-  background-color: #7373ff19;
+  color: var(--colorscheme);
+  background-color: #7373ff34;
+  padding: 10px 20px;
   border-radius: 10px;
-}
-.log-in {
-  font-weight: 500;
-  font-size: 20px;
-  padding: 12px 22px;
-  background-color: transparent;
-  color: #7373ff;
-  border-radius: 10px;
-  transition: 0.2s;
-}
-.log-in:hover {
-  background-color: #7373ff19;
-  color: #7373ff;
 }
 
+.search {
+  color: var(--colorscheme);
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding-left: 50px;
+  width: 100%;
+  min-width: 400px;
+}
+
+.search .field
+{
+  display: flex;
+  padding: 25px 40px 25px 20px;
+  height: 40px;
+  font-size:16px;
+  cursor: text;
+  border-radius: 30px;
+  border-color:rgb(156, 156, 156);
+  outline:none;
+
+}
+
+.search .field::placeholder
+{
+  color:var(--colorscheme);
+  opacity: 0.8;
+}
+
+.search .field:focus
+{
+  border-radius: 0px;
+  cursor: text;
+  border-color:rgb(156, 156, 156);
+  outline: auto;
+  outline-color: var(--colorscheme);
+}
+
+.search button
+{
+  display: flex;
+  position:absolute;
+  padding: 5px 5px;
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  text-decoration: none;
+  border:none;
+}
+
+.search .search-icon
+{
+  color:var(--colorscheme);
+  
+}

@@ -5,6 +5,8 @@ import { BiFoodMenu } from "react-icons/bi";
 import { IoIosLogIn } from "react-icons/io";
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import { FaBars } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
+import { IoPerson } from "react-icons/io5";
 
 export default function NavbarTop(){
     return (
@@ -17,32 +19,31 @@ export default function NavbarTop(){
         </a>
       </div>
 
+      <form class ={styles["search"]}>
+        <input form class={styles["field"]} placeholder = "Search GoodEats"></input>
+        <button type="submit"><FaSearch class={styles["search-icon"]}/></button>
+      </form>
+
       <div class={styles["menu"]}>
         <div class={styles["menu-links"]}>
-
-          {/* {styles["test1"] + " "+ styles["test2"]} or {`${styles["test1"]} ${styles["test2"]}`}*/}
-          
-
           <a href="/grocery-page">
             <FaBars />
             <div>Shop</div>
           </a>
+
           <a href="/shopping-cart">
             <FaShoppingCart />
             <div>Shopping Cart</div>
           </a>
-        </div>
 
-        <button class={styles["log-in"]}>
           <a href = "/login-page">
-            <IoIosLogIn />
-            <div>Login</div>
+            <IoPerson />
+            <div>Sign In / Register</div>
           </a>
-        </button>
-
+        </div>
       </div>
-  </nav>
-        </>
+    </nav>
+    </>
 
     )
 }
