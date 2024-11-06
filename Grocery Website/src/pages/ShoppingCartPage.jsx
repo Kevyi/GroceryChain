@@ -2,6 +2,13 @@ import styles from "../styles/shoppingCart.module.css"
 import CartItem from "../components/CartItem.jsx"
 
 export default function ShoppingCartPage(){
+
+    //Get dictionary of objects that's formatted like "name: amount". Seen in popUp component.
+    const items = JSON.parse(localStorage.getItem('items'));
+
+    //use this item to map it below for cartItems. Cartitems will need to be updated to 
+        //take in new arguments.
+
     return (
         
         <>
