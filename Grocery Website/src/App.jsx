@@ -4,7 +4,7 @@ import axios from 'axios';
 import GroceryPage from './pages/GroceryPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import ShoppingCartPage from './pages/ShoppingCartPage.jsx'
-import RegisterLoginPage from './pages/RegisterLoginPage.jsx'
+import RegisterLoginPage from './pages/LoginPage.jsx'
 import TestingPage1 from './pages/TestingPage1.jsx'
 import NavbarTop from './components/NavbarTop.jsx'
 import LoginPage from './pages/LoginPage.jsx'
