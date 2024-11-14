@@ -1,52 +1,86 @@
+.carouselWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: visible; /* Make sure overflow is visible so buttons aren't cut off */
+  width: 80%; /* Adjust width to display 4 items comfortably */
+  max-width: 800px; /* Ensure it fits 4 items */
+  margin: auto;
+  padding: 0 30px; /* Add padding to give space for buttons */
+}
 
-  .carousel-wrapper {
-    display: flex;
-    align-items: center;
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding: 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
 
-  }
-  
-  .carousel {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    width: 93vh;
-    padding: 10px;
-    gap: 10px;
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
-  }
-  
-  .carousel::-webkit-scrollbar {
-    display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
-  }
-  
-  .carousel-item {
-    flex: 0 0 auto;
-    width: 150px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  
-  .carousel-button {
-    font-size: 24px;
-    cursor: pointer;
-    border: none;
-    background-color: transparent;
-    color: #007bff;
-    padding: 0 15px;
-  }
-  
-  .carousel-button.left {
-    position: absolute;
-    left: 0;
-  }
-  
-  .carousel-button.right {
-    position: absolute;
-    right: 0;
-  }
-  
+.carouselItem {
+  min-width: 180px; /* Adjust width to fit 4 items */
+  height: 200px; /* Adjust for desired square size */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  scroll-snap-align: center;
+}
+
+.productImage {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.productTitle {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 5px;
+  height: 40px; /* Fixed height for title */
+}
+
+.productWeight {
+  font-weight: bold;
+  text-align: center;
+  margin-top: auto; /* Align at the bottom */
+  height: 20px; /* Fixed height for weight */
+}
+
+.carouselButton {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carouselButton.left {
+  left: -20px; /* Move this further to the left */
+}
+
+.carouselButton.right {
+  right: -20px; /* Move this further to the right */
+}
+
+.carouselButton:hover {
+  background-color: #5a54cc;
+}

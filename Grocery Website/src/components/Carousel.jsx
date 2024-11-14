@@ -1,62 +1,38 @@
 import React, { useRef } from 'react';
+import products from '../pages/Product.jsx';
 import styles from './componentsStyle/carousel.module.css';
 
+export default function Carousel() {
+    const limitedProducts = [...products.slice(0,8)];
+    const carouselRef = useRef(null);
 
-export default function Carousel(){
+    const scrollLeft = () => {
+        const scrollAmount = 120 + 20; // Item width + gap
+        carouselRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    };
 
-    const items = [
-        {name: 'Kroger® Non-Drowsy DayTime', quantity: '24 ct' },
-        {name: 'Kroger® Daytime/NiteTime', quantity: '48 ct' },
-        {name: 'Halls Relief Cherry Cough Drops', quantity: '80 ct' },
-        {name: 'Ricola Cough Suppressant', quantity: '19 ct' },
-        {name: 'Kroger® NightTime Cold', quantity: '24 ct' },
-        {name: 'Ricola Cough Suppressant', quantity: '21 ct' },
-        {name: 'Kroger® Maximum Strength', quantity: '24 ct' },
-        {name: 'Kroger® Maximum Strength', quantity: '24 ct' },
-        {name: 'Kroger® Maximum Strength', quantity: '24 ct' },
-        
-        // Add more items as needed
-      ];
-      
-      
-        const carouselRef = useRef(null);
-     
-      
-        const scrollLeft = () => {
-          carouselRef.current.scrollBy({ left: -200, behavior: 'smooth' });
-        };
-      
-        const scrollRight = () => {
-          carouselRef.current.scrollBy({ left: 200, behavior: 'smooth' });
-        };
-      
-    return(<>
-    
-    
+    const scrollRight = () => {
+        const scrollAmount = 120 + 20; // Item width + gap
+        carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    };
 
-      <div className={styles["carousel-wrapper"]}>
-        <button className= {styles["carousel-button left"]} onClick={scrollLeft}>
-          &#8592;
-        </button>
-
-        <div className={styles["carousel"]} ref={carouselRef}>
-
-          {items.map((item, index) => (
-            <div key={index} className={styles["carousel-item"]}>
-              <p>{item.name}</p>
-              <p>{item.quantity}</p>
-        
+    return (
+        <div className={styles.carouselWrapper}>
+            <button className={`${styles.carouselButton} ${styles.left}`} onClick={scrollLeft}>
+                &#8592;
+            </button>
+            <div className={styles.carousel} ref={carouselRef}>
+                {limitedProducts.map((product, index) => (
+                    <div key={index} className={styles.carouselItem}>
+                        <img src={product.image} alt={product.title} className={styles.productImage} />
+                        <h3 className={styles.productTitle}>{product.title}</h3>
+                        <p className={styles.productWeight}>{product.weight} lb</p>
+                    </div>
+                ))}
             </div>
-          ))}
-
+            <button className={`${styles.carouselButton} ${styles.right}`} onClick={scrollRight}>
+                &#8594;
+            </button>
         </div>
-        
-        <button className= {styles["carousel-button right"]} onClick={scrollRight}>
-          &#8594;
-        </button>
-      </div>
-
-    
-    
-    </>)
+    );
 }
