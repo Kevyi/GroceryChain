@@ -1,0 +1,42 @@
+.image-container {
+    position: relative;
+}
+
+.organic-symbol, .vegetable-symbol {
+    position: absolute;
+    width: 5px; /* Smaller size for both icons */
+    height: 5px;
+}
+
+.organic-symbol {
+    position: absolute;
+    top: 8px; /* Position for organic symbol */
+    left: 8px; /* Adjust as needed */
+    z-index: 20; /* Higher z-index to place above vegetable symbol if both are present */
+    width: 55px;
+    height: 45px;
+    border-radius: 50%;
+    opacity: 0.9;
+}
+
+.vegetable-symbol {
+    position: absolute;
+    top: 13px; /* Position when displayed alone */
+    right: -25px;
+    width: 55px;
+    height: 45px;
+    border-radius: 50%;
+    z-index: 10;
+    opacity: 0.9;
+}
+
+.vegetable-symbol-below {
+    position: absolute;
+    top: 8px; /* Align with organic symbol */
+    left: 8px; /* Match organic-symbol position */
+    width: 55px;
+    height: 45px;
+    border-radius: 50%;
+    z-index: 10; /* Lower z-index to place below organic symbol */
+    opacity: 0.9;
+}

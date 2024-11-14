@@ -1,28 +1,29 @@
 import styles from "../styles/home.module.css"
+import Carousel from "../components/Carousel.jsx"
 
 export default function Home(){
 
-
-    const footerText = "Testing2131231.";
 return (
     <>    
     <div id = {styles["main"]}>
 
     
         <div className = {styles["header"]}>
-            <h1 style={{fontSize: "100px", margin : 0, textAlign:"center"}}><b>Grocery Store</b></h1>
+            <h1 style={{fontSize: "50px", margin : 0, textAlign:"center"}}>
+                Good Eats
+            </h1>
             <iframe src="" title="description" style = {{height:"60vh"}}></iframe>
         </div>
 
-        <div className = {"footer"}>
+        <div className = {styles["center-carousel"]}>
+            <h2>Fall Wellness Essentials</h2>
+            <Carousel></Carousel>
+        </div>
+         
+        
+        <div className = {styles["footer"]}>
 
-            <p>This is the footer with Overflow capabilities</p>
-            <p>{footerText}</p>
-            <p>{footerText}</p>
-            <p>{footerText}</p>
-            <p>{footerText}</p>
-            <p>{footerText}</p>
-
+            <a href = "https://github.com/Kevyi/GroceryChain" >Contributions @ https://github.com/Kevyi/GroceryChain </a>
 
         </div>
     </div>  

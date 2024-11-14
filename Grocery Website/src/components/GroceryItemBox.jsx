@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
 import styles from "./componentsStyle/groceryItem.module.css"
+import PopUp from "./GroceryItemPopUp.jsx"
 
 //Individual box for grocery item, should take parameters for each item.
         //Objects are items, functions are items.
 
         //Takes an object/dictionary that holds all the values for a grocery item ie. Weight, name, etc.
+
+
+
 export default function GroceryItemBox({groceryItem}){
 
-    const [isExpanded, setIsExpanded] = useState(false);
+
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleExpand = () => {
-        setIsExpanded(!isExpanded);
-    };
+        setIsOpen(true);
+    }
+
+    const handleClose = () => {
+        setIsOpen(false);
+    }
 
     
     //Grocery item contains values: name, image, weight, description 
@@ -21,7 +30,7 @@ export default function GroceryItemBox({groceryItem}){
         
                 Do something that expands the box when clicked.
         */}
-         <div className = {styles["box"]}>
+         <div className = {styles["box"]} onClick={handleExpand}>
 
             <div className = {styles["image"]}> 
                 {groceryItem.image}
@@ -36,8 +45,9 @@ export default function GroceryItemBox({groceryItem}){
             <div>
             {groceryItem.price}
             </div>
-
         </div>  
+
+        {isOpen && <PopUp onClose = {handleClose} groceryItem = {groceryItem}></PopUp>}
     
     </>)
 
