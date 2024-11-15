@@ -1,3 +1,8 @@
+:root
+{
+  --colorscheme: #7373ff;
+}
+/*#7373ff;*/
 *,
 *::before,
 *::after {
@@ -8,9 +13,24 @@ a {
   text-decoration: none;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
+a div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: center;
+  padding-left: 10px;
+  line-height:normal;
+}
 
+a .logo
+{
+  color: var(--colorscheme);
+  height: 50px;
+  width: 50px;
+}
 button {
   border: 0;
   outline: none;
@@ -21,20 +41,21 @@ button {
 
 
 .navbar {
-  border: solid grey 1px;
-  box-shadow: 2px 2px rgb(173, 168, 168);
-  width: auto;
-
-  height: 90px;
-  background-color: hsl(0, 0%, 100%);
-  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: solid grey 1px;
+  box-shadow: 2px 2px rgb(173, 168, 168);
+  width: auto;
+  height: 90px;
+  background-color: hsl(0, 0%, 100%);
+  padding: 20px 40px;
 }
 
 .navbar .logo a{
-  font-size: 24px;
+  height: 100px;
+  width: 100px;
+  font-size: 100px;
   font-weight: 700;
   color: white;
   margin-left: 12px;
@@ -48,34 +69,119 @@ button {
 
 .menu-links {
   display: flex;
-  gap: 24px;
-  border-right: 3px solid #999999;
+  gap:20px;
   padding-inline: 24px;
 }
 
 .menu-links a {
   font-weight: 500;
-  color: #000000;
+  color: var(--colorscheme);
   font-size: 20px;
-  padding: 8px 16px;
+  padding: 0px 20px;
+  text-wrap:nowrap;
 }
 .menu-links a:hover {
-  color: rgb(255, 255, 255);
-  background-color: rgb(213, 213, 213);
+  color: var(--colorscheme);
+  background-color: #7373ff34;
+  padding: 10px 20px;
   border-radius: 10px;
 }
-.log-in {
-  font-weight: 500;
-  font-size: 20px;
-  padding: 12px 22px;
-  background-color: transparent;
-  color: #000000;
-  border-radius: 10px;
-  border: 2px solid #0aa5ff;
-  transition: 0.2s;
+
+.search {
+  color: var(--colorscheme);
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding-left: 50px;
+  width: 100%;
+  min-width: 400px;
 }
-.log-in:hover {
-  background-color: #0aa5ff;
+
+.search .field
+{
+  display: flex;
+  padding: 25px 40px 25px 20px;
+  height: 40px;
+  font-size:16px;
+  cursor: text;
+  border-radius: 30px;
+  border-color:rgb(156, 156, 156);
+  outline:none;
+
+}
+
+.search .field::placeholder
+{
+  color:var(--colorscheme);
+  opacity: 0.8;
+}
+
+.search .field:focus
+{
+  border-radius: 0px;
+  cursor: text;
+  border-color:rgb(156, 156, 156);
+  outline: auto;
+  outline-color: var(--colorscheme);
+}
+
+.search button
+{
+  display: flex;
+  position:absolute;
+  padding: 5px 5px;
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  text-decoration: none;
+  border:none;
+}
+
+.search .search-icon
+{
+  color:var(--colorscheme);
+  
+}
+
+.cart-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--colorscheme);
+  text-decoration: none;
+}
+
+.cart-icon-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-icon {
+  font-size: 24px;
+  color: var(--colorscheme);
+  position: relative;
+}
+
+.cart-item-counter-badge {
+  position: absolute;
+  top: -10px;  /* Moves the badge slightly higher */
+  right: -12px; /* Adjusts the badge position horizontally */
+  background-color: red;
   color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px; /* Ensures circular shape for single-digit numbers */
+  height: 18px; /* Matches the width for a circular shape */
+}
+
+.cart-text {
+  font-size: 16px;
+  font-weight: 500;
 }
 

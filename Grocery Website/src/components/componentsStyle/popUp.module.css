@@ -1,0 +1,154 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+
+  }
+
+  .popup-content {
+    width: 65%; /* Controls the popup width */
+    height: 90%; /* Controls the popup height */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+
+    display: flex;
+    background-color: rgb(243, 248, 252);
+
+  }
+  
+  .close-button {
+    position: absolute;
+    background-color: transparent;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: red;
+    cursor: pointer;
+  }
+
+  .right-side{
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+    gap: 10px;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fill;
+  }
+
+  .left-side{
+    display: flex;
+    height: fit-content;
+    flex-direction: column;
+    width: 500px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .temp-box{
+    width:300px;
+    height: 300px;
+    border: solid;
+    margin: 20px;
+  }
+
+  .description{
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    max-width: 500px;
+    max-height: 175px;
+    padding: 10px;
+    gap: 10px;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    background: rgb(250, 247, 247);
+    box-shadow: 1px 2px 1px gray;
+  }
+
+
+  .details > *{
+    margin: 10px;
+  }
+
+  .quantity{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+
+    .quantity p{
+        margin-right: 10px;
+    }
+
+  .quantity .value
+{
+    display: flex;
+    width: 60px;
+}
+
+.counterBox
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-div
+{
+    padding: 20px;
+}
+button
+{
+    color:rgb(129, 129, 129);
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.close-button:hover
+{
+    background-color: rgba(128, 128, 128, 0.185);
+    border-radius: 2px;
+}
+
+.add-button:hover{
+    background-color: rgb(0, 255, 47);
+}
+
+.add-button:active{
+    background-color: rgba(0, 255, 47, 0.185);
+}
+
+.quantity .value
+{
+    display: flex;
+    width: 60px;
+}
+
+.add-button{
+    position: absolute;
+    background-color: lightgreen;
+    bottom: 30px;
+    right: 30px;
+    font-size: 30px;
+    color: green;
+    cursor: pointer;
+}
+
+.verticalLine {
+    width: 1px; /* Line width */
+    background-color: black; /* Line color */
+    height: 100%; /* Override in-line if you want specific height. */
+    float: left; /* Causes the line to float to left of content. 
+        You can instead use position:absolute or display:inline-block
+        if this fits better with your design */
+    margin: 0px 15px 0px 15px;
+  }

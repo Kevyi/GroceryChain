@@ -1,0 +1,86 @@
+.carouselWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: visible; /* Make sure overflow is visible so buttons aren't cut off */
+  width: 80%; /* Adjust width to display 4 items comfortably */
+  max-width: 800px; /* Ensure it fits 4 items */
+  margin: auto;
+  padding: 0 30px; /* Add padding to give space for buttons */
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding: 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carouselItem {
+  min-width: 180px; /* Adjust width to fit 4 items */
+  height: 200px; /* Adjust for desired square size */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  scroll-snap-align: center;
+}
+
+.productImage {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.productTitle {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 5px;
+  height: 40px; /* Fixed height for title */
+}
+
+.productWeight {
+  font-weight: bold;
+  text-align: center;
+  margin-top: auto; /* Align at the bottom */
+  height: 20px; /* Fixed height for weight */
+}
+
+.carouselButton {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carouselButton.left {
+  left: -20px; /* Move this further to the left */
+}
+
+.carouselButton.right {
+  right: -20px; /* Move this further to the right */
+}
+
+.carouselButton:hover {
+  background-color: #5a54cc;
+}
