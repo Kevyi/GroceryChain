@@ -5,7 +5,7 @@ import Description from './Description';
 import indicator from './Indicator';
 import { FaFilter } from 'react-icons/fa';
 
-export default function GroceryPage() {
+export default function GroceryPage({ updateCartCount }) {  // Accept updateCartCount as a prop
     const [groceryItems, setGroceryItems] = useState([]);
     const [quantities, setQuantities] = useState({});
     const [selectedProductId, setSelectedProductId] = useState(null);
@@ -95,7 +95,6 @@ export default function GroceryPage() {
         }
 
         return groceryItems.filter(product => {
-            // Define each filter condition
             const isFruit = !product.isVegetable && !product.isOther;
             const isVegetable = product.isVegetable;
             const isOrganic = product.isOrganic;
@@ -103,59 +102,37 @@ export default function GroceryPage() {
     
             let match = true;
     
-            // Check combinations of selected filters
             if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
-                // Display items that are organic and fall into either fruit, vegetable, or other categories
                 match = (isFruit || isVegetable || isOther) && isOrganic;
             } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic) {
-                // Display organic fruits and vegetables
                 match = (isFruit || isVegetable) && isOrganic;
             } else if (selectedFilters.Fruit && selectedFilters.Organic && selectedFilters.Other) {
-                // Display organic fruits and other items
                 match = (isFruit || isOther) && isOrganic;
             } else if (selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
-                // Display organic vegetables and other items
                 match = (isVegetable || isOther) && isOrganic;
             } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Other) {
-                // Display fruits, vegetables, and other items (without organic requirement)
                 match = isFruit || isVegetable || isOther;
             } else if (selectedFilters.Fruit && selectedFilters.Vegetable) {
-                // Display fruits and vegetables (without organic requirement)
                 match = isFruit || isVegetable;
             } else if (selectedFilters.Fruit && selectedFilters.Organic) {
-                // Display organic fruits
                 match = isFruit && isOrganic;
             } else if (selectedFilters.Vegetable && selectedFilters.Organic) {
-                // Display organic vegetables
                 match = isVegetable && isOrganic;
             } else if (selectedFilters.Other && selectedFilters.Organic) {
-                // Display organic items in the "other" category
                 match = isOther && isOrganic;
             } else if (selectedFilters.Fruit && selectedFilters.Other) {
-                // Display fruits and "other" types
                 match = isFruit || isOther;
             } else if (selectedFilters.Vegetable && selectedFilters.Other) {
-                // Display vegetables and "other" types
                 match = isVegetable || isOther;
             } else {
-                // Apply individual filters if only one is selected
-                if (selectedFilters.Fruit) {
-                    match = isFruit;
-                }
-                if (selectedFilters.Vegetable) {
-                    match = isVegetable;
-                }
-                if (selectedFilters.Organic) {
-                    match = isOrganic;
-                }
-                if (selectedFilters.Other) {
-                    match = isOther;
-                }
+                if (selectedFilters.Fruit) match = isFruit;
+                if (selectedFilters.Vegetable) match = isVegetable;
+                if (selectedFilters.Organic) match = isOrganic;
+                if (selectedFilters.Other) match = isOther;
             }
     
             return match;
         });
-
     };
 
     const incrementQuantity = (productId) => {
@@ -189,6 +166,7 @@ export default function GroceryPage() {
             }
 
             localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+            updateCartCount();  // Call updateCartCount after updating the cart
             return updatedCart;
         });
 
@@ -196,7 +174,6 @@ export default function GroceryPage() {
             ...prevQuantities,
             [product.id]: 1,
         }));
-
         alert(`${quantityToAdd}x ${product.title} has been added to your shopping cart!`);
     };
 

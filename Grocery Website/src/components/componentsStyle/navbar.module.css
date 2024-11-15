@@ -141,3 +141,47 @@ button {
   color:var(--colorscheme);
   
 }
+
+.cart-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--colorscheme);
+  text-decoration: none;
+}
+
+.cart-icon-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-icon {
+  font-size: 24px;
+  color: var(--colorscheme);
+  position: relative;
+}
+
+.cart-item-counter-badge {
+  position: absolute;
+  top: -10px;  /* Moves the badge slightly higher */
+  right: -12px; /* Adjusts the badge position horizontally */
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px; /* Ensures circular shape for single-digit numbers */
+  height: 18px; /* Matches the width for a circular shape */
+}
+
+.cart-text {
+  font-size: 16px;
+  font-weight: 500;
+}
+

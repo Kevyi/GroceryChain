@@ -3,34 +3,58 @@ import { useNavigate } from 'react-router-dom';
 import styles from "../styles/shoppingCart.module.css";
 import Cart from './Cart';
 
-export default function ShoppingCartPage() {
+export default function ShoppingCartPage({ updateCartCount }) {
     const [cartItems, setCartItems] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
         setCartItems(savedCartItems);
+        updateCartSummary(savedCartItems);
     }, []);
 
-    const handleRemoveItem = (productId) => {
-        const updatedCart = cartItems.filter(item => item.id !== productId);
-        setCartItems(updatedCart);
-        localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+    // Function to update the localStorage and cart item count in Navbar
+    const saveCartItems = (items) => {
+        setCartItems(items);
+        localStorage.setItem('cartItems', JSON.stringify(items));
+        updateCartCount();
+        updateCartSummary(items);
     };
 
+    // Function to remove item from cart
+    const handleRemoveItem = (productId) => {
+        const updatedCart = cartItems.filter(item => item.id !== productId);
+        saveCartItems(updatedCart);
+    };
+
+    // Function to handle quantity changes
     const handleQuantityChange = (productId, newQuantity) => {
         const updatedCart = cartItems.map(item =>
             item.id === productId ? { ...item, quantity: newQuantity } : item
         );
-        setCartItems(updatedCart);
-        localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+        saveCartItems(updatedCart);
     };
 
-    const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const totalWeight = cartItems.reduce((sum, item) => sum + (parseFloat(item.weight) || 0) * item.quantity, 0);
-    const shippingFee = totalWeight < 20 ? 0 : 5.0;
-    const finalPrice = totalPrice + shippingFee;
+    // Calculate cart totals
+    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalWeight, setTotalWeight] = useState(0);
+    const [shippingFee, setShippingFee] = useState(0);
+    const [finalPrice, setFinalPrice] = useState(0);
+
+    const updateCartSummary = (items) => {
+        const totalQty = items.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const totalWeight = items.reduce((sum, item) => sum + (parseFloat(item.weight) || 0) * item.quantity, 0);
+        const shippingFee = totalWeight <= 20 ? 0 : 5.0;
+        const finalPrice = totalPrice + shippingFee;
+
+        setTotalQuantity(totalQty);
+        setTotalPrice(totalPrice);
+        setTotalWeight(totalWeight);
+        setShippingFee(shippingFee);
+        setFinalPrice(finalPrice);
+    };
 
     return (
         <div className={styles.cartContainer}>
