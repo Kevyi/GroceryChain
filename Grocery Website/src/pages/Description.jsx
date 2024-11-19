@@ -422,7 +422,22 @@ const productDetailsMap = {
         price: "$5.00",
         weight: "0.5 lb",
         image: "images/ChiaSeeds.jpg"
-    }
+    },
+
+    "031": {
+    title: "Chicken",
+    detailedDescription: "Fresh and tender chicken meat, perfect for grilling, roasting, or frying. A high-protein option, ideal for a healthy meal. Carefully selected for its quality and flavor, making it a versatile addition to any dish.",
+    specifications: {
+      variety: "Broiler",
+      origin: "USA",
+      organic: "No",
+      type: "Meat",
+      availability: "In Stock",
+    },
+    price: "$5.00",
+    weight: "1.5 lb",
+    image: "images/chicken.jpg"  // Add the actual path to the chicken image
+  },
 
     // Add more details for other products using their IDs
 };

@@ -301,6 +301,19 @@ const products = [
       isOrganic: true,
       isVegetable: false,
       isOther: true
+  },
+
+  {
+    id: "031",
+    title: "Chicken",
+    description: "Fresh and tender chicken meat, perfect for grilling, roasting, or frying. A high-protein option, ideal for a healthy meal. Carefully selected for its quality and flavor.",
+    image: "images/chicken.jpg",  // Add the path to the image of chicken
+    price: 5.00,
+    weight: 1.5,
+    isOrganic: false,  // You can change this to true if it's organic
+    isVegetable: false,
+    isOther: false,
+    isMeat: true,  // Chicken is a meat product
   }
 ];
 

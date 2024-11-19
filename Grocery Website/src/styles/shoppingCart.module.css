@@ -259,3 +259,73 @@
     font-style: italic;
     text-align: center;
 }
+
+.purchaseStatus {
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    max-width: 600px;
+}
+
+.purchaseStatus p {
+    font-weight: bold;
+}
+
+.purchaseStatus.success {
+    color: green;
+}
+
+.purchaseStatus.error {
+    color: red;
+}
+
+.successContainer {
+    text-align: center;
+    padding: 25px; /* Increased padding slightly */
+    width: 100%;
+    max-width: 650px; /* Slightly larger container */
+    margin: 0 auto;
+}
+
+.successImage {
+    width: 250px; /* Increased image size */
+    height: auto;
+    margin-bottom: 25px; /* Add more spacing below the image */
+}
+
+.successMessage {
+    font-size: 1.7em; /* Slightly larger success message */
+    color: #4caf50; /* Success green */
+    font-weight: bold;
+    margin-bottom: 15px; /* Add more spacing below the message */
+}
+
+.successSubMessage {
+    font-size: 1.4em; /* Slightly larger sub-message */
+    color: #888; /* Subtle gray */
+    margin-top: 10px; /* Add spacing above */
+    font-weight: normal;
+}
+
+.continueShoppingButton.success {
+    background-color: #4caf50; /* Green for success */
+    color: #fff;
+    padding: 18px 35px; /* Increased padding */
+    font-size: 1.3em; /* Slightly larger text size */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 25px; /* Increase spacing from other elements */
+    transition: background-color 0.3s ease;
+}
+
+.continueShoppingButton.success:hover {
+    background-color: #45a049; /* Darker green on hover */
+}

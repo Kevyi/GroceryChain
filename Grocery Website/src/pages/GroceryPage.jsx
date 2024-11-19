@@ -4,179 +4,243 @@ import products from './Product';
 import Description from './Description';
 import indicator from './Indicator';
 import { FaFilter } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';  // Import useLocation from react-router-dom to get URL query parameters
 
-export default function GroceryPage({ updateCartCount }) {  // Accept updateCartCount as a prop
-    const [groceryItems, setGroceryItems] = useState([]);
-    const [quantities, setQuantities] = useState({});
-    const [selectedProductId, setSelectedProductId] = useState(null);
-    const [cartItems, setCartItems] = useState([]);
-    const [selectedFilters, setSelectedFilters] = useState({
-        All: true,
-        Fruit: false,
-        Vegetable: false,
-        Organic: false,
-        Other: false,
+export default function GroceryPage({ updateCartCount }) {
+  const [groceryItems, setGroceryItems] = useState([]);
+  const [quantities, setQuantities] = useState({});
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [selectedFilters, setSelectedFilters] = useState({
+    All: true,
+    Fruit: false,
+    Vegetable: false,
+    Meat: false, 
+    Organic: false,
+    Other: false,
+  });
+  const [sortOption, setSortOption] = useState('id-asc');
+  
+  const location = useLocation(); // Use the location hook to access URL parameters
+  
+  // This effect will run whenever the URL changes (e.g., when the filter is updated in the URL)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search); // Get query parameters from the URL
+    const filter = urlParams.get("filter");  // Extract the 'filter' parameter from the URL
+    
+    // Initialize filters based on the URL parameter
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      
+      if (filter) {
+        // Reset all filters to false, then set the selected one to true
+        Object.keys(updatedFilters).forEach(key => updatedFilters[key] = false);
+        if (filter === "fruit") {
+          updatedFilters.Fruit = true;
+        } else if (filter === "vegetable") {
+          updatedFilters.Vegetable = true;
+        } else if (filter === "meat") {
+            updatedFilters.Meat = true;
+        } else if (filter === "organic") {
+          updatedFilters.Organic = true;
+        } else if (filter === "other") {
+          updatedFilters.Other = true;
+        }
+        updatedFilters.All = false; // Make sure "All" is not selected when a filter is applied
+      } else {
+        updatedFilters.All = true; // Default to "All" when no filter is applied
+      }
+
+      return updatedFilters;
     });
-    const [sortOption, setSortOption] = useState('id-asc');
 
-    useEffect(() => {
-        setGroceryItems(products);
+    // Set products and quantities
+    setGroceryItems(products);
 
-        const initialQuantities = products.reduce((acc, product) => {
-            acc[product.id] = 1;
-            return acc;
-        }, {});
-        setQuantities(initialQuantities);
+    const initialQuantities = products.reduce((acc, product) => {
+      acc[product.id] = 1;
+      return acc;
+    }, {});
+    setQuantities(initialQuantities);
 
-        const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        setCartItems(savedCartItems);
-    }, []);
+    const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    setCartItems(savedCartItems);
+  }, [location.search]);  // Depend on location.search to re-run this effect when the query changes
 
-    const handleSortChange = (e) => {
-        setSortOption(e.target.value);
-    };
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
 
-    const sortProducts = (items) => {
-        switch (sortOption) {
-            case 'id-asc':
-                return [...items].sort((a, b) => a.id - b.id);
-            case 'id-desc':
-                return [...items].sort((a, b) => b.id - a.id);
-            case 'alphabetical-asc':
-                return [...items].sort((a, b) => a.title.localeCompare(b.title));
-            case 'alphabetical-desc':
-                return [...items].sort((a, b) => b.title.localeCompare(a.title));
-            case 'cost-asc':
-                return [...items].sort((a, b) => a.price - b.price);
-            case 'cost-desc':
-                return [...items].sort((a, b) => b.price - a.price);
-            case 'weight-asc':
-                return [...items].sort((a, b) => a.weight - b.weight);
-            case 'weight-desc':
-                return [...items].sort((a, b) => b.weight - a.weight);
-            default:
-                return items;
+  const sortProducts = (items) => {
+    switch (sortOption) {
+      case 'id-asc':
+        return [...items].sort((a, b) => a.id - b.id);
+      case 'id-desc':
+        return [...items].sort((a, b) => b.id - a.id);
+      case 'alphabetical-asc':
+        return [...items].sort((a, b) => a.title.localeCompare(b.title));
+      case 'alphabetical-desc':
+        return [...items].sort((a, b) => b.title.localeCompare(a.title));
+      case 'cost-asc':
+        return [...items].sort((a, b) => a.price - b.price);
+      case 'cost-desc':
+        return [...items].sort((a, b) => b.price - a.price);
+      case 'weight-asc':
+        return [...items].sort((a, b) => a.weight - b.weight);
+      case 'weight-desc':
+        return [...items].sort((a, b) => b.weight - a.weight);
+      default:
+        return items;
+    }
+  };
+
+  const openModal = (productId) => {
+    setSelectedProductId(productId);
+  };
+
+  const closeModal = () => {
+    setSelectedProductId(null);
+  };
+
+  const handleFilterChange = (filter) => {
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+
+      if (filter === "All") {
+        Object.keys(updatedFilters).forEach(key => updatedFilters[key] = (key === "All"));
+      } else {
+        updatedFilters[filter] = !prevFilters[filter];
+        updatedFilters.All = false;
+
+        const allUnchecked = !updatedFilters.Fruit && !updatedFilters.Vegetable && !updatedFilters.Meat&&!updatedFilters.Organic && !updatedFilters.Other;
+        if (allUnchecked) {
+          updatedFilters.All = true;
         }
-    };
+      }
 
-    const openModal = (productId) => {
-        setSelectedProductId(productId);
-    };
+      return updatedFilters;
+    });
+  };
 
-    const closeModal = () => {
-        setSelectedProductId(null);
-    };
+  const filterProducts = () => {
+    const filters = Object.keys(selectedFilters).filter(filter => selectedFilters[filter] && filter !== "All");
 
-    const handleFilterChange = (filter) => {
-        setSelectedFilters((prevFilters) => {
-            const updatedFilters = { ...prevFilters };
+    if (selectedFilters.All || filters.length === 0) {
+      return groceryItems;
+    }
 
-            if (filter === "All") {
-                Object.keys(updatedFilters).forEach(key => updatedFilters[key] = (key === "All"));
-            } else {
-                updatedFilters[filter] = !prevFilters[filter];
-                updatedFilters.All = false;
+    return groceryItems.filter(product => {
+      const isFruit = !product.isVegetable && !product.isOther;
+      const isVegetable = product.isVegetable;
+      const isMeat = product.isMeat;
+      const isOrganic = product.isOrganic;
+      const isOther = product.isOther;
+  
+      let match = true;
+  
+      if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
+        match = (isFruit || isVegetable || isOther) && isOrganic;
+      } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic) {
+        match = (isFruit || isVegetable) && isOrganic;
+      } else if (selectedFilters.Fruit && selectedFilters.Organic && selectedFilters.Other) {
+        match = (isFruit || isOther) && isOrganic;
+      } else if (selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
+        match = (isVegetable || isOther) && isOrganic;
+      } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Other) {
+        match = isFruit || isVegetable || isOther;
+      } else if (selectedFilters.Fruit && selectedFilters.Vegetable) {
+        match = isFruit || isVegetable;
+      } else if (selectedFilters.Fruit && selectedFilters.Organic) {
+        match = isFruit && isOrganic;
+      } else if (selectedFilters.Vegetable && selectedFilters.Organic) {
+        match = isVegetable && isOrganic;
+      } else if (selectedFilters.Other && selectedFilters.Organic) {
+        match = isOther && isOrganic;
+      } else if (selectedFilters.Fruit && selectedFilters.Other) {
+        match = isFruit || isOther;
+      } else if (selectedFilters.Vegetable && selectedFilters.Other) {
+        match = isVegetable || isOther;
+    } else if (selectedFilters.Fruit && selectedFilters.Meat) {
+        match = isFruit || isMeat;
+    } else if (selectedFilters.Vegetable && selectedFilters.Meat) {
+        match = isVegetable || isMeat;
+    } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Meat) {
+        match = isFruit || isVegetable || isMeat;
+    } else if (selectedFilters.Other && selectedFilters.Meat) {
+        match = isOther || isMeat;
+    } else if (selectedFilters.Fruit && selectedFilters.Other && selectedFilters.Meat) {
+        match = isFruit || isOther || isMeat;
+    } else if (selectedFilters.Vegetable && selectedFilters.Other && selectedFilters.Meat) {
+        match = isVegetable || isOther || isMeat;
+    } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Other && selectedFilters.Meat) {
+        match = isFruit || isVegetable || isOther || isMeat;
+    } else if (selectedFilters.Meat && selectedFilters.Organic) {
+        match = isMeat && isOrganic;
+    } else if (selectedFilters.Fruit && selectedFilters.Meat && selectedFilters.Organic) {
+        match = (isFruit || isMeat) && isOrganic;
+    } else if (selectedFilters.Vegetable && selectedFilters.Meat && selectedFilters.Organic) {
+        match = (isVegetable || isMeat) && isOrganic;
+    } else if (selectedFilters.Other && selectedFilters.Meat && selectedFilters.Organic) {
+        match = (isOther || isMeat) && isOrganic;
+    } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Meat && selectedFilters.Organic) {
+        match = (isFruit || isVegetable || isMeat) && isOrganic;
+    } else if (selectedFilters.Fruit && selectedFilters.Other && selectedFilters.Meat && selectedFilters.Organic) {
+        match = (isFruit || isOther || isMeat) && isOrganic;
+    } else if (selectedFilters.Vegetable && selectedFilters.Other && selectedFilters.Meat && selectedFilters.Organic) {
+        match = (isVegetable || isOther || isMeat) && isOrganic;
+      } else {
+        if (selectedFilters.Fruit) match = isFruit;
+        if (selectedFilters.Vegetable) match = isVegetable;
+        if (selectedFilters.Meat) match = isMeat;
+        if (selectedFilters.Organic) match = isOrganic;
+        if (selectedFilters.Other) match = isOther;
+      }
+  
+      return match;
+    });
+  };
 
-                const allUnchecked = !updatedFilters.Fruit && !updatedFilters.Vegetable && !updatedFilters.Organic && !updatedFilters.Other;
-                if (allUnchecked) {
-                    updatedFilters.All = true;
-                }
-            }
+  const incrementQuantity = (productId) => {
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [productId]: (prevQuantities[productId] || 1) + 1
+    }));
+  };
 
-            return updatedFilters;
-        });
-    };
+  const decrementQuantity = (productId) => {
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [productId]: Math.max(1, (prevQuantities[productId] || 1) - 1)
+    }));
+  };
 
-    const filterProducts = () => {
-        const filters = Object.keys(selectedFilters).filter(filter => selectedFilters[filter] && filter !== "All");
+  const handleAddToCart = (product) => {
+    const quantityToAdd = quantities[product.id] || 1;
 
-        if (selectedFilters.All || filters.length === 0) {
-            return groceryItems;
-        }
+    setCartItems((prevCartItems) => {
+      const updatedCart = prevCartItems.map(item =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + quantityToAdd }
+          : item
+      );
 
-        return groceryItems.filter(product => {
-            const isFruit = !product.isVegetable && !product.isOther;
-            const isVegetable = product.isVegetable;
-            const isOrganic = product.isOrganic;
-            const isOther = product.isOther;
-    
-            let match = true;
-    
-            if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
-                match = (isFruit || isVegetable || isOther) && isOrganic;
-            } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic) {
-                match = (isFruit || isVegetable) && isOrganic;
-            } else if (selectedFilters.Fruit && selectedFilters.Organic && selectedFilters.Other) {
-                match = (isFruit || isOther) && isOrganic;
-            } else if (selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
-                match = (isVegetable || isOther) && isOrganic;
-            } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Other) {
-                match = isFruit || isVegetable || isOther;
-            } else if (selectedFilters.Fruit && selectedFilters.Vegetable) {
-                match = isFruit || isVegetable;
-            } else if (selectedFilters.Fruit && selectedFilters.Organic) {
-                match = isFruit && isOrganic;
-            } else if (selectedFilters.Vegetable && selectedFilters.Organic) {
-                match = isVegetable && isOrganic;
-            } else if (selectedFilters.Other && selectedFilters.Organic) {
-                match = isOther && isOrganic;
-            } else if (selectedFilters.Fruit && selectedFilters.Other) {
-                match = isFruit || isOther;
-            } else if (selectedFilters.Vegetable && selectedFilters.Other) {
-                match = isVegetable || isOther;
-            } else {
-                if (selectedFilters.Fruit) match = isFruit;
-                if (selectedFilters.Vegetable) match = isVegetable;
-                if (selectedFilters.Organic) match = isOrganic;
-                if (selectedFilters.Other) match = isOther;
-            }
-    
-            return match;
-        });
-    };
+      const itemExists = updatedCart.some(item => item.id === product.id);
 
-    const incrementQuantity = (productId) => {
-        setQuantities(prevQuantities => ({
-            ...prevQuantities,
-            [productId]: (prevQuantities[productId] || 1) + 1
-        }));
-    };
+      if (!itemExists) {
+        updatedCart.push({ ...product, quantity: quantityToAdd });
+      }
 
-    const decrementQuantity = (productId) => {
-        setQuantities(prevQuantities => ({
-            ...prevQuantities,
-            [productId]: Math.max(1, (prevQuantities[productId] || 1) - 1)
-        }));
-    };
+      localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+      updateCartCount();  // Call updateCartCount after updating the cart
+      return updatedCart;
+    });
 
-    const handleAddToCart = (product) => {
-        const quantityToAdd = quantities[product.id] || 1;
-
-        setCartItems((prevCartItems) => {
-            const updatedCart = prevCartItems.map(item =>
-                item.id === product.id
-                    ? { ...item, quantity: item.quantity + quantityToAdd }
-                    : item
-            );
-
-            const itemExists = updatedCart.some(item => item.id === product.id);
-
-            if (!itemExists) {
-                updatedCart.push({ ...product, quantity: quantityToAdd });
-            }
-
-            localStorage.setItem('cartItems', JSON.stringify(updatedCart));
-            updateCartCount();  // Call updateCartCount after updating the cart
-            return updatedCart;
-        });
-
-        setQuantities((prevQuantities) => ({
-            ...prevQuantities,
-            [product.id]: 1,
-        }));
-        alert(`${quantityToAdd}x ${product.title} has been added to your shopping cart!`);
-    };
-
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [product.id]: 1,
+    }));
+    alert(`${quantityToAdd}x ${product.title} has been added to your shopping cart!`);
+  };
     return (
         <div className={styles["page"]}>
             <div className={styles["header"]}>
@@ -203,7 +267,7 @@ export default function GroceryPage({ updateCartCount }) {  // Accept updateCart
                         <FaFilter className={styles["filter-icon"]} />
                         <h3 className={styles["filter-title"]}>Filtered Product</h3>
                     </div>
-                    {["All", "Fruit", "Vegetable", "Organic", "Other"].map((filter) => (
+                    {["All", "Fruit", "Vegetable", "Meat", "Organic", "Other"].map((filter) => (
                         <label key={filter} className={styles["filter-checkbox"]}>
                             <input
                                 type="checkbox"

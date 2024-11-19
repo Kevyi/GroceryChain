@@ -1,203 +1,157 @@
+/* Main container adjustments for alignment */
 .main {
     display: flex;
-    flex-direction: column;   
-    justify-content: center; 
-    align-items: center;      
-    height: 100vh;
-    background-image: url('../images/fruitsAndVeges.jpg');
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-}
-
-.login-box {
-    margin: -10%;
-    width: 40%;
-    height: 33%;
-    border: 0.4vw solid black;
-    background-color: rgba(0, 0, 0, 0.9); 
-    display: flex;
     flex-direction: column;
+    justify-content: flex-start; /* Align content toward the top */
     align-items: center;
-    border-radius: 5%;
+    height: 100vh;
+    background-image: url('../images/fruitsAndVeges.jpg'); /* Background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 40px; /* Ensure space for the welcome message */
 }
 
-.login-box h1 {
-    margin: -.5vw;
+/* Notification message (success or failure) */
+.notificationMessage {
+    position: relative;
+    margin-bottom: 10px; /* Add spacing between the message and the next content */
+    font-size: 1.2rem;
+    color: #f8d7da; /* Default to error red */
+    background-color: #f5c6cb; /* Light red background */
+    padding: 10px 20px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    z-index: 1200; /* Ensure it appears above other elements */
+}
+
+/* Success message styling */
+.notificationMessage.success {
+    color: #155724; /* Green text */
+    background-color: #d4edda; /* Light green background */
+    border: 1px solid #c3e6cb;
+}
+
+/* Welcome Message */
+.welcomeMessage {
+    position: relative;
+    margin-bottom: 20px; /* Add space between the message and modal */
+    font-size: 2rem;
+    color: white; /* Change the text color to white */
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8); /* Enhance readability */
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modalContent {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.9); /* Dark background for contrast */
+    padding: 30px;
+    padding-bottom: 50px; /* Ensure space at the bottom for the "Login" message */
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1100;
+    margin-top: 20px; /* Add space between the welcome message and modal */
+}
+
+/* Header styling for modal titles */
+.centerRegistration {
+    text-align: center;
+    font-size: 1.8rem;
     color: white;
-    font-size: 5vw;
-    margin-bottom: 0vw;
+    margin-bottom: 20px;
 }
 
-.login-box h2 {
-
-    color: white;
-
-}
-
-.buttonSpacing{
-    margin-top: 2vw;
-}
-
-::placeholder {
-    color: rgb(255, 255, 255,.5); /* Transparent black text */
-}
-
-input {
-    align-items: center;
+/* Input fields */
+.inputBox {
+    display: block;
     width: 100%;
-    height: 3vw;
-}
-
-input[type="text"],
-input[type="password"] {
-    width: 70%;
     padding: 10px;
-    border: 2px solid #ccc;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
-    box-sizing: border-box; 
+    background-color: #fff;
+    color: #000;
+    box-sizing: border-box;
 }
 
-/* Add this class to style the submit button */
+/* Submit button styling */
 .submitButton {
-    width: 20vw; /* Set width similar to text and password fields */
-    height: 3.5vw; /* Make the button slightly larger */
-    padding: 10px; /* Add some padding */
-    font-size: 1.2rem; /* Increase font size */
-    background-color: rgba(1, 36, 20, 0.75); /* Customize button color */
-    color: white; /* Text color */
-    border: 2px solid green; /* Add a border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Change cursor to pointer */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background-color: #28a745; /* Green button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .submitButton:hover {
-    background-color: #0056b3; /* Darker background on hover */
+    background-color: #218838; /* Darker green on hover */
 }
 
-/* Adjust margin for spacing around the button */
-/* .buttonSpacing {
-    margin-top: 2%;
-    display: flex;
-    justify-content: center;
-} */
-
-.spacing{
-    margin-top: 0vw;
-}
-
-.inLineText{
-    display: inline;
-    text-decoration: underline;
-    color:inherit;
-}
-
-/* Modal Overlay (background dimming) */
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Dark background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Make sure it's above other content */
-}
-
-.centerRegistration{
-    text-align: center;
-    color: black;
-}
-.login-box {
-    margin-top: -10vw;
-    width: 40vw;
-    height: 33vw;
-    border: 0.4vw solid black;
-    background-color: rgba(0, 0, 0, 0.9); 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 5%;
-}
-
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modalContent {
-    background-color: rgb(0, 0, 0);
-    padding: 40px;
-    border-radius: 5%;
-    position: relative;
-    width: 27%;
-    height: 95%;
-}
-
-.closeButton {
-    position: absolute;
-    top: -1%;
-    right: 0px;
-    background: none;
-    border: none;
-    font-size: 250%;
+/* Login message link */
+.inLineText {
+    color: #00bfff; /* Blue link color */
+    font-weight: bold;
     cursor: pointer;
-    color:darkred
+    text-decoration: underline;
+    margin-top: 10px; /* Add spacing above the link */
 }
 
-.closeButton:hover {
-    color: red;
+.inLineText:hover {
+    color: #007bff; /* Darker blue on hover */
 }
 
-.centerRegistration {
+/* Modal form spacing */
+.spacingForTextBlocks {
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modalContent {
+        padding-bottom: 60px; /* Extra padding for smaller screens */
+        margin-top: 10px; /* Adjust space between modal and message */
+    }
+    .main {
+        padding-top: 20px; /* Adjust top padding for smaller screens */
+    }
+}
+
+
+.successMessage {
+    color: #155724; /* Dark green for success */
+    background-color: #d4edda; /* Light green background for success */
+    border: 1px solid #c3e6cb; /* Green border */
+    font-weight: bold;
+    font-size: 1rem; /* Slightly larger font size */
+    margin-top: 15px; /* Space above the message */
+    padding: 10px; /* Padding inside the message box */
+    border-radius: 5px; /* Rounded corners */
     text-align: center;
-    color: white;
-    font-size: 2vw;
-}
-
-
-
-
-input[type="text"].inputBox,
-input[type="date"].inputBox,
-input[type="password"].inputBox {
-    width: 97%;
-    padding: 2%;
-    border: 1px solid #333; 
-    border-radius: 3%; 
-    font-size: 1.2rem;
-    display: block; /* Make the input block-level */
-    margin: 0 auto;
-    
-}
-
-.spacingForTextBlocks{
-    margin: 4%;
-}
-
-
-.registrationButton {
-    width: 97%; /* Set width similar to text and password fields */
-    height: 3.5vw; /* Make the button slightly larger */
-    padding: 10px; /* Add some padding */
-    font-size: 1.2rem; /* Increase font size */
-    background-color: rgba(1, 36, 20, 0.75); /* Customize button color */
-    color: white; /* Text color */
-    border: 2px solid green; /* Add a border */
-    border-radius: 8px; /* Rounded corners */
-    cursor: pointer; /* Change cursor to pointer */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    display: block; /* Make the input block-level */
-    margin: 0 auto;
-}
+  }
+  
+  .errorMessage {
+    color: #721c24; /* Dark red for errors */
+    background-color: #f8d7da; /* Light red background for errors */
+    border: 1px solid #f5c6cb; /* Red border */
+    font-weight: bold;
+    font-size: 1rem; /* Slightly larger font size */
+    margin-top: 15px; /* Space above the message */
+    padding: 10px; /* Padding inside the message box */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center;
+  }

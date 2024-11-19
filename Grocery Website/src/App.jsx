@@ -8,9 +8,11 @@ import RegisterLoginPage from './pages/RegisterLoginPage.jsx';
 import TestingPage1 from './pages/TestingPage1.jsx';
 import NavbarTop from './components/NavbarTop.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import Register from './pages/Register.jsx';
 
 function App() {
     const [totalCartItems, setTotalCartItems] = useState(0);
+    const [loggedInUser, setLoggedInUser] = useState(null); // State to track the logged-in user
 
     // Function to update cart count based on current items in localStorage
     const updateCartCount = () => {
@@ -29,25 +31,44 @@ function App() {
         }
     };
 
-    // Call fetchAPI and updateCartCount on initial render
+    // Handle log off
+    const handleLogOff = () => {
+        setLoggedInUser(null); // Clear logged-in user
+        localStorage.removeItem("loggedInUser"); // Remove user from localStorage
+    };
+
+    // Initialize cart count and user session on initial render
     useEffect(() => {
         fetchAPI();
         updateCartCount();
+        
+        // Check if a user is already logged in (from localStorage)
+        const savedUser = localStorage.getItem("loggedInUser");
+        if (savedUser) {
+            setLoggedInUser(savedUser);
+        }
     }, []);
 
     return (
         <>
-            {/* Pass totalCartItems to NavbarTop and updateCartCount to GroceryPage and ShoppingCartPage */}
-            <NavbarTop totalCartItems={totalCartItems} />
+            {/* Pass loggedInUser, totalCartItems, and handleLogOff to NavbarTop */}
+            <NavbarTop
+                totalCartItems={totalCartItems}
+                loggedInUser={loggedInUser}
+                handleLogOff={handleLogOff}
+            />
             <Router>
                 <Routes>
                     <Route index element={<HomePage />} />
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/grocery-page" element={<GroceryPage updateCartCount={updateCartCount} />} />
                     <Route path="/shopping-cart" element={<ShoppingCartPage updateCartCount={updateCartCount} />} />
-                    <Route path="/register-login" element={<RegisterLoginPage />} />
+                    <Route
+                        path="/login-page"
+                        element={<LoginPage setLoggedInUser={setLoggedInUser} />}
+                    />
+                    <Route path="/register" element={<Register />} />
                     <Route path="/testing1" element={<TestingPage1 />} />
-                    <Route path="/login-page" element={<LoginPage />} />
                 </Routes>
             </Router>
         </>

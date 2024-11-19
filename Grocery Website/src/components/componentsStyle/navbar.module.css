@@ -1,14 +1,22 @@
-:root
-{
+:root {
   --colorscheme: #7373ff;
+  --icon-size: 36px; /* Define a uniform size for all icons */
+  --font-size: 18px; /* Uniform font size for labels */
 }
-/*#7373ff;*/
+
+/* Universal styles */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* Logo */
+.logo {
+  font-size: var(--icon-size); /* Uniform size */
+  color: var(--colorscheme);
+  margin-right: 20px;
+}
 a {
   text-decoration: none;
   display: flex;
@@ -16,21 +24,6 @@ a {
   justify-content: center;
 }
 
-a div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: center;
-  padding-left: 10px;
-  line-height:normal;
-}
-
-a .logo
-{
-  color: var(--colorscheme);
-  height: 50px;
-  width: 50px;
-}
 button {
   border: 0;
   outline: none;
@@ -39,28 +32,73 @@ button {
   cursor: pointer;
 }
 
-
+/* Navbar styles */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: solid grey 1px;
-  box-shadow: 2px 2px rgb(173, 168, 168);
-  width: auto;
-  height: 90px;
+  width: 100%;
+  height: 120px; /* Keeps consistent height */
   background-color: hsl(0, 0%, 100%);
   padding: 20px 40px;
+  border-bottom: 1px solid grey;
+  box-shadow: 2px 2px rgba(173, 168, 168, 0.5);
 }
 
-.navbar .logo a{
-  height: 100px;
-  width: 100px;
-  font-size: 100px;
+/* Logo container */
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  margin-left: 20px; /* Space from the left edge */
+}
+
+/* Adjust logo size */
+.navbar .logo a {
+  font-size: 24px; /* Matches size of shop icon text */
   font-weight: 700;
-  color: white;
-  margin-left: 12px;
+  color: var(--colorscheme);
+  margin-right: 20px; /* Space between logo and search bar */
 }
 
+/* Search bar styles */
+.search {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  max-width: 500px; /* Adjusted for balance */
+  margin: 0 auto; /* Centers the search bar */
+}
+
+.search .field {
+  width: 100%;
+  height: 50px;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: 1px solid rgb(156, 156, 156);
+  border-radius: 30px;
+  outline: none;
+}
+
+.search .field::placeholder {
+  color: var(--colorscheme);
+  opacity: 0.8;
+}
+
+.search .field:focus {
+  border-color: var(--colorscheme);
+  outline: auto;
+  outline-color: var(--colorscheme);
+}
+
+.search button {
+  margin-left: -40px;
+  background: none;
+  border: none;
+  color: var(--colorscheme);
+  cursor: pointer;
+}
+
+/* Menu styles */
 .menu {
   display: flex;
   align-items: center;
@@ -69,87 +107,25 @@ button {
 
 .menu-links {
   display: flex;
-  gap:20px;
-  padding-inline: 24px;
+  gap: 20px;
+  align-items: center;
 }
 
 .menu-links a {
   font-weight: 500;
   color: var(--colorscheme);
-  font-size: 20px;
-  padding: 0px 20px;
-  text-wrap:nowrap;
+  font-size: 24px; /* Matches size of the logo and shop links */
+  padding: 0 20px;
+  white-space: nowrap;
 }
+
 .menu-links a:hover {
-  color: var(--colorscheme);
-  background-color: #7373ff34;
-  padding: 10px 20px;
+  background-color: rgba(115, 115, 255, 0.2);
   border-radius: 10px;
+  padding: 10px 20px;
 }
 
-.search {
-  color: var(--colorscheme);
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  padding-left: 50px;
-  width: 100%;
-  min-width: 400px;
-}
-
-.search .field
-{
-  display: flex;
-  padding: 25px 40px 25px 20px;
-  height: 40px;
-  font-size:16px;
-  cursor: text;
-  border-radius: 30px;
-  border-color:rgb(156, 156, 156);
-  outline:none;
-
-}
-
-.search .field::placeholder
-{
-  color:var(--colorscheme);
-  opacity: 0.8;
-}
-
-.search .field:focus
-{
-  border-radius: 0px;
-  cursor: text;
-  border-color:rgb(156, 156, 156);
-  outline: auto;
-  outline-color: var(--colorscheme);
-}
-
-.search button
-{
-  display: flex;
-  position:absolute;
-  padding: 5px 5px;
-  margin-right: 10px;
-  background-color: rgba(255, 255, 255, 0);
-  text-decoration: none;
-  border:none;
-}
-
-.search .search-icon
-{
-  color:var(--colorscheme);
-  
-}
-
-.cart-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--colorscheme);
-  text-decoration: none;
-}
-
+/* Cart styles */
 .cart-icon-container {
   position: relative;
   display: inline-flex;
@@ -157,16 +133,10 @@ button {
   justify-content: center;
 }
 
-.cart-icon {
-  font-size: 24px;
-  color: var(--colorscheme);
-  position: relative;
-}
-
 .cart-item-counter-badge {
   position: absolute;
-  top: -10px;  /* Moves the badge slightly higher */
-  right: -12px; /* Adjusts the badge position horizontally */
+  top: -10px;
+  right: -12px;
   background-color: red;
   color: white;
   border-radius: 50%;
@@ -176,12 +146,58 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px; /* Ensures circular shape for single-digit numbers */
-  height: 18px; /* Matches the width for a circular shape */
+  min-width: 18px;
+  height: 18px;
 }
 
-.cart-text {
-  font-size: 16px;
-  font-weight: 500;
+/* Username styles */
+.user-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-width: 120px; /* Allocates consistent space */
+  text-align: center;
 }
 
+.username {
+  font-weight: bold;
+  color: var(--colorscheme);
+  font-size: 24px; /* Matches font size with menu */
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.username:hover {
+  background-color: var(--colorscheme);
+  color: white;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  z-index: 1000;
+  min-width: 120px;
+  padding: 5px 0;
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  color: var(--colorscheme);
+  background: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
