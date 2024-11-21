@@ -41,12 +41,12 @@ export default function GroceryItemBox({groceryItem}){
 
             <p><strong>{groceryItem.name}</strong></p>
 
-            <div>
-            {groceryItem.description}
+            <div className = {styles["price"]}>
+            {groceryItem.price}
             </div>
 
-            <div>
-            {groceryItem.price}
+            <div className = {styles["description"]}>
+            {groceryItem.description}
             </div>
         </div>  
 

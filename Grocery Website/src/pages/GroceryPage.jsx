@@ -6,12 +6,12 @@ export default function GroceryPage(){
 
     const arrayOfItems = [];
     const temp = [
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"}
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"}
     ]
 
 
@@ -84,6 +84,8 @@ export default function GroceryPage(){
 
         <>
 
+        
+
         <p><strong>Welcome to the Grocery page User! Some random stuff.</strong></p>
         
         <div className = {styles["page"]}>
@@ -119,11 +121,6 @@ export default function GroceryPage(){
 
             <div id = {styles["main"]}>
 
-                {/* <div className = {styles["column"]}>
-                    This is where the column for the submission will be.
-                </div> */}
-                
-                
                     <GroceryTable groceryItems={temp}></GroceryTable>
                 
                 

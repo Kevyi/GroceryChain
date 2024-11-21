@@ -26,8 +26,9 @@
     display: grid;
     padding-left: 40px;
     padding-right: 40px;
-    gap: 0%;
+    gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive columns */
+    /* grid-template-rows: auto; */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
