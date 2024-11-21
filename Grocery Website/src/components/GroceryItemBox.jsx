@@ -22,7 +22,10 @@ export default function GroceryItemBox({groceryItem}){
         setIsOpen(false);
     }
 
-    
+    //MUST CONSISTANTLY USE JPG TYPE.
+    const groceryItemImg = "../../public/productImages/" + groceryItem.name + ".jpg";
+
+
     //Grocery item contains values: name, image, weight, description 
     return(<>
 
@@ -33,7 +36,7 @@ export default function GroceryItemBox({groceryItem}){
          <div className = {styles["box"]} onClick={handleExpand}>
 
             <div className = {styles["image"]}> 
-                {groceryItem.image}
+                <img src = {groceryItemImg} alt="Apple" ></img>
             </div>
 
             <p><strong>{groceryItem.name}</strong></p>

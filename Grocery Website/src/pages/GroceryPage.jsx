@@ -6,20 +6,20 @@ export default function GroceryPage(){
 
     const arrayOfItems = [];
     const temp = [
-        {name : "apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"},
-        {name : "banana", image : "Input Image dsadas", weight : "Input Weight", description : "Random description b", price : "$10"}
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"},
+        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10"}
     ]
+
+
+//Use .filter
+
+
             //Store Items inside the localstorage!!!! 
                 //Find out how to use it if not.
-
-
 
                 //Auto runs on webpage start.
                 useEffect(() => {
@@ -88,8 +88,6 @@ export default function GroceryPage(){
         
         <div className = {styles["page"]}>
             <div className = {styles["column"]}>
-
-
                     <form id = {styles["category"]} onChange = {test}>
                         <fieldset>
                             <legend>Category Selector</legend>
@@ -125,9 +123,9 @@ export default function GroceryPage(){
                     This is where the column for the submission will be.
                 </div> */}
                 
-                <div className = {styles["table"]}>
+                
                     <GroceryTable groceryItems={temp}></GroceryTable>
-                </div>
+                
                 
             </div>
         </div>

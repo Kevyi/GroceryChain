@@ -5,6 +5,7 @@
 #main{
     display:flex;
     height: auto;
+    width: 100%;
 }
 .table{
     display: flex;
