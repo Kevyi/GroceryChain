@@ -20,7 +20,7 @@ export default function NavbarTop(){
       </div>
 
       <form class ={styles["search"]}>
-        <input form class={styles["field"]} placeholder = "Search GoodEats"></input>
+        <input form class={styles["field"]} placeholder = "Search Freshie"></input>
         <button type="submit"><FaSearch class={styles["search-icon"]}/></button>
       </form>
 

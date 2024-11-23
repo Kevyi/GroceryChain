@@ -6,12 +6,12 @@ export default function GroceryPage(){
 
     const arrayOfItems = [];
     const temp = [
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"},
-        {name : "Apple", image : "Input Image", weight : "Input Weight", description : "Random description b", price : "$10.00"}
+        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
+        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
+        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
+        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
+        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
+        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20}
     ]
 
 

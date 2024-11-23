@@ -47,6 +47,9 @@ export default function PopUp({onClose, groceryItem}){
     };
 
 
+
+    const groceryItemImg = "../../public/productImages/" + groceryItem.name + ".jpg";
+
     return(<>
     
         <div className = {styles["popup-overlay"]}>
@@ -58,7 +61,9 @@ export default function PopUp({onClose, groceryItem}){
 
                 <div className = {styles["left-side"]}>
                     <div className = {styles["temp-box"]}>
-                        place Image here
+
+                        <img src = {groceryItemImg}></img>
+
                     </div>
                     <h2 style={{ margin: '0px 10px 10px', fontSize: '24px' }}>Description</h2>
                     <div className = {styles["description"]}>
@@ -77,10 +82,21 @@ export default function PopUp({onClose, groceryItem}){
                     <h1>Details</h1>
 
                     <div className = {styles['details']}>
-                        <div>Name</div>
-                        <div>Price</div>
-                        <div>Weight</div>
-                        <div>Availability</div>
+                        
+                        <div>
+                            <h2>Name: {groceryItem.name}</h2>
+                        </div>
+
+                        <div>
+                            <strong>Price: {groceryItem.price}</strong>
+                        </div>
+
+                        <div>
+                            Weight: {groceryItem.weight}
+                        </div>
+                        <div>
+                            Stock: {groceryItem.stock}
+                        </div>
                     </div>
                     
 
@@ -91,12 +107,12 @@ export default function PopUp({onClose, groceryItem}){
                             value={count} 
                         />
                         <div className={styles["counterBox"]}>
-                            <button onClick={increment}><FaChevronUp /></button>
-                            <button onClick={decrement}><FaChevronDown /></button> 
+                            <button className = {styles["upDownButton"]} onClick={increment}><FaChevronUp /></button>
+                            <button className = {styles["upDownButton"]} onClick={decrement}><FaChevronDown /></button> 
                         </div>
                     </div>
 
-                    <button type = "submit" className = {styles["add-button"]} onClick = {updateData}>Add</button>
+                    <button type = "submit" className = {styles["add-button"]} onClick = {updateData}>Add To Cart</button>
                     
                 </div>
 
