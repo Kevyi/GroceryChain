@@ -6,8 +6,12 @@ import { useNavigate } from 'react-router-dom';
 export default function ShoppingCartPage(){
 
     //Get dictionary of objects that's formatted like "name: amount". Seen in popUp component.
+
+
     const items = JSON.parse(localStorage.getItem('cartItems'));
 
+
+    
     //use this item to map it below for cartItems. Cartitems will need to be updated to 
         //take in new arguments.
 
@@ -119,14 +123,21 @@ export default function ShoppingCartPage(){
             <div id = {styles["main"]}>
 
                 <div className = {styles["item-display"]}>
+                {items == null || Object.keys(items).length == 0? (<div>
 
-                    {Object.entries(items).map(([key, value]) => (
-                           <CartItem
-                           key={key}
-                           groceryItem={key}
-                           shopCount = {value}
-                           />
-                        ))}
+                    Display something else, prob in replace of Main
+
+                </div>) : 
+                
+                (Object.entries(items).map(([key, value]) => (
+                    <CartItem
+                    key={key}
+                    groceryItem={key}
+                    shopCount = {value}
+                    />
+                 ))
+                )}
+                    
                 </div>
 
                 <div className = {styles["cart"]}>

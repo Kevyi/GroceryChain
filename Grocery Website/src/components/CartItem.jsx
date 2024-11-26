@@ -87,6 +87,9 @@ export default function CartItem({groceryItem, shopCount}) {
                 //console.log(item)
                 setCount(shopCount);
                 
+
+
+
                 
              }  
              catch(error){
@@ -125,9 +128,28 @@ export default function CartItem({groceryItem, shopCount}) {
                         </div>
                     </div>
                     
+
                     <div className={styles["container2"]}>
                         <div className={styles["amount"]}>
-                            <div className={styles["price"]}>${(count * item.price).toFixed(2)}</div>
+
+                            <div className={styles["details"]}>
+                                <p className = {styles["total"]}>Total Pounds: </p>
+                                {(count * item.weight).toFixed(2)}
+
+                                <p className = {styles["individual"]}>Individual Pounds: 
+                                <strong> {item.weight}</strong>
+                                </p> 
+                            </div>
+
+                            <div className={styles["details"]}>
+                                <p className = {styles["total"]}>Total Price: </p> 
+                                ${(count * item.price).toFixed(2)}
+
+                                <p className = {styles["individual"]}>Individual Price: 
+                                    <strong> {item.price}</strong>
+                                </p> 
+                            </div>
+
                             <div className={styles["quantity"]}>Quantity:
                                 <input 
                                     className={styles["value"]} 
@@ -140,6 +162,7 @@ export default function CartItem({groceryItem, shopCount}) {
                             </div>
                         </div>
                         
+
                         <div className={styles["buttons-div"]}>
                             <button className = {styles["delete-button"]} onClick = {deleteItem}>Delete</button>
                         </div>
