@@ -1,5 +1,6 @@
 .popup-overlay {
     position: fixed;
+    display: flex;
     top: 0;
     left: 0;
     width: 100vw;
@@ -13,7 +14,7 @@
   }
 
   .popup-content {
-    width: 65%; /* Controls the popup width */
+    width: 55%; /* Controls the popup width */
     height: 90%; /* Controls the popup height */
     background-color: white;
     padding: 20px;
@@ -77,6 +78,7 @@
 
     border-radius: 10px;
     margin: 15px;
+    flex-shrink: 1;
   }
 
   img{
@@ -109,7 +111,7 @@
 {
     display: flex;
     flex-direction: column;
-    
+    margin-left: 5px;
 }
 .upDownButton{
   color: rgb(255, 255, 255);
@@ -140,11 +142,13 @@ button
 
 .add-button:hover{
     background-color: rgb(38, 35, 221);
+    border-radius: 10px;
     
 }
 
 .add-button:active{
     background-color: rgb(20, 22, 158);
+    border-radius: 10px;
 }
 
 .add-button{

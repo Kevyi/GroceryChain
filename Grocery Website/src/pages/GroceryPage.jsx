@@ -4,16 +4,7 @@ import styles from "../styles/grocery.module.css"
 export default function GroceryPage(){
 
 
-    const arrayOfItems = [];
-    const temp = [
-        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
-        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
-        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
-        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
-        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20},
-        {name : "Apple", image : "Input Image", weight : 1, description : "Random description b", price : "$10.00", stock : 20}
-    ]
-
+    const [groceryItems, setGroceryItems] = useState([]);
 
 //Use .filter
 
@@ -22,41 +13,31 @@ export default function GroceryPage(){
                 //Find out how to use it if not.
 
                 //Auto runs on webpage start.
+
+                //Ran twice for some reason;
                 useEffect(() => {
                     const fetchItems = async () => {
-                           
-                            try {
-                              const response = await fetch('http://localhost:8080/groceryItems', {
+                         try{
+                            const response = await fetch("http://localhost:8080/grocery-page/groceryItems");
 
-                                //Methods: Get (Receives Data), Post (Send data to retrieve data), Put (Send data to update), 
-                                //Delete(sends data to delete something), Patch (like put but minor)
+                            if(!response.ok){
+                                console.error('Error, reponse not ok');
+                                return;
+                            }
 
-                                    //This case technically we use method: 'get'. Backend has to follow method type.    
-
-                                method: 'POST',
-                                //request body will send a json
-                                headers: { 'Content-Type': 'application/json' },
-
-                                //This is shorthand notation of creating an object in JS, {variable} = {variable : "value"}
-                                    //JSON.stringify() converts object to string value for easier transportation 
-                                        //This case does not need to send back data.
-
-                                    //body: JSON.stringify({ email }),
-                              });
-                              
-                              //Receives data and parses to JS object.
-                              const data = await response.json();
-                              console.log(data)
-                
-                              for(let i = 0; i < data.length; i++){
-                                //Pushes each food item into global array.
-                                arrayOfItems.push(data[i])
-                              }
-
-                    
-                            } catch (error) {
-                              console.error('Error fetching tasks:', error);
-                            }  
+                            const data = await response.json();
+                            
+                            // console.log(data.results);
+                            
+                            //Displayed by name, so img has to match name.
+                            //Sets an array of objects which each object is the product.
+                            setGroceryItems(data.results);
+                         }  
+                         catch(error){
+                            console.error('Error: ' + error);
+                         }
+                        
+                        
 
                     };
                     fetchItems();
@@ -78,14 +59,9 @@ export default function GroceryPage(){
 
 
             //Include a reset all checkbox.
-
-
     return (
 
         <>
-
-        
-
         <p><strong>Welcome to the Grocery page User! Some random stuff.</strong></p>
         
         <div className = {styles["page"]}>
@@ -121,7 +97,7 @@ export default function GroceryPage(){
 
             <div id = {styles["main"]}>
 
-                    <GroceryTable groceryItems={temp}></GroceryTable>
+                    <GroceryTable groceryItems={groceryItems}></GroceryTable>
                 
                 
             </div>

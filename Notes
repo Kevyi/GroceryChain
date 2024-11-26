@@ -1,17 +1,17 @@
-LocalStorage: stores data as strings, so if need to save objects, have to use use JSON.stringify(object).
+// LocalStorage: stores data as strings, so if need to save objects, have to use use JSON.stringify(object).
     
 
-        .json() method converts JSON object into JS object to use.
+//         .json() method converts JSON object into JS object to use.
 
 
-const user = {
-  name: "Mandy",
-  age: 23,
-};
+// const user = {
+//   name: "Mandy",
+//   age: 23,
+// };
 
-localStorage.setItem("user-info", JSON.stringify(user));
+// localStorage.setItem("user-info", JSON.stringify(user));
 
-localStorage.getItem("user-info"); --> will return a JSON string afterwards, so must parse into object.
+// localStorage.getItem("user-info"); --> will return a JSON string afterwards, so must parse into object.
 
 
-JSON.parse(localStorage.getItem('user-info')); --> Converts JSON string to JS object.
+// JSON.parse(localStorage.getItem('user-info')); --> Converts JSON string to JS object.

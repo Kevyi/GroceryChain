@@ -24,23 +24,31 @@ export default function PopUp({onClose, groceryItem}){
 
     const updateData = () => {
 
-        if(!localStorage.getItem('items')){
-            localStorage.setItem('items', '{}');
+        if(!localStorage.getItem('cartItems')){
+            localStorage.setItem('cartItems', '{}');
         }
 
-        let items = JSON.parse(localStorage.getItem('items'));
+        let items = JSON.parse(localStorage.getItem('cartItems'));
 
         //Current a JSON object, set/add item thorugh this:
 
-        //Sets item to amount, Ex apple : 5 for 5 apples.
-        items['itemName'] = 5;
+        //Sets item to amount, Ex apple : 5 for 5 apples. If item is already added, add more to it.
+        const itemName = groceryItem.name;
+        if(itemName in items){
+            items[itemName] = items[itemName] + count;
+        }
+        else{
+            items[itemName] = count;
+        }
+
+        
+        
+        
 
         //parses json object back into a string and set.
-        localStorage.setItem('items', JSON.stringify(items));
+        localStorage.setItem('cartItems', JSON.stringify(items));
 
-        //clears localstorage, used for testing.
-        localStorage.clear();
-
+        console.log("Done");
 
         //also calls onClose() method to close the component.
         onClose();
@@ -48,7 +56,7 @@ export default function PopUp({onClose, groceryItem}){
 
 
 
-    const groceryItemImg = "../../public/productImages/" + groceryItem.name + ".jpg";
+    const groceryItemImg = "/productImages/" + groceryItem.name.toLowerCase() + ".jpg";
 
     return(<>
     
@@ -67,11 +75,10 @@ export default function PopUp({onClose, groceryItem}){
                     </div>
                     <h2 style={{ margin: '0px 10px 10px', fontSize: '24px' }}>Description</h2>
                     <div className = {styles["description"]}>
-                        This is a scrollable description thing. Can be scrolled if description is too long
-                        but provbaby will never be that long.
                         
+                        {groceryItem.description}
 
-                        description
+                       
                     </div>
 
                 </div>

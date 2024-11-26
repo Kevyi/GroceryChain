@@ -22,8 +22,8 @@ export default function GroceryItemBox({groceryItem}){
         setIsOpen(false);
     }
 
-    //MUST CONSISTANTLY USE JPG TYPE.
-    const groceryItemImg = "../../public/productImages/" + groceryItem.name + ".jpg";
+    //MUST CONSISTANTLY USE JPG TYPE. //Displayed by name, so img has to match name.
+    const groceryItemImg = "/productImages/" + groceryItem.name.toLowerCase() + ".jpg";
 
 
     //Grocery item contains values: name, image, weight, description 
@@ -36,7 +36,7 @@ export default function GroceryItemBox({groceryItem}){
          <div className = {styles["box"]} onClick={handleExpand}>
 
             <div className = {styles["image"]}> 
-                <img src = {groceryItemImg} alt="Apple" ></img>
+                <img src = {groceryItemImg} alt= {groceryItem.name} ></img>
             </div>
 
             <p><strong>{groceryItem.name}</strong></p>

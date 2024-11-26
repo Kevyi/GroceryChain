@@ -105,3 +105,18 @@ button:hover
     flex-direction: column;
 }
 
+.delete-button{
+    background-color: rgb(251, 75, 75);
+    padding: 5px;
+    color: rgb(37, 30, 30);
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.delete-button:hover{
+    background-color: rgb(255, 0, 0);
+    padding: 5px;
+    color: rgb(37, 30, 30);
+    font-weight: bold;
+    border-radius: 5px;
+}
