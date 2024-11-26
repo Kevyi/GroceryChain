@@ -56,8 +56,8 @@
     margin: 1rem;
 }
 
-.loginBox input[type="text"],
-.loginBox input[type="password"] {
+input[type="email"],
+input[type="password"] {
     width: 70%;
     padding: 10px;
     margin-bottom: 0%; 
@@ -219,6 +219,13 @@
     margin: 0.5rem;        /* Optional: Add space around the checkbox */
 }
 
+.register-login-form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
 
 

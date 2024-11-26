@@ -116,28 +116,43 @@ export default function ShoppingCartPage(){
     //     }
     // };
 
+
+    const navigate = useNavigate();
+
     return (
         
         <>
         {/*Most backend oriented part*/}
-            <div id = {styles["main"]}>
+
+        {items == null || Object.keys(items).length == 0? 
+            (<div className = {styles["emptyCart"]}>
+
+                <div className = {styles["emptyCartContainer"]}>
+                    <img className = {styles["sadcart"]}src = "/miscImages/SadCart.png"></img>
+
+                    <h1 style = {{color : "gray"}}>Your Cart is Empty</h1>
+
+                    <button className = {styles["continue-button"]} onClick = {() => navigate("/grocery-page")}>
+                        Continue Shopping
+                    </button>
+                </div>
+                
+
+            </div>) : 
+
+            (<div id = {styles["main"]}>
 
                 <div className = {styles["item-display"]}>
-                {items == null || Object.keys(items).length == 0? (<div>
-
-                    Display something else, prob in replace of Main
-
-                </div>) : 
-                
-                (Object.entries(items).map(([key, value]) => (
-                    <CartItem
-                    key={key}
-                    groceryItem={key}
-                    shopCount = {value}
-                    />
-                 ))
-                )}
                     
+
+                    {Object.entries(items).map(([key, value]) => (
+                        <CartItem
+                        key={key}
+                        groceryItem={key}
+                        shopCount = {value}
+                        />
+                    ))}
+ 
                 </div>
 
                 <div className = {styles["cart"]}>
@@ -145,8 +160,8 @@ export default function ShoppingCartPage(){
                     Include the receipt etc.
                 </div>
 
-            </div>
-        
+            </div>)} 
+
         </>
 
     )

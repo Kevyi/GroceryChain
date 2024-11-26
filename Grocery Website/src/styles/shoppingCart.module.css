@@ -30,3 +30,47 @@
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+.emptyCart{
+    display: flex;
+    min-height: 90%;
+    align-content: center;
+    margin: auto;
+    
+}
+
+.emptyCartContainer{
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 20px;
+    border: 1px solid antiquewhite;
+    background-color: rgb(255, 248, 238);
+    height: 700px;
+    width: 1500px;
+    margin: auto;
+    
+    align-items: center;
+    justify-content: center
+}
+
+.sadcart{
+    width: 300px;
+    height: 300px;
+    
+}
+
+.continue-button{
+    width: 250px;
+    height: 75px;
+
+    margin-top: 20px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: large;
+    font-weight: bold;
+    background: blue;
+    color: white;
+    border-radius: 10px;
+}
