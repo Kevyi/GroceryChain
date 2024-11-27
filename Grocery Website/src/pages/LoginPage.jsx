@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from "../styles/RegisterLogin.module.css"; // Import the CSS module
+import { Link, useNavigate } from 'react-router-dom';
+import {LoginContext} from "../App.jsx"
 
 export default function RegisterLoginPage() {
     const [Modal, setModal] = useState(false); // Manage modal visibility state
     const [formData, setFormData] = useState({ email: '', password: '' });
+    const navigate = useNavigate();
     
-
+    //Gets the LoggedIn State from App.jsx, imported
+    const {isLoggedIn, setIsLoggedIn} = useContext(LoginContext);
 
     // useEffect to handle adding/removing the body class for scroll locking
     useEffect(() => {
@@ -32,7 +36,12 @@ export default function RegisterLoginPage() {
             const data = await response.json();
 
             localStorage.setItem('token', data.token);
+            
+
+            setIsLoggedIn(true);
             alert(data.token)
+            navigate("/grocery-page");
+
         }
         catch(error){
             console.error('Error during login:', error);
@@ -45,6 +54,8 @@ export default function RegisterLoginPage() {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
       };
+
+    
 
     // Toggle the modal visibility
     const handleOpenModal = () => {
@@ -89,12 +100,15 @@ export default function RegisterLoginPage() {
 }
 
 function RegistrationModal({ onClose }) {
+    const navigate = useNavigate();
     const [registerData, setRegisterData] = useState({ 
         email: '', 
         password: '', 
         confirmPassword : '', 
         name : '', 
-        isAdmin : false});
+        isAdmin : false,
+        address : '',
+    });
 
     const register = async (e) => {
         e.preventDefault();
@@ -115,7 +129,10 @@ function RegistrationModal({ onClose }) {
               email: registerData.email,
               password: registerData.password,
               name: registerData.name,
-              isAdmin : registerData.isAdmin
+              isAdmin : registerData.isAdmin,
+              address : registerData.address,
+            //   Passes a json object which we will input receipts into its array
+              transactions : {receipts : []}
             }),
           });
     
@@ -124,7 +141,7 @@ function RegistrationModal({ onClose }) {
             alert('Registration successful!');
             console.log('Server response:', data);
             onClose(); //maybe just close register page.
-            navigate('/login'); // Redirect to login page on success
+            navigate('/login-page'); // Redirect to login page on success
           } else {
             alert('Registration failed!');
             console.error('Server error:', data);
@@ -136,8 +153,8 @@ function RegistrationModal({ onClose }) {
       };
 
     const handleChangeRegister = (e) =>{
-        const { name, value } = e.target;
-        setRegisterData({ ...registerData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        setRegisterData({ ...registerData, [name]: type === 'checkbox' ? checked : value, });
       };
 
 
@@ -190,26 +207,24 @@ function RegistrationModal({ onClose }) {
 
                     <div className={styles.textBoxSpacing}></div>
 
-                    <h2> Date of Birth</h2>
+                    <h2> Address</h2>
                     <div className={styles.textBoxSpacing2}></div>
 
-                        <input type="date" 
-                            name="dateOfBirth"  
-                            className={styles.inputBox} 
-                            placeholder='Date of Birth'>
-                        </input>
-
-                    <div className={styles.textBoxSpacing}></div>
-
                         <input type="text" 
-                            name="Country"  
+                            name="address"  
+                            value = {registerData.address}
+                            onChange={handleChangeRegister}     
                             className={styles.inputBox} 
-                            placeholder='Country'>
+                            placeholder='Address'>
                         </input>
+
+                   
 
                     <div className={styles.textBoxSpacing}></div>
                     <div className={styles.inLineFlex}>
-                            <h4>Are you an admin?</h4> 
+                            <h4>Admin Registration: </h4> 
+
+                            {/* Checkmark can't be unchecked */}
                             <input 
                                 name="isAdmin"
                                 type="checkbox" 

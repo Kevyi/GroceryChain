@@ -56,8 +56,9 @@
     margin: 1rem;
 }
 
-input[type="email"],
-input[type="password"] {
+.register-login-form > input[type="email"],
+.register-login-form > input[type = "text"],
+.register-login-form > input[type="password"] {
     width: 70%;
     padding: 10px;
     margin-bottom: 0%; 

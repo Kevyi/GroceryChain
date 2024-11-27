@@ -1,0 +1,45 @@
+.main{
+    height: fill;
+    width: fill;
+    padding: 20px;
+    flex-direction: column;
+}
+
+input[type="email"],
+input[type = "text"],
+input[type="password"] {
+    width: 70%;
+    padding: 10px;
+    margin-bottom: 0%; 
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box; 
+
+    margin: 5px;
+}
+
+.form-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px
+}
+
+.change-button{
+    margin: 20px;
+    width: 200px;
+    max-width: 200px;
+    height: 50px;
+}
+
+.change-form{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.change-form > input, .change-button{
+    align-self: center;
+}
+

@@ -5,8 +5,16 @@ export default function GroceryPage(){
 
 
     const [groceryItems, setGroceryItems] = useState([]);
+    const [categories, setCategories] = useState({
+                dairy: false, 
+                fruit: false, 
+                vegetable : false, 
+                grain : false, 
+                meat : false,
+            });
+    let allGroceryItems;
 
-//Use .filter
+        //Use .filter
 
 
             //Store Items inside the localstorage!!!! 
@@ -32,6 +40,7 @@ export default function GroceryPage(){
                             //Displayed by name, so img has to match name.
                             //Sets an array of objects which each object is the product.
                             setGroceryItems(data.results);
+                            allGroceryItems = data.results;
                          }  
                          catch(error){
                             console.error('Error: ' + error);
@@ -41,20 +50,26 @@ export default function GroceryPage(){
 
                     };
                     fetchItems();
-                  }, [] );
+
+                    //Whenever category changes, update the states.
+
+
+
+                  }, [categories] );
                   //Empty [] above is the dependency array, useEffect runs once if empty or runs everytime a variable in array is updated.
 
 
-            const test = () => {
-                //If nothing is checked, show everything. Else filter.
-                    
+                const categoryChange = (e) =>{
+                    const { name, checked } = e.target;
+                    setUserInfo({ ...userInfo, [name]:  checked, });
+                };       
 
-                //Query database to get category. If multiple, query to get category && otherCategory etc.
-                    
 
-                //This function should be ran everytime a checkbox is clicked or updated.
+                function categorize(){
+                    //changes the state groceryItem using allgroceryitems array.
+                    return;
+                }
 
-            }          
 
 
 
@@ -66,28 +81,50 @@ export default function GroceryPage(){
         
         <div className = {styles["page"]}>
             <div className = {styles["column"]}>
-                    <form id = {styles["category"]} onChange = {test}>
+                    <form className = {styles["category"]} onChange = {categoryChange}>
                         <fieldset>
-                            <legend>Category Selector</legend>
+                            <legend>
+                                <strong style = {{fontSize: "20px"}}>Category Selector</strong>
+                            </legend>
                             <div className = {styles["category-item"]}>
-                                <input type="checkbox" id="scales" name="scales"/>
-                                <label for="scales">Scales</label>
+                                <label for="dairy">Dairy</label>
+                                <input 
+                                    className = {styles["category-checkbox"]} 
+                                    type="checkbox" 
+                                    name="dairy"/>
+                                
                             </div>
                             <div className = {styles["category-item"]}>
-                                <input type="checkbox" id="scales" name="scales"/>
-                                <label for="scales">Scales</label>
+                                <label for="fruit">Fruits</label>
+                                <input 
+                                    className = {styles["category-checkbox"]} 
+                                    type="checkbox" 
+                                    name="fruit"/>
+                                
                             </div>
                             <div className = {styles["category-item"]}>
-                                <input type="checkbox" id="scales" name="scales"/>
-                                <label for="scales">Scales</label>
+                                <label for="vegetable">Vegetables</label>    
+                                <input 
+                                    className = {styles["category-checkbox"]} 
+                                    type="checkbox" 
+                                    name="vegetable"/>
+                                
                             </div>
                             <div className = {styles["category-item"]}>
-                                <input type="checkbox" id="scales" name="scales"/>
-                                <label for="scales">Scales</label>
+                                <label for="grain">Grains</label>
+                                <input 
+                                    className = {styles["category-checkbox"]} 
+                                    type="checkbox" 
+                                    name="grain"/>
+                                
                             </div>
                             <div className = {styles["category-item"]}>
-                                <input type="checkbox" id="scales" name="scales"/>
-                                <label for="scales">Scales</label>
+                                <label for="meat">Meat</label>
+                                <input 
+                                    className = {styles["category-checkbox"]} 
+                                    type="checkbox" 
+                                    name="meat"/>
+
                             </div>
 
                             {/*Include a reset all checkbox. */}
@@ -98,8 +135,7 @@ export default function GroceryPage(){
             <div id = {styles["main"]}>
 
                     <GroceryTable groceryItems={groceryItems}></GroceryTable>
-                
-                
+
             </div>
         </div>
         
