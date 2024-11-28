@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const db = require('./database.js');
-
+const jwt = require('jsonwebtoken');
 
 
 //Learn about middleware.
@@ -15,12 +15,13 @@ const groceryRoute = require("./pagesBackend/groceryPage.js");
 const homeRoute = require("./pagesBackend/homePage.js");
 const registerLoginRoute = require("./pagesBackend/registerLoginPage.js");
 const shoppingCartRoute = require("./pagesBackend/shoppingCartPage.js");
+const accountRoute = require("./pagesBackend/accountPage.js");
 
 app.use("/home", homeRoute);
 app.use("/grocery-page", groceryRoute);
 app.use("/shopping-cart", shoppingCartRoute);
-// app.use("/register-login", registerLoginRoute);
-
+app.use("/register-login", registerLoginRoute);
+app.use("/account-page", accountRoute);
 
 //Listens to requires made from this website (origin). Not sure if we have to specify extended url like localhost:5173/groceryItems.
                     //Make different JS files and import it to this main server if possible.
@@ -46,24 +47,33 @@ app.get("/api", (req, res) => {
     res.json({random: ["test1, test2"]})
 });
 
+app.post("/verifying-login", (req, res) => {
+    
+    //req might send null so becareful.
+    const {token} = req.body;
+    
+    console.log(token)
 
+    //Checks if token exists
+    if (!token) return res.status(401).json({ message: 'Token required' });
 
-
-
-
-
-// app.get("/shopping-cart/groceryItems", (req, res) => {
-//     res.json({ message: 'Grocery items added successfully!' });
-//   });
-
-
-
-
-
-
-
-
-
+    try{
+        const decoded = jwt.verify(token, 'secretkey');
+        
+        console.log(decoded)
+        res.json(decoded)
+    }
+    //check if expired or token invalid
+    catch(error){
+        if (error.name === "TokenExpiredError") {
+            return res.status(403).json({ message: 'Token has expired.' });
+        }
+        else{
+            return res.status(403).json({ message: 'Invalid token' });
+        }
+    }
+  
+});
 
 
 app.listen(8080, () => {

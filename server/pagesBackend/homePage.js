@@ -12,4 +12,7 @@ const corsOptions = {
 router.use(express.json());
 router.use(cors(corsOptions));
 
+
+
+
 module.exports = router

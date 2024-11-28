@@ -33,7 +33,7 @@ router.post("/groceryItems", (req, res) => {
               return res.status(404).send('Item not found');
           }
 
-          console.log({results})
+          //console.log({results})
           return res.json({results});
   
       })
