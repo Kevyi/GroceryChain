@@ -286,46 +286,296 @@
 }
 
 .successContainer {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Push content towards the top */
+    height: 85vh; /* Reduce height to compress spacing */
+    padding: 30px; /* Adjust padding to reduce extra space */
+    animation: fadeIn 1s ease-in-out; /* Keep smooth animation */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.successContent {
     text-align: center;
-    padding: 25px; /* Increased padding slightly */
+    background: linear-gradient(135deg, #e0ffe0, #ccffcc); /* Keep the gradient */
+    padding: 40px; /* Adjust padding for balance */
+    border-radius: 20px; /* Rounder corners */
+    max-width: 850px; /* Keep a consistent width */
     width: 100%;
-    max-width: 650px; /* Slightly larger container */
-    margin: 0 auto;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    position: relative;
+    animation: slideUp 0.8s ease-out forwards; /* Smooth slide-up animation */
+    transform: translateY(-10%); /* Slightly move higher */
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(40px); /* Start lower */
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(-10%); /* End at a slightly higher position */
+        opacity: 1;
+    }
+}
+
+
+.successTitle {
+   
+    font-size: 2.5rem; /* Keep the font size large */
+    font-weight: bold;
+    color: #2d8b2d; /* Maintain the green tone */
+    margin-bottom: 25px;
+    white-space: nowrap; /* Prevent line breaks */
+    text-align: center;
+    animation: bounce 1.5s infinite; /* Bounce animation for the title */
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .successImage {
-    width: 250px; /* Increased image size */
+    width: 250px; /* Slightly larger image */
     height: auto;
-    margin-bottom: 25px; /* Add more spacing below the image */
+    margin: 20px 0;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.6s ease-out; /* Add pop-in animation */
 }
 
-.successMessage {
-    font-size: 1.7em; /* Slightly larger success message */
-    color: #4caf50; /* Success green */
-    font-weight: bold;
-    margin-bottom: 15px; /* Add more spacing below the message */
+@keyframes popIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .successSubMessage {
-    font-size: 1.4em; /* Slightly larger sub-message */
-    color: #888; /* Subtle gray */
-    margin-top: 10px; /* Add spacing above */
-    font-weight: normal;
+    font-size: 1.6rem; /* Slightly larger for better readability */
+    color: #4d4d4d;
+    margin-bottom: 40px;
+    animation: fadeInText 1.5s ease-in; /* Add gradual fade-in for text */
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .continueShoppingButton.success {
-    background-color: #4caf50; /* Green for success */
+    background-color: #28a745;
     color: #fff;
-    padding: 18px 35px; /* Increased padding */
-    font-size: 1.3em; /* Slightly larger text size */
+    font-size: 1.3rem; /* Larger button text */
     font-weight: bold;
+    padding: 15px 35px; /* Increase padding for a bigger button */
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
-    margin-top: 25px; /* Increase spacing from other elements */
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 300px; /* Wider button */
+    animation: buttonAppear 0.8s ease-in-out; /* Add button appear animation */
+    margin-top: 50px; /* Add margin to move it down */
+    margin-left: 45px; /* Add margin to the left for spacing */
+    animation: bounce 2.5s infinite; /* Bounce animation for the title */
+}
+
+@keyframes buttonAppear {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .continueShoppingButton.success:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #218838;
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: hoverPulse 0.6s infinite; /* Add subtle pulsing hover effect */
 }
+
+@keyframes hoverPulse {
+    0%, 100% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+
+.loginPromptMessage {
+    color: #dc3545; /* Bootstrap-like red */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px; /* Spacing between the message and the buttons */
+    font-size: 0.9rem; /* Slightly smaller font */
+    animation: fadeIn 0.3s ease; /* Smooth fade-in effect */
+}
+
+/* Optional fade-in effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.paymentPage {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.pageTitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.paymentForm {
+    display: flex;
+    flex-wrap: wrap;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.column {
+    flex: 1;
+    padding: 15px;
+}
+
+h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.formGroup label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.cardsImage {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+.input:focus {
+    border-color: #6c63ff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(108, 99, 255, 0.3);
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.row > .formGroup {
+    flex: 1;
+}
+
+.submitButton {
+    background-color: #6c63ff;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+    animation: fadeIn 1s ease-in-out; /* Add the fadeIn animation */
+}
+
+.submitButton:hover {
+    background-color: #5a52d4;
+}
+
+.successMessage {
+    color: #28a745;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
+}
+
+.errorMessage {
+    color: #dc3545;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
+}
+
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+

@@ -20,16 +20,21 @@ if (!$conn) {
 $data = json_decode(file_get_contents("php://input"), true);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && $data) {
+    // Validate input
     if (empty($data['username']) || empty($data['password'])) {
-        echo json_encode(["status" => "fail", "message" => "Empty field detected. Please enter both username and password."]);
+        echo json_encode(["status" => "fail", "message" => "Username and password are required."]);
         exit();
     }
 
     $username = $data['username'];
     $password = $data['password'];
+    $isAdmin = isset($data['isAdmin']) && $data['isAdmin'] === true;
 
-    // Fetch plain text password from database
-    $query = "SELECT password FROM loginregister WHERE username = ?";
+    // Determine the table based on admin flag
+    $table = $isAdmin ? 'adminaccount' : 'loginregister';
+
+    // Prepare SQL query to fetch the password
+    $query = "SELECT password FROM $table WHERE username = ?";
     $stmt = mysqli_prepare($conn, $query);
 
     if ($stmt === false) {
@@ -44,23 +49,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $data) {
         mysqli_stmt_bind_result($stmt, $dbPassword);
         mysqli_stmt_fetch($stmt);
 
-        // Debugging: Log the fetched password and input password
-        error_log("Debug: Fetched password from DB: " . $dbPassword);
-        error_log("Debug: Input password: " . $password);
-
         // Compare passwords directly (no hashing)
         if ($password === $dbPassword) {
-            echo json_encode(["status" => "success", "message" => "Login successful"]);
+            $message = $isAdmin ? "Admin login successful" : "User login successful";
+            echo json_encode(["status" => "success", "message" => $message]);
         } else {
-            echo json_encode(["status" => "fail", "message" => "Incorrect password"]);
+            echo json_encode(["status" => "fail", "message" => "Incorrect password."]);
         }
     } else {
-        echo json_encode(["status" => "fail", "message" => "User not found"]);
+        $message = $isAdmin ? "Admin not found." : "User not found.";
+        echo json_encode(["status" => "fail", "message" => $message]);
     }
 
     mysqli_stmt_close($stmt);
 } else {
-    echo json_encode(["status" => "error", "message" => "Invalid request"]);
+    echo json_encode(["status" => "error", "message" => "Invalid request."]);
 }
 
 mysqli_close($conn);

@@ -72,7 +72,7 @@
 }
 
 .quantityInput {
-    width: 45px; /* Reduced width of the input field */
+    width: 90px; /* Reduced width of the input field */
     text-align: center;
     font-size: 1em;
     padding: 5px;
@@ -123,4 +123,14 @@
 .descriptionText {
     margin-top: 1px; /* Bring text closer to header */
     font-size: 1em;
+}
+
+.inStock {
+    color: green;
+    font-weight: bold;
+}
+
+.outOfStock {
+    color: red;
+    font-weight: bold;
 }

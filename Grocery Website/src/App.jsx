@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import axios from 'axios';
-import GroceryPage from './pages/GroceryPage.jsx';
-import HomePage from './pages/HomePage.jsx';
-import ShoppingCartPage from './pages/ShoppingCartPage.jsx';
-import RegisterLoginPage from './pages/RegisterLoginPage.jsx';
-import TestingPage1 from './pages/TestingPage1.jsx';
-import NavbarTop from './components/NavbarTop.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import Register from './pages/Register.jsx';
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import axios from "axios";
+import GroceryPage from "./pages/GroceryPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import ShoppingCartPage from "./pages/ShoppingCartPage.jsx";
+import RegisterLoginPage from "./pages/RegisterLoginPage.jsx";
+import TestingPage1 from "./pages/TestingPage1.jsx";
+import NavbarTop from "./components/NavbarTop.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import Register from "./pages/Register.jsx";
+import AdminUpdate from "./pages/AdminUpdate.jsx";
+import PaymentPage from "./pages/Payment.jsx";
 
 function App() {
     const [totalCartItems, setTotalCartItems] = useState(0);
@@ -31,6 +33,12 @@ function App() {
         }
     };
 
+    // Handle login
+    const handleLogin = (username) => {
+        setLoggedInUser(username);
+        localStorage.setItem("loggedInUser", username); // Store the logged-in user in localStorage
+    };
+
     // Handle log off
     const handleLogOff = () => {
         setLoggedInUser(null); // Clear logged-in user
@@ -41,7 +49,7 @@ function App() {
     useEffect(() => {
         fetchAPI();
         updateCartCount();
-        
+
         // Check if a user is already logged in (from localStorage)
         const savedUser = localStorage.getItem("loggedInUser");
         if (savedUser) {
@@ -62,14 +70,26 @@ function App() {
                     <Route index element={<HomePage />} />
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/grocery-page" element={<GroceryPage updateCartCount={updateCartCount} />} />
-                    <Route path="/shopping-cart" element={<ShoppingCartPage updateCartCount={updateCartCount} />} />
+                    <Route path="/payment" element={<PaymentPage />} />
+                    <Route path="/admin-update" element={<AdminUpdate />} />
+                    <Route
+                        path="/shopping-cart"
+                        element={
+                            <ShoppingCartPage
+                                updateCartCount={updateCartCount}
+                                loggedInUser={loggedInUser} // Pass down loggedInUser for authentication checks
+                            />
+                        }
+                    />
                     <Route
                         path="/login-page"
-                        element={<LoginPage setLoggedInUser={setLoggedInUser} />}
+                        element={<LoginPage setLoggedInUser={handleLogin} />}
                     />
                     <Route path="/register" element={<Register />} />
                     <Route path="/testing1" element={<TestingPage1 />} />
                 </Routes>
+
+                
             </Router>
         </>
     );

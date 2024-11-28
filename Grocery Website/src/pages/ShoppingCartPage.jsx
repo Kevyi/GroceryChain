@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from "../styles/shoppingCart.module.css";
 import Cart from './Cart';
 
-export default function ShoppingCartPage({ updateCartCount }) {
+export default function ShoppingCartPage({ updateCartCount, loggedInUser }) { // Accept loggedInUser as a prop
     const [cartItems, setCartItems] = useState([]);
     const [purchaseStatus, setPurchaseStatus] = useState(null); // To track the status of the purchase
+    const [showLoginMessage, setShowLoginMessage] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    
 
     useEffect(() => {
         const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
         setCartItems(savedCartItems);
         updateCartSummary(savedCartItems);
-    }, []);
+        if (location.state && location.state.success) {
+            handlePayment();
+            setPurchaseStatus("Purchase successful!");
+
+        }
+    }, [location.state]);
 
     // Function to update the localStorage and cart item count in Navbar
     const saveCartItems = (items) => {
@@ -58,18 +66,23 @@ export default function ShoppingCartPage({ updateCartCount }) {
     };
 
     const handlePayment = async () => {
+        if (!loggedInUser) {
+            setPurchaseStatus("Error: Please log in to proceed with the payment.");
+            return;
+        }
+
         if (cartItems.length === 0) {
             setPurchaseStatus("Error: Your cart is empty.");
             return;
         }
-    
+
         const cartData = cartItems.map(item => ({
             id: item.id,
             quantity: item.quantity,
         }));
-    
+
         console.log("Sending cart data to backend:", cartData);
-    
+
         try {
             const response = await fetch("http://localhost/Purchase.php", {
                 method: "POST",
@@ -78,16 +91,16 @@ export default function ShoppingCartPage({ updateCartCount }) {
                 },
                 body: JSON.stringify({ cartItems: cartData }),
             });
-    
+
             console.log("Server Response Status:", response.status);
-    
+
             if (!response.ok) {
                 throw new Error("Failed to connect to the server");
             }
-    
+
             const data = await response.json();
             console.log("Response from backend:", data);
-    
+
             if (data.status === "success") {
                 setPurchaseStatus("Purchase successful!");
                 localStorage.removeItem("cartItems");
@@ -101,31 +114,48 @@ export default function ShoppingCartPage({ updateCartCount }) {
             setPurchaseStatus("Error: Unable to process your request. Please try again later.");
         }
     };
-    
+
     return (
         <div className={styles.cartContainer}>
-            {purchaseStatus === "Purchase successful!" ? (
-                // Success Message with Happy Cart
-                <div className={styles.successContainer}>
-                    <img
-                        src={Cart[1].image} // Use the HappyCart image for success
-                        alt="Purchase Successful"
-                        className={styles.successImage}
-                    />
-                    <h2 className={styles.successMessage}>Thank you for your purchase!!!</h2>
-                    <p className={styles.successSubMessage}>Now I'm happy!!!</p>
-                    <button
-                        className={`${styles.continueShoppingButton} ${styles.success}`}
-                        onClick={() => navigate("/grocery-page")}
-                    >
-                        Continue Shopping
-                    </button>
+            {purchaseStatus && (
+                <div
+                    className={
+                        purchaseStatus.startsWith("Error")
+                            ? styles.errorMessage
+                            : styles.successMessage
+                    }
+                >
+                   
                 </div>
+            )}
+          {purchaseStatus === "Purchase successful!" ? (
+    // Success Message with Happy Cart
+    <div className={styles.successContainer}>
+        <div className={styles.successContent}>
+            <img
+                src={Cart[1].image} // Use the HappyCart image for success
+                className={styles.successImage}
+                alt="Happy Cart"
+            />
+            <h2 className={styles.successTitle}>🎉Thank you for your purchase!🎉</h2>
+            <p className={styles.successSubMessage}>
+                Your cart is happy, and so are we! 😊
+            </p>
+        </div>
+        <button
+            className={`${styles.continueShoppingButton} ${styles.success}`}
+            onClick={() => navigate("/grocery-page")}
+        >
+            Continue Shopping 🛒
+        </button>
+    </div>
+
+
             ) : (
                 <>
                     <div className={styles.cartItemsContainer}>
                         <h2>Your Shopping Cart</h2>
-        
+
                         {cartItems.length > 0 ? (
                             <div className={styles.cartItems}>
                                 {cartItems.map((item) => (
@@ -152,9 +182,7 @@ export default function ShoppingCartPage({ updateCartCount }) {
                                                     >
                                                         -
                                                     </button>
-                                                    <span
-                                                        className={styles.quantityDisplay}
-                                                    >
+                                                    <span className={styles.quantityDisplay}>
                                                         {item.quantity}
                                                     </span>
                                                     <button
@@ -176,18 +204,14 @@ export default function ShoppingCartPage({ updateCartCount }) {
                                                 Base Price: ${item.price.toFixed(2)}
                                             </p>
                                             <p className={styles.itemTotalPrice}>
-                                                Total Price: $
-                                                {(item.price * item.quantity).toFixed(2)}
+                                                Total Price: ${(item.price * item.quantity).toFixed(2)}
                                             </p>
                                             <p className={styles.itemBaseWeight}>
                                                 Base Weight: {item.weight} lbs
                                             </p>
                                             <p className={styles.itemTotalWeight}>
                                                 Total Weight:{" "}
-                                                {(item.weight * item.quantity).toFixed(
-                                                    2
-                                                )}{" "}
-                                                lbs
+                                                {(item.weight * item.quantity).toFixed(2)} lbs
                                             </p>
                                         </div>
                                         <button
@@ -206,12 +230,8 @@ export default function ShoppingCartPage({ updateCartCount }) {
                                     alt="Empty Cart"
                                     className={styles.emptyCartImage}
                                 />
-                                <p className={styles.emptyCartMessage}>
-                                    Your cart is empty
-                                </p>
-                                <p className={styles.sadMessage}>
-                                    Add something to make me happy!!!
-                                </p>
+                                <p className={styles.emptyCartMessage}>Your cart is empty</p>
+                                <p className={styles.sadMessage}>Add something to make me happy!!!</p>
                                 <button
                                     className={styles.continueShoppingButton}
                                     onClick={() => navigate("/grocery-page")}
@@ -221,7 +241,7 @@ export default function ShoppingCartPage({ updateCartCount }) {
                             </div>
                         )}
                     </div>
-        
+
                     {cartItems.length > 0 && (
                         <div className={styles.cartSummaryContainer}>
                             <h3>Cart Summary</h3>
@@ -238,15 +258,26 @@ export default function ShoppingCartPage({ updateCartCount }) {
                                     : `$${shippingFee.toFixed(2)}`}
                             </p>
                             <p>
-                                <strong>
-                                    Final Price: ${finalPrice.toFixed(2)}
-                                </strong>
+                                <strong>Final Price: ${finalPrice.toFixed(2)}</strong>
                             </p>
-        
-                            <div className={styles.buttonContainer}>
+
+                <div className={styles.buttonContainer}>
+                                {!loggedInUser && showLoginMessage && (
+                                    <p className={styles.loginPromptMessage}>
+                                        Please log in to proceed with the payment.
+                                    </p>
+                                )}
                                 <button
                                     className={styles.payNowButton}
-                                    onClick={handlePayment}
+                                    onClick={() => {
+                                        if (!loggedInUser) {
+                                            setShowLoginMessage(true); // Show message if user is not logged in
+                                        } else {
+            
+                                            handlePayment(); // Proceed with payment if user is logged in
+                                        }
+                                    }}
+                                    
                                 >
                                     Pay NOW!
                                 </button>
@@ -258,11 +289,10 @@ export default function ShoppingCartPage({ updateCartCount }) {
                                     Keep Shopping
                                 </button>
                             </div>
-                        </div>
+                    </div>
                     )}
                 </>
             )}
         </div>
     );
-    
 }

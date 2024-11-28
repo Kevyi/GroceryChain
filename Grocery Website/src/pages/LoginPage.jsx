@@ -107,7 +107,7 @@ export default function LoginRegister({ setLoggedInUser }) {
   return (
     <div className={styles.main}>
       <h1 className={styles.welcomeMessage}>Welcome to GoodEats</h1>
-
+  
       {!isRegisterOpen ? (
         <div className={styles.modalContent}>
           <h2 className={styles.centerRegistration}>Login</h2>
@@ -130,6 +130,20 @@ export default function LoginRegister({ setLoggedInUser }) {
               placeholder="Enter your password"
               required
             />
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="isAdmin"
+                checked={loginData.isAdmin}
+                onChange={(e) =>
+                  setLoginData((prevData) => ({
+                    ...prevData,
+                    isAdmin: e.target.checked,
+                  }))
+                }
+              />
+              Login as Admin
+            </label>
             <button className={styles.submitButton} type="submit">
               Login
             </button>
@@ -201,6 +215,20 @@ export default function LoginRegister({ setLoggedInUser }) {
               onChange={(e) => handleChange(e, setRegisterData)}
               placeholder="Enter your country"
             />
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="isAdmin"
+                checked={registerData.isAdmin}
+                onChange={(e) =>
+                  setRegisterData((prevData) => ({
+                    ...prevData,
+                    isAdmin: e.target.checked,
+                  }))
+                }
+              />
+              Register as Admin
+            </label>
             <button className={styles.submitButton} type="submit">
               Register
             </button>
@@ -228,5 +256,5 @@ export default function LoginRegister({ setLoggedInUser }) {
         </div>
       )}
     </div>
-  );
+  );  
 }

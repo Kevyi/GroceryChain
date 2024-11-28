@@ -34,10 +34,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $data) {
     $password = $data['password'];
     $date_of_birth = $data['date_of_birth'];
     $country = $data['country'];
+    $isAdmin = isset($data['isAdmin']) && $data['isAdmin'] === true;
 
-    // Check for duplicate username or email
-    $checkQuery = "SELECT * FROM loginregister WHERE username = ? OR email = ?";
+    // Determine the target table based on the admin flag
+    $table = $isAdmin ? 'adminaccount' : 'loginregister';
+
+    // Debugging: Check the input data and table
+    error_log("Debug: Username: $username, isAdmin: " . ($isAdmin ? "true" : "false"));
+    error_log("Debug: Target table: $table");
+
+    // Check for duplicate username or email in the appropriate table
+    $checkQuery = "SELECT * FROM $table WHERE username = ? OR email = ?";
     $stmt = mysqli_prepare($conn, $checkQuery);
+    if ($stmt === false) {
+        die(json_encode(["status" => "error", "message" => "SQL error: " . mysqli_error($conn)]));
+    }
+
     mysqli_stmt_bind_param($stmt, "ss", $username, $email);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
@@ -49,15 +61,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $data) {
     }
     mysqli_stmt_close($stmt);
 
-    // Insert new user into the database
-    $query = "INSERT INTO loginregister (username, email, password, date_of_birth, country) VALUES (?, ?, ?, ?, ?)";
+    // Insert new user or admin into the selected table
+    $query = "INSERT INTO $table (username, email, password, date_of_birth, country) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
+
+    if ($stmt === false) {
+        die(json_encode(["status" => "error", "message" => "SQL prepare error: " . mysqli_error($conn)]));
+    }
+
     mysqli_stmt_bind_param($stmt, "sssss", $username, $email, $password, $date_of_birth, $country);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo json_encode(["status" => "success", "message" => "Registration successful."]);
+        $message = $isAdmin ? "Admin registration successful." : "User registration successful.";
+        echo json_encode(["status" => "success", "message" => $message]);
     } else {
-        echo json_encode(["status" => "error", "message" => "Failed to register. Please try again."]);
+        echo json_encode(["status" => "error", "message" => "Failed to register: " . mysqli_error($conn)]);
     }
     mysqli_stmt_close($stmt);
 } else {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import styles from "../styles/description.module.css";
 
 const productDetailsMap = {
@@ -10,7 +10,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+            
         },
         price: "$2.50",
         weight: "1 lb",
@@ -24,7 +24,7 @@ const productDetailsMap = {
             origin: "USA",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+            
         },
         price: "$1.00",
         weight: "0.33 lb",
@@ -38,7 +38,7 @@ const productDetailsMap = {
         origin: "USA",
         organic: "No",
         type: "Fruit",
-        availability: "In Stock",
+       
     },
     price: "$1.50",
     weight: "0.33 lb",
@@ -52,7 +52,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+            
         },
         price: "$0.25",
         weight: "0.25 lb",
@@ -66,7 +66,7 @@ const productDetailsMap = {
             size: "Large",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+          
         },
         price: "$6.00",
         weight: "10 lbs",
@@ -80,7 +80,7 @@ const productDetailsMap = {
             size: "1 lb Bunch",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+            
         },
         price: "$1.50",
         weight: "1 lb",
@@ -94,7 +94,7 @@ const productDetailsMap = {
             origin: "USA",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+          
         },
         price: "$1.20",
         weight: "0.33 lb",
@@ -108,7 +108,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+            
         },
         price: "$0.89",
         weight: "0.5 lb",
@@ -122,7 +122,7 @@ const productDetailsMap = {
             origin: "Florida, USA",
             organic: "No",
             type: "Fruit",
-            availability: "In Stock",
+           
         },
         price: "$0.60",
         weight: "0.4 lb",
@@ -136,7 +136,7 @@ const productDetailsMap = {
             size: "Large",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+            
         },
         price: "$3.50",
         weight: "2.5 lbs",
@@ -150,7 +150,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+           
         },
         price: "$1.10",
         weight: "0.25 lb",
@@ -164,7 +164,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "No",
             type: "Vegetable",
-            availability: "In Stock",
+            
         },
         price: "$0.50",
         weight: "0.5 lb",
@@ -178,7 +178,7 @@ const productDetailsMap = {
             size: "Pint",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+           
         },
         price: "$4.00",
         weight: "0.2 lb",
@@ -192,7 +192,7 @@ const productDetailsMap = {
             size: "1/2 lb Bag",
             organic: "No",
             type: "Nut",
-            availability: "In Stock",
+            
         },
         price: "$7.50",
         weight: "0.5 lb",
@@ -206,7 +206,7 @@ const productDetailsMap = {
             size: "Bunch",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+            
         },
         price: "$1.99",
         weight: "0.3 lb",
@@ -220,7 +220,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+           
         },
         price: "$1.25",
         weight: "0.33 lb",
@@ -234,7 +234,7 @@ const productDetailsMap = {
             size: "Large",
             organic: "No",
             type: "Fruit",
-            availability: "In Stock",
+            
         },
         price: "$1.50",
         weight: "0.5 lb",
@@ -248,7 +248,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+           
         },
         price: "$0.60",
         weight: "0.5 lb",
@@ -262,7 +262,7 @@ const productDetailsMap = {
             size: "1 lb Pack",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+          
         },
         price: "$3.99",
         weight: "0.4 lb",
@@ -276,7 +276,7 @@ const productDetailsMap = {
             origin: "Mexico",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+            
         },
         price: "$1.00",
         weight: "0.4 lb",
@@ -291,7 +291,7 @@ const productDetailsMap = {
             size: "Large",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+            
         },
         price: "$1.80",
         weight: "0.5 lb",
@@ -305,7 +305,7 @@ const productDetailsMap = {
             origin: "California, USA",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
+            
         },
         price: "$2.50",
         weight: "0.6 lb",
@@ -319,7 +319,7 @@ const productDetailsMap = {
             size: "1 lb Head",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+           
         },
         price: "$1.25",
         weight: "1 lb",
@@ -333,7 +333,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+           
         },
         price: "$1.30",
         weight: "0.7 lb",
@@ -347,7 +347,7 @@ const productDetailsMap = {
             size: "Medium",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
+           
         },
         price: "$0.90",
         weight: "0.5 lb",
@@ -361,7 +361,7 @@ const productDetailsMap = {
             size: "1/2 lb Bag",
             organic: "No",
             type: "Nut",
-            availability: "In Stock",
+            
         },
         price: "$6.50",
         weight: "0.4 lb",
@@ -375,7 +375,6 @@ const productDetailsMap = {
             size: "Pint",
             organic: "Yes",
             type: "Fruit",
-            availability: "In Stock",
         },
         price: "$4.20",
         weight: "0.3 lb",
@@ -389,7 +388,6 @@ const productDetailsMap = {
             size: "Bulb",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
         },
         price: "$0.99",
         weight: "0.2 lb",
@@ -403,7 +401,6 @@ const productDetailsMap = {
             size: "5 lbs",
             organic: "Yes",
             type: "Vegetable",
-            availability: "In Stock",
         },
         price: "$3.75",
         weight: "5 lbs",
@@ -417,7 +414,6 @@ const productDetailsMap = {
             size: "8 oz Bag",
             organic: "Yes",
             type: "Seed",
-            availability: "In Stock",
         },
         price: "$5.00",
         weight: "0.5 lb",
@@ -432,7 +428,6 @@ const productDetailsMap = {
       origin: "USA",
       organic: "No",
       type: "Meat",
-      availability: "In Stock",
     },
     price: "$5.00",
     weight: "1.5 lb",
@@ -442,16 +437,57 @@ const productDetailsMap = {
     // Add more details for other products using their IDs
 };
 
-export default function Description({ productId, onClose, quantity, incrementQuantity, decrementQuantity, handleAddToCart }) {
+export default function Description({
+    productId,
+    onClose,
+    quantity,
+    incrementQuantity,
+    decrementQuantity,
+    handleAddToCart,
+    updateQuantityManually, // Add this prop for manual updates
+}) {
+    const [availability, setAvailability] = useState(null); // Tracks dynamic availability
     const productDetails = productDetailsMap[productId];
-    
+
+    useEffect(() => {
+        // Fetch dynamic availability based on productId
+        const fetchAvailability = async () => {
+            try {
+                const response = await fetch("http://localhost/Storage.php", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    const product = data.data.find((item) => item.product_id === productId);
+                    if (product) {
+                        setAvailability(product.quantity > 0 ? "In Stock" : "Out of Stock");
+                    } else {
+                        setAvailability("Unknown");
+                    }
+                } else {
+                    setAvailability("Error");
+                }
+            } catch (error) {
+                console.error("Error fetching availability:", error);
+                setAvailability("Error");
+            }
+        };
+
+        fetchAvailability();
+    }, [productId]);
+
     if (!productDetails) return null;
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <span className={styles.closeButton} onClick={onClose}>&times;</span>
-                
+                <span className={styles.closeButton} onClick={onClose}>
+                    &times;
+                </span>
                 <div className={styles.modalBody}>
                     {/* Left Section: Specifications */}
                     <div className={styles.modalLeft}>
@@ -461,34 +497,66 @@ export default function Description({ productId, onClose, quantity, incrementQua
                         <p><strong>Variety:</strong> {productDetails.specifications.variety || "N/A"}</p>
                         <p><strong>Size:</strong> {productDetails.specifications.size || "N/A"}</p>
                         <p><strong>Organic:</strong> {productDetails.specifications.organic}</p>
-                        <p><strong>Type:</strong> {productDetails.specifications.type}</p> 
+                        <p><strong>Type:</strong> {productDetails.specifications.type}</p>
                     </div>
 
-                    {/* Right Section: Details and Quantity */}
+                    {/* Right Section: Details */}
                     <div className={styles.modalRight}>
                         <h2>{productDetails.title}</h2>
                         <h4>Details</h4>
                         <p><strong>Name:</strong> {productDetails.title}</p>
                         <p><strong>Price:</strong> {productDetails.price}</p>
                         <p><strong>Weight:</strong> {productDetails.weight}</p>
-                        <p><strong>Availability:</strong> {productDetails.specifications.availability}</p>
+
+                        {/* Availability */}
+                        <p>
+                            <strong>Availability:</strong>{" "}
+                            <span className={availability === "In Stock" ? styles.inStock : styles.outOfStock}>
+                                {availability || "Loading..."}
+                            </span>
+                        </p>
 
                         <label><strong>Quantity:</strong></label>
                         <div className={styles.quantitySelector}>
-                            <button onClick={decrementQuantity} className={styles.quantityButton}>-</button>
+                            <button
+                                onClick={() => decrementQuantity(productId)}
+                                className={styles.quantityButton}
+                                disabled={availability !== "In Stock"} // Disable if Out of Stock
+                            >
+                                -
+                            </button>
                             <input
                                 type="number"
                                 min="1"
                                 value={quantity}
-                                readOnly
+                                onChange={(e) => {
+                                    const inputQuantity = e.target.value;
+                                    if (/^\d*$/.test(inputQuantity)) {
+                                        updateQuantityManually(productId, inputQuantity); // Pass to handler
+                                    }
+                                }}
+                                onBlur={(e) => {
+                                    const inputQuantity = parseInt(e.target.value, 10);
+                                    if (isNaN(inputQuantity) || inputQuantity < 1) {
+                                        updateQuantityManually(productId, 1); // Reset to 1 if invalid
+                                    }
+                                }}
                                 className={styles.quantityInput}
+                                disabled={availability !== "In Stock"} // Disable if Out of Stock
                             />
-                            <button onClick={incrementQuantity} className={styles.quantityButton}>+</button>
+                            <button
+                                onClick={() => incrementQuantity(productId)}
+                                className={styles.quantityButton}
+                                disabled={availability !== "In Stock"} // Disable if Out of Stock
+                            >
+                                +
+                            </button>
                         </div>
 
-                        <button 
-                            className={styles.addToCartButton} 
+                        <button
+                            className={styles.addToCartButton}
                             onClick={handleAddToCart}
+                            disabled={availability !== "In Stock"} // Disable Add if Out of Stock
                         >
                             Add
                         </button>
@@ -504,3 +572,4 @@ export default function Description({ productId, onClose, quantity, incrementQua
         </div>
     );
 }
+

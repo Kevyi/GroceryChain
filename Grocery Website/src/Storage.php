@@ -7,7 +7,8 @@ $password = '';         // Database password
 // Allow CORS and set content type
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Content-Type: application/json; charset=UTF-8");
 header("Cache-Control: no-cache, must-revalidate, max-age=0");
 
 // Establish database connection
@@ -17,58 +18,63 @@ if (!$conn) {
     die(json_encode(["status" => "error", "message" => "Database connection failed: " . mysqli_connect_error()])); 
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
+// Get JSON data from the request
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    $query = "SELECT id AS product_id, Name AS product_name, Count AS quantity, Price AS price FROM products";
+    $result = mysqli_query($conn, $query);
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && $data) {
-    // Validate input fields
-    if (empty($data['product_id']) || empty($data['product_name']) || empty($data['quantity']) || empty($data['price'])) {
-        echo json_encode(["status" => "error", "message" => "Product ID, Name, Quantity, and Price are required."]);
+    if ($result) {
+        $products = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $products[] = $row; // Push each product data to the array
+        }
+        echo json_encode(["status" => "success", "data" => $products]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Failed to fetch product data."]);
+    }
+    exit();
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $product_id = $data['product_id'];
+    $quantity = $data['quantity'];
+
+    if (!$product_id || !$quantity) {
+        echo json_encode(["status" => "error", "message" => "Missing product_id or quantity."]);
         exit();
     }
 
-    $product_id = $data['product_id'];
-    $product_name = $data['product_name'];
-    $quantity = $data['quantity'];
-    $price = $data['price'];
+    $updateQuery = "UPDATE products SET Count = Count + ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $updateQuery);
+    mysqli_stmt_bind_param($stmt, "is", $quantity, $product_id);
 
-    // Check if the product already exists in the products table
-    $checkQuery = "SELECT * FROM products WHERE product_id = ?";
-    $stmt = mysqli_prepare($conn, $checkQuery);
-    mysqli_stmt_bind_param($stmt, "s", $product_id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-
-    if (mysqli_stmt_num_rows($stmt) > 0) {
-        // Product exists, update its stock
-        $updateQuery = "UPDATE products SET quantity = quantity + ? WHERE product_id = ?";
-        $stmt_update = mysqli_prepare($conn, $updateQuery);
-        mysqli_stmt_bind_param($stmt_update, "is", $quantity, $product_id);
-
-        if (mysqli_stmt_execute($stmt_update)) {
-            echo json_encode(["status" => "success", "message" => "Inventory updated successfully."]);
-        } else {
-            echo json_encode(["status" => "error", "message" => "Failed to update inventory."]);
-        }
-
-        mysqli_stmt_close($stmt_update);
+    if (mysqli_stmt_execute($stmt)) {
+        echo json_encode(["status" => "success", "message" => "Stock updated successfully."]);
     } else {
-        // Product doesn't exist, insert it into the products table
-        $insertQuery = "INSERT INTO products (product_id, product_name, quantity, price) VALUES (?, ?, ?, ?)";
-        $stmt_insert = mysqli_prepare($conn, $insertQuery);
-        mysqli_stmt_bind_param($stmt_insert, "ssis", $product_id, $product_name, $quantity, $price);
-
-        if (mysqli_stmt_execute($stmt_insert)) {
-            echo json_encode(["status" => "success", "message" => "Product added to inventory."]);
-        } else {
-            echo json_encode(["status" => "error", "message" => "Failed to add product to inventory."]);
-        }
-
-        mysqli_stmt_close($stmt_insert);
+        echo json_encode(["status" => "error", "message" => "Failed to update stock."]);
     }
 
     mysqli_stmt_close($stmt);
-} else {
-    echo json_encode(["status" => "error", "message" => "Invalid request."]);
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    $query = "SELECT id AS product_id, Name AS product_name, Count AS quantity, Price AS price FROM products";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $products = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $row['availability'] = $row['quantity'] > 0 ? "In Stock" : "Out of Stock"; // Add availability dynamically
+            $products[] = $row;
+        }
+        echo json_encode(["status" => "success", "data" => $products]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Failed to fetch product data."]);
+    }
+    exit();
 }
 
 mysqli_close($conn);

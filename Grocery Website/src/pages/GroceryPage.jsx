@@ -22,6 +22,43 @@ export default function GroceryPage({ updateCartCount }) {
   const [sortOption, setSortOption] = useState('id-asc');
   
   const location = useLocation(); // Use the location hook to access URL parameters
+
+  useEffect(() => {
+    fetch("http://localhost/Storage.php", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          const backendData = data.data;
+
+          const mergedProducts = products.map((product) => {
+            const backendProduct = backendData.find((item) => item.product_id === product.id);
+            return {
+              ...product,
+              count: backendProduct ? backendProduct.quantity : 0, // Use backend count
+            };
+          });
+
+          setGroceryItems(mergedProducts);
+
+          const initialQuantities = mergedProducts.reduce((acc, product) => {
+            acc[product.id] = 1; // Default quantity for input
+            return acc;
+          }, {});
+          setQuantities(initialQuantities);
+
+          const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+          setCartItems(savedCartItems);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching product data:", error);
+      });
+  }, []);
   
   // This effect will run whenever the URL changes (e.g., when the filter is updated in the URL)
   useEffect(() => {
@@ -53,6 +90,8 @@ export default function GroceryPage({ updateCartCount }) {
 
       return updatedFilters;
     });
+
+    
 
     // Set products and quantities
     setGroceryItems(products);
@@ -123,82 +162,40 @@ export default function GroceryPage({ updateCartCount }) {
   };
 
   const filterProducts = () => {
-    const filters = Object.keys(selectedFilters).filter(filter => selectedFilters[filter] && filter !== "All");
-
-    if (selectedFilters.All || filters.length === 0) {
+    // Get active filters (excluding "All")
+    const activeFilters = Object.keys(selectedFilters).filter(
+      (filter) => selectedFilters[filter] && filter !== "All"
+    );
+  
+    // If "All" is selected or no filters are active, return all products
+    if (selectedFilters.All || activeFilters.length === 0) {
       return groceryItems;
     }
-
-    return groceryItems.filter(product => {
-      const isFruit = !product.isVegetable && !product.isOther;
-      const isVegetable = product.isVegetable;
-      const isMeat = product.isMeat;
-      const isOrganic = product.isOrganic;
-      const isOther = product.isOther;
   
-      let match = true;
+    // Map filter keys to product attributes
+    const filterMapping = {
+      Fruit: (product) => !product.isVegetable && !product.isOther && !product.isMeat,
+      Vegetable: (product) => product.isVegetable,
+      Meat: (product) => product.isMeat,
+      Other: (product) => product.isOther,
+    };
   
-      if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
-        match = (isFruit || isVegetable || isOther) && isOrganic;
-      } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Organic) {
-        match = (isFruit || isVegetable) && isOrganic;
-      } else if (selectedFilters.Fruit && selectedFilters.Organic && selectedFilters.Other) {
-        match = (isFruit || isOther) && isOrganic;
-      } else if (selectedFilters.Vegetable && selectedFilters.Organic && selectedFilters.Other) {
-        match = (isVegetable || isOther) && isOrganic;
-      } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Other) {
-        match = isFruit || isVegetable || isOther;
-      } else if (selectedFilters.Fruit && selectedFilters.Vegetable) {
-        match = isFruit || isVegetable;
-      } else if (selectedFilters.Fruit && selectedFilters.Organic) {
-        match = isFruit && isOrganic;
-      } else if (selectedFilters.Vegetable && selectedFilters.Organic) {
-        match = isVegetable && isOrganic;
-      } else if (selectedFilters.Other && selectedFilters.Organic) {
-        match = isOther && isOrganic;
-      } else if (selectedFilters.Fruit && selectedFilters.Other) {
-        match = isFruit || isOther;
-      } else if (selectedFilters.Vegetable && selectedFilters.Other) {
-        match = isVegetable || isOther;
-    } else if (selectedFilters.Fruit && selectedFilters.Meat) {
-        match = isFruit || isMeat;
-    } else if (selectedFilters.Vegetable && selectedFilters.Meat) {
-        match = isVegetable || isMeat;
-    } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Meat) {
-        match = isFruit || isVegetable || isMeat;
-    } else if (selectedFilters.Other && selectedFilters.Meat) {
-        match = isOther || isMeat;
-    } else if (selectedFilters.Fruit && selectedFilters.Other && selectedFilters.Meat) {
-        match = isFruit || isOther || isMeat;
-    } else if (selectedFilters.Vegetable && selectedFilters.Other && selectedFilters.Meat) {
-        match = isVegetable || isOther || isMeat;
-    } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Other && selectedFilters.Meat) {
-        match = isFruit || isVegetable || isOther || isMeat;
-    } else if (selectedFilters.Meat && selectedFilters.Organic) {
-        match = isMeat && isOrganic;
-    } else if (selectedFilters.Fruit && selectedFilters.Meat && selectedFilters.Organic) {
-        match = (isFruit || isMeat) && isOrganic;
-    } else if (selectedFilters.Vegetable && selectedFilters.Meat && selectedFilters.Organic) {
-        match = (isVegetable || isMeat) && isOrganic;
-    } else if (selectedFilters.Other && selectedFilters.Meat && selectedFilters.Organic) {
-        match = (isOther || isMeat) && isOrganic;
-    } else if (selectedFilters.Fruit && selectedFilters.Vegetable && selectedFilters.Meat && selectedFilters.Organic) {
-        match = (isFruit || isVegetable || isMeat) && isOrganic;
-    } else if (selectedFilters.Fruit && selectedFilters.Other && selectedFilters.Meat && selectedFilters.Organic) {
-        match = (isFruit || isOther || isMeat) && isOrganic;
-    } else if (selectedFilters.Vegetable && selectedFilters.Other && selectedFilters.Meat && selectedFilters.Organic) {
-        match = (isVegetable || isOther || isMeat) && isOrganic;
-      } else {
-        if (selectedFilters.Fruit) match = isFruit;
-        if (selectedFilters.Vegetable) match = isVegetable;
-        if (selectedFilters.Meat) match = isMeat;
-        if (selectedFilters.Organic) match = isOrganic;
-        if (selectedFilters.Other) match = isOther;
-      }
+    // Check if Organic is selected
+    const isOrganicFilterActive = selectedFilters.Organic;
   
-      return match;
+    // Filter products based on active filters
+    return groceryItems.filter((product) => {
+      const matchesCategory = activeFilters
+        .filter((filter) => filter !== "Organic") // Exclude Organic from categories
+        .some((filter) => filterMapping[filter](product));
+  
+      // If Organic is active, also check for organic condition
+      const matchesOrganic = isOrganicFilterActive ? product.isOrganic : true;
+  
+      return matchesCategory && matchesOrganic;
     });
   };
+  
 
   const incrementQuantity = (productId) => {
     setQuantities(prevQuantities => ({
@@ -241,6 +238,13 @@ export default function GroceryPage({ updateCartCount }) {
     }));
     alert(`${quantityToAdd}x ${product.title} has been added to your shopping cart!`);
   };
+
+  const updateQuantityManually = (productId, quantity) => {
+    setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [productId]: quantity === "" ? "" : parseInt(quantity, 10),
+    }));
+};
     return (
         <div className={styles["page"]}>
             <div className={styles["header"]}>
@@ -307,6 +311,7 @@ export default function GroceryPage({ updateCartCount }) {
                             <h3 className={styles["product-title"]}>{product.title}</h3>
                             <p className={styles["product-price"]}>Price: ${product.price.toFixed(2)}</p>
                             <p className={styles["product-weight"]}>Weight: {product.weight} lb</p>
+                            
 
                             <div className={styles["quantity-selector"]}>
                                 <button onClick={() => decrementQuantity(product.id)} className={styles["quantity-button"]}>-</button>
@@ -339,6 +344,7 @@ export default function GroceryPage({ updateCartCount }) {
                     incrementQuantity={() => incrementQuantity(selectedProductId)}
                     decrementQuantity={() => decrementQuantity(selectedProductId)}
                     handleAddToCart={() => handleAddToCart(groceryItems.find(item => item.id === selectedProductId))}
+                    updateQuantityManually={updateQuantityManually}
                 />
             )}
         </div>

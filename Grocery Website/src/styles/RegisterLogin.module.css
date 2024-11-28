@@ -155,3 +155,59 @@
     border-radius: 5px; /* Rounded corners */
     text-align: center;
   }
+
+
+  /* Checkbox container for "Login as Admin" */
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px; /* Add spacing above the checkbox */
+    margin-bottom: 20px; /* Add spacing below the checkbox */
+    font-size: 1rem; /* Adjust font size */
+    color: white; /* White text color for visibility */
+}
+
+/* Style for the actual checkbox input */
+.checkbox {
+    appearance: none; /* Remove default checkbox styling */
+    width: 18px;
+    height: 18px;
+    margin-right: 10px; /* Space between checkbox and label */
+    border: 2px solid #28a745; /* Green border for consistency */
+    border-radius: 4px; /* Rounded corners for a modern look */
+    background-color: transparent; /* Transparent background */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Checkbox checked state */
+.checkbox:checked {
+    background-color: #28a745; /* Green fill when checked */
+    border-color: #218838; /* Darker green border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Add a checkmark when the box is checked */
+.checkbox:checked::after {
+    content: '✔'; /* Unicode checkmark */
+    color: white; /* White checkmark color */
+    font-size: 14px;
+    display: block;
+    text-align: center;
+    line-height: 1; /* Center alignment */
+}
+
+/* Label for "Login as Admin" */
+.checkboxLabel {
+    color: white; /* White text for visibility */
+    font-weight: bold; /* Emphasize the label */
+    cursor: pointer; /* Pointer cursor for interactive feel */
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for label */
+.checkboxContainer:hover .checkboxLabel {
+    color: #00bfff; /* Light blue on hover for better visibility */
+}

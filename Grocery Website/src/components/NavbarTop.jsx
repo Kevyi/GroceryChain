@@ -7,10 +7,18 @@ import { FaSearch } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 
 export default function NavbarTop({ totalCartItems, loggedInUser, handleLogOff }) {
+    const [searchTerm, setSearchTerm] = useState(""); // Store the search input
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            window.location.href = `/grocery-page?search=${encodeURIComponent(searchTerm)}`; // Redirect using window.location
+        }
     };
 
     return (
@@ -24,10 +32,12 @@ export default function NavbarTop({ totalCartItems, loggedInUser, handleLogOff }
             </div>
 
             {/* Search Bar */}
-            <form className={styles["search"]}>
+            <form className={styles["search"]} onSubmit={handleSearchSubmit}>
                 <input
                     className={styles["field"]}
                     placeholder="Search FreshBite"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)} // Update search term state
                 />
                 <button type="submit">
                     <FaSearch className={styles["search-icon"]} />
