@@ -108,6 +108,7 @@ function RegistrationModal({ onClose }) {
         name : '', 
         isAdmin : false,
         address : '',
+        creditCard : ''
     });
 
     const register = async (e) => {
@@ -119,7 +120,7 @@ function RegistrationModal({ onClose }) {
         }
 
         //isAdmin returns on? Instead of true.
-        console.log(registerData)
+        // console.log(registerData)
     
         try {
           const response = await fetch('http://localhost:8080/register-login/register', {
@@ -131,8 +132,10 @@ function RegistrationModal({ onClose }) {
               name: registerData.name,
               isAdmin : registerData.isAdmin,
               address : registerData.address,
-            //   Passes a json object which we will input receipts into its array
-              transactions : {receipts : []}
+              creditCard : registerData.creditCard,
+              
+                //Passes a json object but string form
+              transactions : JSON.stringify([])
             }),
           });
     
@@ -170,7 +173,8 @@ function RegistrationModal({ onClose }) {
                             value = {registerData.email}  
                             onChange={handleChangeRegister}   
                             className={styles.inputBox} 
-                            placeholder='Email Address'> 
+                            placeholder='Email Address'
+                            required> 
                         </input>
                         
                     <div className={styles.textBoxSpacing}></div>
@@ -180,7 +184,8 @@ function RegistrationModal({ onClose }) {
                             value = {registerData.name}
                             onChange={handleChangeRegister}   
                             className={styles.inputBox} 
-                            placeholder='Name'>
+                            placeholder='Name'
+                            required>
                         </input>
 
                     <div className={styles.textBoxSpacing}></div>
@@ -191,7 +196,8 @@ function RegistrationModal({ onClose }) {
                             onChange={handleChangeRegister}   
                             className={styles.inputBox} 
                             minlength = "8"
-                            placeholder='Password'>
+                            placeholder='Password'
+                            required>
                         </input>
 
                     <div className={styles.textBoxSpacing}></div>
@@ -202,8 +208,25 @@ function RegistrationModal({ onClose }) {
                             onChange={handleChangeRegister}   
                             className={styles.inputBox} 
                             minlength = "8"
-                            placeholder='Confirm Password'>
+                            placeholder='Confirm Password'
+                            required>
                         </input>
+
+                    <div className={styles.textBoxSpacing}></div>
+                    <h2>Credit Card</h2>
+                    <div className={styles.textBoxSpacing2}></div>
+
+                        <input type="number" 
+                            name="creditCard"  
+                            value = {registerData.creditCard}
+                            onChange={handleChangeRegister}     
+                            className={styles.inputBox} 
+                            placeholder='Credit Card Details'
+                            minlength = "15"
+                            required>
+                        </input>
+
+                   
 
                     <div className={styles.textBoxSpacing}></div>
 
@@ -215,12 +238,11 @@ function RegistrationModal({ onClose }) {
                             value = {registerData.address}
                             onChange={handleChangeRegister}     
                             className={styles.inputBox} 
-                            placeholder='Address'>
+                            placeholder='Address'
+                            required>
                         </input>
-
-                   
-
                     <div className={styles.textBoxSpacing}></div>
+
                     <div className={styles.inLineFlex}>
                             <h4>Admin Registration: </h4> 
 

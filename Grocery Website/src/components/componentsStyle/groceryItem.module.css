@@ -4,6 +4,7 @@
     padding: 20px;
     background-color: #fff;
     align-items: center;
+    max-height: 500px;
     
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);

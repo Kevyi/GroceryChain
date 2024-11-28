@@ -121,8 +121,8 @@ export default function ShoppingCartPage(){
 
 
     //Get from server.js --> verifying-Login
-            //data contains: userId: user.id, name : user.name, email: user.email, password : user.password, isAdmin : user.isAdmin}
-          //AND transactions.receipts = returns an array of items we bought. Will hold objects within array.
+            //data contains: userId: user.id, name : user.name, email: user.email, password : user.password, isAdmin : user.isAdmin, creditCard: user.creditCard}
+                //AND transactions.receipts = returns an array of items we bought. Will hold objects within array.
             //Transaction should be populated after person purchases and appends to receipt.
 
     return (

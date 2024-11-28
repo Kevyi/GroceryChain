@@ -46,7 +46,7 @@ export default function NavbarTop(){
             //Transaction should be populated after person purchases and appends to receipt.
         if(!isLoggedIn){
           user = data;
-          console.log(user)
+          // console.log(user)
           setIsLoggedIn(true);
           navigate("/home");
         }

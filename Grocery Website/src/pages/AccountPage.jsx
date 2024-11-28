@@ -8,7 +8,8 @@ export default function AccountPage(){
         confirmPassword : '', 
         name : '', 
         address : '',
-        isAdmin: false
+        isAdmin: false,
+        creditCard : ''
     });
 
     //replace data.
@@ -71,11 +72,13 @@ export default function AccountPage(){
             
             const data = await response.json();
 
-            //data contains: name : user.name, email: user.email, password : user.password, isAdmin : user.isAdmin, address}
-            //Do everything except the password.
+            //data contains: name : user.name, email: user.email, password : user.password, isAdmin : user.isAdmin, address, creditCard}
+            //Do everything except the confirm password.
                 //For some reason it can only be called once.
                 //Pre-populates the information of the user.
-            setUserInfo({ ...userInfo, email: data['email'], name: data['name'], address: data['address'], isAdmin : data["isAdmin"]});
+            setUserInfo({ ...userInfo, email: data['email'], name: data['name'], address: data['address'], isAdmin : data["isAdmin"],
+                creditCard : data["creditCard"]
+            });
             // for (const key in Object.keys(data)) {
  
             //     let value = data[key]
@@ -130,7 +133,9 @@ export default function AccountPage(){
                             value = {userInfo.email}  
                             onChange={handleInformationChange}   
                             className={styles.inputBox} 
-                            placeholder='Email Address'> 
+                            placeholder='Email Address'
+                            required
+                            > 
                         </input>
 
                         <input type="text" 
@@ -138,7 +143,9 @@ export default function AccountPage(){
                             value = {userInfo.name}
                             onChange={handleInformationChange}   
                             className={styles.inputBox} 
-                            placeholder='Name'>
+                            placeholder='Name'
+                            required
+                            >
                         </input>
 
                         <input type="password" 
@@ -147,7 +154,9 @@ export default function AccountPage(){
                             onChange={handleInformationChange}   
                             className={styles.inputBox} 
                             minlength = "8"
-                            placeholder='Password'>
+                            placeholder='Password'
+                            required
+                            >
                         </input>
 
                         <input type="password" 
@@ -156,7 +165,22 @@ export default function AccountPage(){
                             onChange={handleInformationChange}   
                             className={styles.inputBox} 
                             minlength = "8"
-                            placeholder='Confirm Password'>
+                            placeholder='Confirm Password'
+                            required
+                            >
+                        </input>
+
+                     <h2> Credit Card</h2>
+
+                        <input type="number" 
+                            name="creditCard"  
+                            value = {userInfo.creditCard}
+                            onChange={handleInformationChange}     
+                            className={styles.inputBox} 
+                            placeholder='Credit Card'
+                            minlength = "15"
+                            required
+                            >
                         </input>
 
                     <h2> Address</h2>
@@ -166,7 +190,9 @@ export default function AccountPage(){
                             value = {userInfo.address}
                             onChange={handleInformationChange}     
                             className={styles.inputBox} 
-                            placeholder='Address'>
+                            placeholder='Address'
+                            required
+                            >
                         </input>
 
                         <button type="submit" className={styles["change-button"]}>
@@ -177,7 +203,7 @@ export default function AccountPage(){
             
             <div className = {styles["display-transactions"]}>
                 <h1>Transactions</h1>
-
+                {/* Put the transaction table here populated with the transactions. Maybe sort by date */}
             </div>
 
         </div>

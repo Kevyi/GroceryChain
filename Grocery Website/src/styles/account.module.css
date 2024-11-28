@@ -5,6 +5,7 @@
     flex-direction: column;
 }
 
+input[type="number"],
 input[type="email"],
 input[type = "text"],
 input[type="password"] {
