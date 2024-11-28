@@ -5,10 +5,28 @@
 #main{
     display:flex;
     height: auto;
+    width: 100%;
 }
 .table{
     display: flex;
     flex-direction: column;
+}
+/* .category{
+  
+} */
+
+.category-item{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.category-checkbox{
+
+  padding: 0px;
+  width: 100px;
+  margin-left: auto;
+  margin-right: 30px;
 }
 
 .column {
@@ -20,7 +38,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-right: 20px;
 
-    width: 25%;
+    width: 20%;
     height: fill;
     min-height: 1000px;
     /*Allows items to go down*/

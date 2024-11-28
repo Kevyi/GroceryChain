@@ -10,7 +10,7 @@ return (
     
         <div className = {styles["header"]}>
             <h1 style={{fontSize: "50px", margin : 0, textAlign:"center"}}>
-                Good Eats
+              Freshie
             </h1>
             <iframe src="" title="description" style = {{height:"60vh"}}></iframe>
         </div>

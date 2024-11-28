@@ -1,5 +1,6 @@
 .popup-overlay {
     position: fixed;
+    display: flex;
     top: 0;
     left: 0;
     width: 100vw;
@@ -13,7 +14,7 @@
   }
 
   .popup-content {
-    width: 65%; /* Controls the popup width */
+    width: 55%; /* Controls the popup width */
     height: 90%; /* Controls the popup height */
     background-color: white;
     padding: 20px;
@@ -21,7 +22,7 @@
     position: relative;
 
     display: flex;
-    background-color: rgb(243, 248, 252);
+    background-color: rgb(255, 255, 255);
 
   }
   
@@ -30,8 +31,8 @@
     background-color: transparent;
     top: 10px;
     right: 10px;
-    font-size: 30px;
-    color: red;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
     cursor: pointer;
   }
 
@@ -72,12 +73,18 @@
     padding: 10px;
     gap: 10px;
     scrollbar-width: none; /* Hide scrollbar in Firefox */
-    background: rgb(250, 247, 247);
-    box-shadow: 1px 2px 1px gray;
+    background: rgb(235, 231, 231);
+    /* box-shadow: 1px 2px 1px gray; */
+
+    border-radius: 10px;
+    margin: 15px;
+    flex-shrink: 1;
   }
 
-  .details{
-    
+  img{
+    object-fit:cover;
+    width: 100%;
+    height: 100%;
   }
 
   .details > *{
@@ -104,6 +111,17 @@
 {
     display: flex;
     flex-direction: column;
+    margin-left: 5px;
+}
+.upDownButton{
+  color: rgb(255, 255, 255);
+  background-color: rgb(59, 114, 255);
+
+}
+
+.upDownButton:hover{
+  background-color: rgb(38, 35, 221);
+
 }
 
 .buttons-div
@@ -123,11 +141,31 @@ button
 }
 
 .add-button:hover{
-    background-color: rgb(0, 255, 47);
+    background-color: rgb(38, 35, 221);
+    border-radius: 10px;
+    
 }
 
 .add-button:active{
-    background-color: rgba(0, 255, 47, 0.185);
+    background-color: rgb(20, 22, 158);
+    border-radius: 10px;
+}
+
+.add-button{
+  position: absolute;
+  background-color: rgb(59, 114, 255);
+  bottom: 30px;
+  right: 30px;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  border-radius: 10px;
+  border: solid;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  padding: 10px;
+
 }
 
 .quantity .value
@@ -136,15 +174,7 @@ button
     width: 60px;
 }
 
-.add-button{
-    position: absolute;
-    background-color: lightgreen;
-    bottom: 30px;
-    right: 30px;
-    font-size: 30px;
-    color: green;
-    cursor: pointer;
-}
+
 
 .verticalLine {
     width: 1px; /* Line width */
