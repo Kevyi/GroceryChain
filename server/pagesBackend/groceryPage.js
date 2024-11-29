@@ -1,47 +1,52 @@
 const express = require("express");
 const router = express.Router();
-const db = require('../database.js');
+const db = require("../database.js");
 const cors = require("cors");
 
-//user router.get() instead of app.get().
-
 const corsOptions = {
-    origin: "http://localhost:5173",  // Allow your frontend domain
-  //   methods: ["GET", "POST"],  // Methods you want to allow
-  };
-  
+  origin: "http://localhost:5173", // Allow requests from the frontend domain
+};
+
 router.use(express.json());
 router.use(cors(corsOptions));
 
-
-
-//user router.get() instead of app.get().
-
+// Route to get grocery items with optional search and category filtering
 router.get("/groceryItems", (req, res) => {
+  const { query, categories } = req.query; // Extract query and categories from request
 
-    
-    // Step 1: Retrieve existing user data
-    const getUserQuery = 'SELECT * FROM products';
+  // Base SQL query
+  let sql = "SELECT * FROM products WHERE 1=1";
+  const params = [];
 
-   
+  // Add search query filtering if provided
+  if (query) {
+    sql += " AND name LIKE ?";
+    params.push(`%${query}%`); // Wildcards for partial matching
+  }
 
-        db.query(getUserQuery, (err, results) => {
+  // Add category filtering if provided
+  if (categories) {
+    const categoryList = categories.split(","); // Convert categories to an array
+    if (categoryList.length > 0) {
+      // Use JSON_CONTAINS to match categories in the JSON array
+      const categoryConditions = categoryList.map(() => "JSON_CONTAINS(categories, ?, '$')");
+      sql += ` AND (${categoryConditions.join(" OR ")})`;
+      params.push(...categoryList.map((cat) => `"${cat}"`)); // Add each category as a JSON string
+    }
+  }
 
-            if (err) return res.status(500).send('Error retrieving user data');
-            if (results.length === 0) {
-                
-                return res.status(404).send('Item not found');
-            }
+  console.log("SQL Query:", sql); // Debugging: Log the final SQL query
+  console.log("Params:", params); // Debugging: Log the query parameters
 
-            //console.log({results})
-            return res.json({results});
-    
-        })
-       
+  // Execute the query
+  db.query(sql, params, (err, results) => {
+    if (err) {
+      console.error("Database Error:", err);
+      return res.status(500).json({ error: "Error retrieving products" });
+    }
 
-        
+    return res.json({ results });
+  });
+});
 
-    });
-    
-
-module.exports = router
+module.exports = router;
