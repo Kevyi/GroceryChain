@@ -37,10 +37,14 @@ export default function RegisterLoginPage() {
 
             localStorage.setItem('token', data.token);
             
+            if(!data.token){
+                alert("Invalid Login")
+            }else{
+                setIsLoggedIn(true);
+                alert(data.token)
+                navigate("/grocery-page");
+            }
 
-            setIsLoggedIn(true);
-            alert(data.token)
-            navigate("/grocery-page");
 
         }
         catch(error){
