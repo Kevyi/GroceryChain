@@ -1,126 +1,176 @@
 .paymentPage {
-    background-color: #f8f9fa;
-    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom right, #d9f1ff, #ffffff);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-}
-
-.pageTitle {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #333;
+    z-index: 1000;
+    font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    overflow-y: auto;
 }
 
 .paymentForm {
-    display: flex;
-    flex-wrap: wrap;
     background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 100%;
-    max-width: 800px;
+    padding: 40px 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 1200px; /* Increase max-width to prevent clipping */
+    width: 90%; /* Allow flexibility for smaller screens */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    gap: 30px;
+    overflow: visible; /* Ensure content isn't clipped */
+    position: relative;
 }
 
-.column {
-    flex: 1;
-    padding: 15px;
-}
-
-h3 {
-    margin-bottom: 15px;
-    font-size: 1.5rem;
-    color: #333;
-    font-weight: bold;
-}
-
-.formGroup {
-    margin-bottom: 15px;
-}
-
-.formGroup label {
-    font-size: 0.9rem;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-.cardsImage {
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-}
-
-.input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s;
-}
-
-.input:focus {
-    border-color: #6c63ff;
-    outline: none;
-    box-shadow: 0 0 4px rgba(108, 99, 255, 0.3);
-}
 
 .row {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between; /* Space between left and right columns */
+    align-items: flex-start; /* Align items to the top */
+    gap: 40px; /* Add spacing between columns */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.leftColumn {
+    flex: 1; /* Take up equal space */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.rightColumn {
+    flex: 1; /* Take up equal space */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sectionTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    border-bottom: 3px solid #94a3b8;
+    padding-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 
-.row > .formGroup {
+.input {
+    padding: 16px 18px;
+    font-size: 1rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 10px;
+    background-color: #f9fbfd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.input:focus {
+    border-color: #2563eb;
+    background-color: #eef7ff;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+    outline: none;
+}
+
+.smallInputGroup {
+    display: flex;
+    gap: 15px;
+}
+
+.smallInput {
     flex: 1;
+    padding: 16px 18px;
+    font-size: 1rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 10px;
+    background-color: #f9fbfd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.smallInput:focus {
+    border-color: #3b82f6;
+    background-color: #eef7ff;
+    box-shadow: 0 0 8px rgba(59, 130, 206, 0.4);
+    outline: none;
 }
 
 .submitButton {
-    background-color: #6c63ff;
-    color: #fff;
-    padding: 12px 20px;
+    background: linear-gradient(to right, #4299e1, #3182ce);
+    color: #ffffff;
+    padding: 16px;
+    font-size: 1.4rem;
+    font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 1rem;
-    width: 100%;
-    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
     margin-top: 20px;
-    transition: background-color 0.3s;
-    animation: fadeIn 1s ease-in-out; /* Add the fadeIn animation */
+    text-transform: uppercase;
+    align-self: center; /* Center horizontally */
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
 }
 
 .submitButton:hover {
-    background-color: #5a52d4;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+    background: linear-gradient(to right, #2b6cb0, #285e8e);
 }
 
-.successMessage {
-    color: #28a745;
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1rem;
+.closeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #ef4444;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.errorMessage {
-    color: #dc3545;
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1rem;
+.closeButton:hover {
+    color: #dc2626;
+    transform: scale(1.1);
 }
 
-
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
+@media (max-width: 768px) {
+    .paymentForm {
+        flex-direction: column;
+        padding: 30px;
+        gap: 20px;
     }
-    to {
-        opacity: 1;
+
+    .row {
+        flex-direction: column;
+        gap: 20px;
     }
+
+    .submitButton {
+        font-size: 1.2rem;
+        padding: 14px;
+    }
+}
+
+.cardImageContainer {
+    text-align: center;
+    margin-bottom: 20px; /* Space below the image */
+}
+
+.cardImage {
+    max-width: 100%; /* Responsive scaling */
+    max-height: 100px; /* Restrict height */
+    object-fit: contain; /* Maintain aspect ratio */
+    border: 1px solid #e2e8f0; /* Light border for aesthetics */
+    border-radius: 8px; /* Rounded corners for style */
 }

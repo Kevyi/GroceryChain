@@ -1,0 +1,90 @@
+.fullPageOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.modalContent {
+    background: #fff;
+    width: 90%; /* Adjusted for responsiveness */
+    height: 90%; /* Fills most of the screen */
+    max-width: 1200px;
+    max-height: 90%; /* Constrained for large screens */
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    overflow: auto; /* Ensures content doesn’t overflow on smaller screens */
+}
+
+.successContainer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    background: #f0f9f9;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.successImage {
+    width: 250px; /* Adjusted for better proportion */
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.successTitle {
+    font-size: 2.5rem; /* Slightly reduced for better fit */
+    color: #4caf50;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.successSubMessage {
+    font-size: 1.2rem; /* Adjusted for readability */
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.5; /* Improved spacing for readability */
+}
+
+.continueShoppingButton {
+    background: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.continueShoppingButton:hover {
+    background: #45a045;
+    transform: scale(1.05); /* Adds a subtle hover effect */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
