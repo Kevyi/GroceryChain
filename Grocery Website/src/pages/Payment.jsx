@@ -16,6 +16,7 @@ export default function PaymentPage({ handlePayment, onClose, onPaymentSuccess }
     });
 
     const [paymentStatus, setPaymentStatus] = useState("");
+    const [isProcessing, setIsProcessing] = useState(false); // Spinner state
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -27,18 +28,23 @@ export default function PaymentPage({ handlePayment, onClose, onPaymentSuccess }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setPaymentStatus("Processing payment...");
+        setPaymentStatus("");
+        setIsProcessing(true); // Show spinner
 
-        const success = await handlePayment(paymentDetails);
+        // Simulate loading for 2 seconds before continuing
+        setTimeout(async () => {
+            const success = await handlePayment(paymentDetails);
+            setIsProcessing(false); // Hide spinner after processing
 
-        if (success) {
-            setPaymentStatus("Payment Successful! 🎉");
-            setTimeout(() => {
-                onPaymentSuccess(); // Trigger success handler
-            }, 1500);
-        } else {
-            setPaymentStatus("Error: Unable to process payment.");
-        }
+            if (success) {
+                setPaymentStatus("Payment Successful! 🎉");
+                setTimeout(() => {
+                    onPaymentSuccess(); // Trigger success handler
+                }, 1500);
+            } else {
+                setPaymentStatus("Error: Unable to process payment.");
+            }
+        }, 2000);
     };
 
     return (
@@ -48,6 +54,14 @@ export default function PaymentPage({ handlePayment, onClose, onPaymentSuccess }
             </button>
             <form className={styles.paymentForm} onSubmit={handleSubmit}>
                 <h1 className={styles.pageTitle}>Payment Page</h1>
+                {/* Accepted Cards Image */}
+                <div className={styles.cardImageContainer}>
+                    <img
+                        src="/CreditCard.jpg" // Path to image in public folder
+                        alt="Accepted Credit Cards"
+                        className={styles.cardImage}
+                    />
+                </div>
                 <div className={styles.row}>
                     <div className={styles.column}>
                         <h3 className={styles.sectionTitle}>Billing Address</h3>
@@ -144,8 +158,8 @@ export default function PaymentPage({ handlePayment, onClose, onPaymentSuccess }
                         </div>
                     </div>
                 </div>
-                <button type="submit" className={styles.submitButton}>
-                    Pay Now
+                <button type="submit" className={styles.submitButton} disabled={isProcessing}>
+                    {isProcessing ? <div className={styles.spinner}></div> : "Pay Now"}
                 </button>
                 {paymentStatus && (
                     <p

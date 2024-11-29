@@ -4,173 +4,188 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom right, #d9f1ff, #ffffff);
+    background: linear-gradient(135deg, #f6f9fc, #ffffff);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     overflow-y: auto;
+    padding: 20px;
 }
 
 .paymentForm {
     background: #ffffff;
-    padding: 40px 50px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    max-width: 1200px; /* Increase max-width to prevent clipping */
-    width: 90%; /* Allow flexibility for smaller screens */
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 90%;
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 30px;
-    overflow: visible; /* Ensure content isn't clipped */
+    flex-direction: column;
+    gap: 20px;
     position: relative;
 }
 
-
-.row {
-    display: flex;
-    justify-content: space-between; /* Space between left and right columns */
-    align-items: flex-start; /* Align items to the top */
-    gap: 40px; /* Add spacing between columns */
-    flex-wrap: nowrap; /* Prevent wrapping */
+.cardImageContainer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 10px;
 }
 
-.leftColumn {
-    flex: 1; /* Take up equal space */
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.rightColumn {
-    flex: 1; /* Take up equal space */
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+.cardImage {
+    max-width: 100%;
+    height: auto;
+    max-height: 40px;
+    object-fit: contain;
 }
 
 .sectionTitle {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #1e293b;
-    border-bottom: 3px solid #94a3b8;
-    padding-bottom: 8px;
-    letter-spacing: 0.5px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 8px;
 }
 
 .input {
-    padding: 16px 18px;
-    font-size: 1rem;
+    padding: 10px 12px;
+    font-size: 0.9rem;
     border: 1px solid #cbd5e0;
-    border-radius: 10px;
-    background-color: #f9fbfd;
+    border-radius: 8px;
+    background-color: #f9fafb;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .input:focus {
-    border-color: #2563eb;
-    background-color: #eef7ff;
-    box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+    border-color: #3182ce;
+    background-color: #edf2f7;
+    box-shadow: 0 0 6px rgba(49, 130, 206, 0.3);
     outline: none;
 }
 
 .smallInputGroup {
     display: flex;
-    gap: 15px;
+    gap: 10px;
+    flex-wrap: wrap; /* Ensure fields adjust for smaller screens */
 }
 
 .smallInput {
     flex: 1;
-    padding: 16px 18px;
-    font-size: 1rem;
+    min-width: 80px; /* Ensures the fields don't shrink too much */
+    max-width: 120px; /* Prevents fields from being too wide */
+    padding: 10px 12px;
+    font-size: 0.9rem;
     border: 1px solid #cbd5e0;
-    border-radius: 10px;
-    background-color: #f9fbfd;
+    border-radius: 8px;
+    background-color: #f9fafb;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .smallInput:focus {
-    border-color: #3b82f6;
-    background-color: #eef7ff;
-    box-shadow: 0 0 8px rgba(59, 130, 206, 0.4);
+    border-color: #2563eb;
+    box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
     outline: none;
 }
 
 .submitButton {
     background: linear-gradient(to right, #4299e1, #3182ce);
     color: #ffffff;
-    padding: 16px;
-    font-size: 1.4rem;
+    padding: 12px 0;
+    font-size: 1rem;
     font-weight: bold;
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
-    margin-top: 20px;
+    margin-top: 15px;
     text-transform: uppercase;
-    align-self: center; /* Center horizontally */
     text-align: center;
-    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+    width: 100%;
+    max-width: 250px;
+    align-self: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .submitButton:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
-    background: linear-gradient(to right, #2b6cb0, #285e8e);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.4);
+    background: linear-gradient(to right, #2563eb, #2b6cb0);
 }
 
 .closeButton {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     background: transparent;
     border: none;
-    font-size: 2rem;
-    color: #ef4444;
+    font-size: 1.5rem;
+    color: #e53e3e;
     cursor: pointer;
     transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .closeButton:hover {
-    color: #dc2626;
+    color: #c53030;
     transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
     .paymentForm {
-        flex-direction: column;
-        padding: 30px;
-        gap: 20px;
+        padding: 20px;
     }
 
     .row {
-        flex-direction: column;
-        gap: 20px;
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
 
     .submitButton {
-        font-size: 1.2rem;
-        padding: 14px;
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .cardImage {
+        max-height: 30px;
     }
 }
 
-.cardImageContainer {
-    text-align: center;
-    margin-bottom: 20px; /* Space below the image */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-left-color: #2563eb;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
 }
 
-.cardImage {
-    max-width: 100%; /* Responsive scaling */
-    max-height: 100px; /* Restrict height */
-    object-fit: contain; /* Maintain aspect ratio */
-    border: 1px solid #e2e8f0; /* Light border for aesthetics */
-    border-radius: 8px; /* Rounded corners for style */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
