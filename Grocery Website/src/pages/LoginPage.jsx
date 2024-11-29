@@ -230,7 +230,7 @@ function RegistrationModal({ onClose }) {
 
                     <div className={styles.textBoxSpacing}></div>
 
-                    <h2> Address</h2>
+                    <h2>Residential Address</h2>
                     <div className={styles.textBoxSpacing2}></div>
 
                         <input type="text" 

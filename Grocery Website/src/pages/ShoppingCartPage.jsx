@@ -164,6 +164,7 @@ export default function ShoppingCartPage(){
                 <div className = {styles["cart"]}>
                     {/* Display the prices and stuff.*/}
                     Include the receipt etc.
+                    
                 </div>
 
             </div>)} 
