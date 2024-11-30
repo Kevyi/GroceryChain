@@ -59,6 +59,31 @@ export default function GroceryPage({ updateCartCount }) {
         console.error("Error fetching product data:", error);
       });
   }, []);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search); // Parse query parameters from the URL
+    const searchQuery = urlParams.get("search"); // Extract the "search" parameter
+
+    // Log the search query
+    console.log("Search Query from URL:", searchQuery);
+
+    if (searchQuery) {
+        // Filter grocery items based on the search query
+        const filteredItems = products.filter((product) =>
+            product.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        // Log the filtered items
+        console.log("Filtered Items:", filteredItems);
+
+        setGroceryItems(filteredItems); // Update the state with filtered items
+    } else {
+        // If no search query, show all products
+        console.log("No Search Query, showing all products.");
+        setGroceryItems(products);
+    }
+}, [location.search]); // Re-run this effect whenever the URL's search parameter changes
+
   
   // This effect will run whenever the URL changes (e.g., when the filter is updated in the URL)
   useEffect(() => {
@@ -164,37 +189,49 @@ export default function GroceryPage({ updateCartCount }) {
   const filterProducts = () => {
     // Get active filters (excluding "All")
     const activeFilters = Object.keys(selectedFilters).filter(
-      (filter) => selectedFilters[filter] && filter !== "All"
+        (filter) => selectedFilters[filter] && filter !== "All"
     );
-  
-    // If "All" is selected or no filters are active, return all products
+
+    // Get the search query
+    const urlParams = new URLSearchParams(location.search);
+    const searchQuery = urlParams.get("search");
+
+    // Filter products by search query if it exists
+    const searchedItems = searchQuery
+        ? groceryItems.filter((product) =>
+              product.title.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        : groceryItems;
+
+    // If "All" is selected or no filters are active, return search-filtered products
     if (selectedFilters.All || activeFilters.length === 0) {
-      return groceryItems;
+        return searchedItems;
     }
-  
+
     // Map filter keys to product attributes
     const filterMapping = {
-      Fruit: (product) => !product.isVegetable && !product.isOther && !product.isMeat,
-      Vegetable: (product) => product.isVegetable,
-      Meat: (product) => product.isMeat,
-      Other: (product) => product.isOther,
+        Fruit: (product) => !product.isVegetable && !product.isOther && !product.isMeat,
+        Vegetable: (product) => product.isVegetable,
+        Meat: (product) => product.isMeat,
+        Other: (product) => product.isOther,
     };
-  
+
     // Check if Organic is selected
     const isOrganicFilterActive = selectedFilters.Organic;
-  
-    // Filter products based on active filters
-    return groceryItems.filter((product) => {
-      const matchesCategory = activeFilters
-        .filter((filter) => filter !== "Organic") // Exclude Organic from categories
-        .some((filter) => filterMapping[filter](product));
-  
-      // If Organic is active, also check for organic condition
-      const matchesOrganic = isOrganicFilterActive ? product.isOrganic : true;
-  
-      return matchesCategory && matchesOrganic;
+
+    // Filter products based on active filters and search
+    return searchedItems.filter((product) => {
+        const matchesCategory = activeFilters
+            .filter((filter) => filter !== "Organic") // Exclude Organic from categories
+            .some((filter) => filterMapping[filter](product));
+
+        // If Organic is active, also check for organic condition
+        const matchesOrganic = isOrganicFilterActive ? product.isOrganic : true;
+
+        return matchesCategory && matchesOrganic;
     });
-  };
+};
+
   
 
   const incrementQuantity = (productId) => {

@@ -7,9 +7,11 @@ import { FaSearch } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 
 export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }) {
-    const [searchTerm, setSearchTerm] = useState(""); // Store the search input
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isSearched, setIsSearched] = useState(false); // Track if a search has been executed
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [userData, setUserData] = useState({ username: "", isAdmin: false }); // Persisted user data
+    
 
     useEffect(() => {
         // Check if user is logged in or restore from localStorage
@@ -21,6 +23,16 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
             localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser)); // Persist in localStorage
         }
     }, [loggedInUser]); // Refresh when loggedInUser changes
+
+    useEffect(() => {
+        // Check if the URL contains a search query on component mount
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get("search");
+        if (searchQuery) {
+            setSearchTerm(searchQuery); // Populate the search term from the URL
+            setIsSearched(true); // Show reset button
+        }
+    }, []);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -35,8 +47,18 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            window.location.href = `/grocery-page?search=${encodeURIComponent(searchTerm)}`;
+            console.log("Search submitted:", searchTerm); // Debug log
+            // Redirect to the grocery page with the search term as a query parameter
+            window.location.href = `/grocery-page?search=${encodeURIComponent(searchTerm.trim())}`;
+            setIsSearched(true); // Mark as searched
         }
+    };
+
+    const handleReset = () => {
+        console.log("Reset clicked"); // Debug log
+        setSearchTerm(""); // Clear the search term
+        setIsSearched(false); // Reset the search state
+        window.location.href = "/grocery-page"; // Redirect to the grocery page without query params
     };
 
     return (
@@ -49,18 +71,33 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                 </a>
             </div>
 
-            {/* Search Bar */}
-            <form className={styles["search"]} onSubmit={handleSearchSubmit}>
-                <input
-                    className={styles["field"]}
-                    placeholder="Search FreshBite"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
+            <form
+            className={styles["search"]}
+            onSubmit={handleSearchSubmit}
+        >
+            <input
+                className={styles["field"]}
+                placeholder="Search FreshBite"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {isSearched ? (
+                // Show Reset button only after a search has been executed
+                <button
+                    type="button"
+                    className={styles["reset-button"]}
+                    onClick={handleReset}
+                >
+                    X
+                </button>
+            ) : (
+                // Show Search button when no search has been executed
                 <button type="submit">
                     <FaSearch className={styles["search-icon"]} />
                 </button>
-            </form>
+            )}
+        </form>
+
 
             {/* Menu */}
             <div className={styles["menu"]}>
@@ -99,7 +136,9 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                                         className={styles["dropdown-item"]}
                                     >
                                         Log Off
+                                       
                                     </button>
+                                  
                                 </div>
                             )}
                         </div>

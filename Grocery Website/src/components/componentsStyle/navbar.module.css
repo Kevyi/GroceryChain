@@ -201,3 +201,20 @@ button {
 .dropdown-item:hover {
   background-color: #f5f5f5;
 }
+
+.reset-button {
+  border: none;
+  background: transparent;
+  color: #ff0000 !important; /* Default bright red */
+  font-size: 28px !important;
+  font-weight: 500; /* Slightly bold for better visibility */
+  cursor: pointer;
+  padding: 0.0005rem;
+  margin-left:  -40px !important; /* Adjusted to move the button slightly left */
+  transition: color 0.2s ease-in-out; /* Smooth color transition on hover */
+}
+
+.reset-button:hover {
+  color: #640b0b !important; /* Slightly darker red for hover */
+}
+
