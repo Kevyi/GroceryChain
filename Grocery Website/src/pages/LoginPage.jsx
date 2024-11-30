@@ -9,6 +9,7 @@ export default function LoginRegister({ setLoggedInUser }) {
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
+    isAdmin: false, // Track if the user is logging in as admin
   });
 
   const [registerData, setRegisterData] = useState({
@@ -17,6 +18,7 @@ export default function LoginRegister({ setLoggedInUser }) {
     password: "",
     date_of_birth: "",
     country: "",
+    isAdmin: false, // Track if the user is registering as admin
   });
 
   const [loginMessage, setLoginMessage] = useState({ type: "", text: "" });
@@ -50,9 +52,15 @@ export default function LoginRegister({ setLoggedInUser }) {
       const result = await response.json();
       if (result.status === "success") {
         setLoginMessage({ type: "success", text: "Login successful!" });
-        setLoggedInUser(loginData.username); // Update shared logged-in user state
-        localStorage.setItem("loggedInUser", loginData.username); // Save in localStorage
-        navigate("/"); // Redirect to home
+        setLoggedInUser({
+          username: loginData.username,
+          isAdmin: result.isAdmin, // Store if user is admin
+        }); // Update shared logged-in user state
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify({ username: loginData.username, isAdmin: result.isAdmin })
+        ); // Save in localStorage
+        navigate(result.isAdmin ? "/home" : "/"); // Navigate based on user type
       } else {
         setLoginMessage({ type: "error", text: result.message || "Login failed." });
       }
@@ -83,6 +91,7 @@ export default function LoginRegister({ setLoggedInUser }) {
           password: "",
           date_of_birth: "",
           country: "",
+          isAdmin: false, // Reset admin field
         }); // Clear input fields
         setTimeout(() => {
           setIsRegisterOpen(false); // Switch to login form after delay
@@ -100,14 +109,14 @@ export default function LoginRegister({ setLoggedInUser }) {
   useEffect(() => {
     const savedUser = localStorage.getItem("loggedInUser");
     if (savedUser) {
-      setLoggedInUser(savedUser); // Load user on page refresh
+      setLoggedInUser(JSON.parse(savedUser)); // Load user on page refresh
     }
   }, [setLoggedInUser]);
 
   return (
     <div className={styles.main}>
       <h1 className={styles.welcomeMessage}>Welcome to GoodEats</h1>
-  
+
       {!isRegisterOpen ? (
         <div className={styles.modalContent}>
           <h2 className={styles.centerRegistration}>Login</h2>
@@ -256,5 +265,5 @@ export default function LoginRegister({ setLoggedInUser }) {
         </div>
       )}
     </div>
-  );  
+  );
 }

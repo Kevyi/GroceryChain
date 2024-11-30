@@ -52,7 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $data) {
         // Compare passwords directly (no hashing)
         if ($password === $dbPassword) {
             $message = $isAdmin ? "Admin login successful" : "User login successful";
-            echo json_encode(["status" => "success", "message" => $message]);
+            echo json_encode([
+                "status" => "success",
+                "message" => $message,
+                "isAdmin" => $isAdmin // Send isAdmin to frontend
+            ]);
         } else {
             echo json_encode(["status" => "fail", "message" => "Incorrect password."]);
         }
