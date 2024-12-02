@@ -218,3 +218,48 @@ button {
   color: #640b0b !important; /* Slightly darker red for hover */
 }
 
+.countdown-container {
+  font-size: 0.9rem;
+  color: #ff4d4d; /* A soft red to indicate urgency */
+  margin-left: 10px;
+  font-weight: bold;
+  background-color: #fff5f5; /* Light red background to make it stand out */
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ffcccc; /* Subtle border for better visibility */
+  display: inline-block;
+  text-align: center;
+}
+
+.countdown-container:hover {
+  background-color: #ffeaea; /* Slight hover effect */
+  color: #ff1a1a; /* Darker red for hover state */
+  cursor: default;
+}
+
+.logout-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #ffcccc;
+  color: #ff0000;
+  border: 1px solid #ff6666;
+  border-radius: 5px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 1rem;
+  font-weight: bold;
+  animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+}
+

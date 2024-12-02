@@ -88,7 +88,7 @@ function App() {
                         path="/login-page"
                         element={<LoginPage setLoggedInUser={handleLogin} />}
                     />
-                    <Route path="/register" element={<Register />} />
+                   <Route path="/register" element={<Register />} />
                     <Route path="/testing1" element={<TestingPage1 />} />
                 </Routes>
 

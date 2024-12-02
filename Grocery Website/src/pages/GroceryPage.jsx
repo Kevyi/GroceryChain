@@ -24,7 +24,7 @@ export default function GroceryPage({ updateCartCount }) {
   const location = useLocation(); // Use the location hook to access URL parameters
 
   useEffect(() => {
-    fetch("http://localhost/Storage.php", {
+    fetch("http://localhost:3000/storage", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -11,7 +11,10 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     const [isSearched, setIsSearched] = useState(false); // Track if a search has been executed
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [userData, setUserData] = useState({ username: "", isAdmin: false }); // Persisted user data
-    
+    const [countdown, setCountdown] = useState(600); // Inactivity timeout countdown in seconds
+    const [isActive, setIsActive] = useState(true); // Track user activity state
+    const [logoutMessage, setLogoutMessage] = useState(""); // Message for inactivity logout
+    const [isInactiveLogout, setIsInactiveLogout] = useState(false); // Track if logout is due to inactivity
 
     useEffect(() => {
         // Check if user is logged in or restore from localStorage
@@ -34,14 +37,59 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
         }
     }, []);
 
+    useEffect(() => {
+        // Reset countdown on user activity
+        const handleUserActivity = () => {
+            setCountdown(600); // Reset countdown to 60 seconds
+            setIsActive(true);
+        };
+
+        // Attach event listeners for user activity
+        window.addEventListener("mousemove", handleUserActivity);
+        window.addEventListener("keydown", handleUserActivity);
+
+        // Cleanup event listeners on unmount
+        return () => {
+            window.removeEventListener("mousemove", handleUserActivity);
+            window.removeEventListener("keydown", handleUserActivity);
+        };
+    }, []);
+
+    useEffect(() => {
+        let timer;
+        if (userData.username && isActive) {
+            // Start countdown if user is active and logged in
+            timer = setInterval(() => {
+                setCountdown((prev) => {
+                    if (prev === 1) {
+                        handleInactiveLogout(); // Log out due to inactivity
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+        return () => clearInterval(timer); // Cleanup timer on unmount
+    }, [userData.username, isActive]);
+
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleInactiveLogout = () => {
+        setIsInactiveLogout(true); // Mark as inactive logout
+        handleLogOffUser();
+        setLogoutMessage("You have been logged out due to being inactive."); // Set logout message
     };
 
     const handleLogOffUser = () => {
         handleLogOff(); // Call external log-off function
         setUserData({ username: "", isAdmin: false }); // Clear user data state
         localStorage.removeItem("loggedInUser"); // Clear localStorage
+        if (!isInactiveLogout) {
+            setLogoutMessage(""); // Clear logout message for manual logouts
+        }
     };
 
     const handleSearchSubmit = (e) => {
@@ -62,94 +110,100 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     };
 
     return (
-        <nav className={styles["navbar"]}>
-            {/* Logo and Brand Name */}
-            <div className={styles["logo-container"]}>
-                <a href="/home" className={styles["logo"]}>
-                    <GiForkKnifeSpoon />
-                    <span className={styles["brand-name"]}>FreshBite</span>
-                </a>
-            </div>
+        <>
+            <nav className={styles["navbar"]}>
+                {/* Logo and Brand Name */}
+                <div className={styles["logo-container"]}>
+                    <a href="/home" className={styles["logo"]}>
+                        <GiForkKnifeSpoon />
+                        <span className={styles["brand-name"]}>FreshBite</span>
+                    </a>
+                </div>
 
-            <form
-            className={styles["search"]}
-            onSubmit={handleSearchSubmit}
-        >
-            <input
-                className={styles["field"]}
-                placeholder="Search FreshBite"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {isSearched ? (
-                // Show Reset button only after a search has been executed
-                <button
-                    type="button"
-                    className={styles["reset-button"]}
-                    onClick={handleReset}
+                <form
+                    className={styles["search"]}
+                    onSubmit={handleSearchSubmit}
                 >
-                    X
-                </button>
-            ) : (
-                // Show Search button when no search has been executed
-                <button type="submit">
-                    <FaSearch className={styles["search-icon"]} />
-                </button>
-            )}
-        </form>
-
-
-            {/* Menu */}
-            <div className={styles["menu"]}>
-                <div className={styles["menu-links"]}>
-                    <a href="/grocery-page">
-                        <FaBars />
-                        <div>Shop</div>
-                    </a>
-
-                    <a
-                        href={userData.isAdmin ? "/admin-update" : "/shopping-cart"}
-                        className={styles["cart-icon-container"]}
-                    >
-                        <FaShoppingCart />
-                        {totalCartItems > 0 && (
-                            <div className={styles["cart-item-counter-badge"]}>
-                                {totalCartItems}
-                            </div>
-                        )}
-                        <div>{userData.isAdmin ? "Update Cart" : "Shopping Cart"}</div>
-                    </a>
-
-                    {userData.username ? (
-                        <div
-                            className={styles["user-dropdown"]}
-                            onMouseEnter={toggleDropdown}
-                            onMouseLeave={toggleDropdown}
+                    <input
+                        className={styles["field"]}
+                        placeholder="Search FreshBite"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    {isSearched ? (
+                        // Show Reset button only after a search has been executed
+                        <button
+                            type="button"
+                            className={styles["reset-button"]}
+                            onClick={handleReset}
                         >
-                            <span className={styles["username"]}>
-                                {userData.username} ({userData.isAdmin ? "Admin" : "Customer"})
-                            </span>
-                            {isDropdownOpen && (
-                                <div className={styles["dropdown-menu"]}>
-                                    <button
-                                        onClick={handleLogOffUser}
-                                        className={styles["dropdown-item"]}
-                                    >
-                                        Log Off
-                                       
-                                    </button>
-                                  
+                            X
+                        </button>
+                    ) : (
+                        // Show Search button when no search has been executed
+                        <button type="submit">
+                            <FaSearch className={styles["search-icon"]} />
+                        </button>
+                    )}
+                </form>
+
+                {/* Menu */}
+                <div className={styles["menu"]}>
+                    <div className={styles["menu-links"]}>
+                        <a href="/grocery-page">
+                            <FaBars />
+                            <div>Shop</div>
+                        </a>
+
+                        <a
+                            href={userData.isAdmin ? "/admin-update" : "/shopping-cart"}
+                            className={styles["cart-icon-container"]}
+                        >
+                            <FaShoppingCart />
+                            {totalCartItems > 0 && (
+                                <div className={styles["cart-item-counter-badge"]}>
+                                    {totalCartItems}
                                 </div>
                             )}
-                        </div>
-                    ) : (
-                        <a href="/login-page">
-                            <IoPerson />
-                            <div>Sign In / Register</div>
+                            <div>{userData.isAdmin ? "Update Cart" : "Shopping Cart"}</div>
                         </a>
-                    )}
+
+                        {userData.username ? (
+                            <div
+                                className={styles["user-dropdown"]}
+                                onMouseEnter={toggleDropdown}
+                                onMouseLeave={toggleDropdown}
+                            >
+                                <span className={styles["username"]}>
+                                    {userData.username} ({userData.isAdmin ? "Admin" : "Customer"})
+                                </span>
+                                {isDropdownOpen && (
+                                    <div className={styles["dropdown-menu"]}>
+                                        <button
+                                            onClick={handleLogOffUser}
+                                            className={styles["dropdown-item"]}
+                                        >
+                                            Log Off
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <a href="/login-page">
+                                <IoPerson />
+                                <div>Sign In / Register</div>
+                            </a>
+                        )}
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+
+            {/* Logout Message */}
+            {logoutMessage && (
+                <div className={styles["logout-message"]} onClick={() => setLogoutMessage("")}>
+                    <p>{logoutMessage}</p>
+                </div>
+            )}
+        </>
     );
 }

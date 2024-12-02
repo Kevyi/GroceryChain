@@ -3,14 +3,17 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../styles/shoppingCart.module.css";
 import Cart from "./Cart";
 import PaymentModal from "./Modal";
-import SuccessModal from "./SuccesModal"; // Import the success modal
+import SuccessModal from "./SuccesModal";
+import ReceiptModal from "./ReceiptModal";
 
 export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
     const [cartItems, setCartItems] = useState([]);
     const [purchaseStatus, setPurchaseStatus] = useState(null);
     const [showLoginMessage, setShowLoginMessage] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // State for success modal
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+    const [receiptDetails, setReceiptDetails] = useState(null); // Receipt details state
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,7 +30,7 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
     const saveCartItems = (items) => {
         setCartItems(items);
         localStorage.setItem("cartItems", JSON.stringify(items));
-        updateCartCount(items.length); // Update the navbar count
+        updateCartCount(items.length);
         updateCartSummary(items);
     };
 
@@ -68,19 +71,17 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
             setPurchaseStatus("Error: Please log in to proceed with the payment.");
             return false;
         }
-    
+
         if (cartItems.length === 0) {
             setPurchaseStatus("Error: Your cart is empty.");
             return false;
         }
-    
+
         try {
-            // Step 1: Validate Credit Card with `CreditCard.php`
-            const creditCardResponse = await fetch("http://localhost/CreditCard.php", {
+            // Step 1: Validate Credit Card
+            const creditCardResponse = await fetch("http://localhost:3000/creditcard", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     full_name: paymentDetails.name,
                     address: paymentDetails.address,
@@ -94,24 +95,22 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                     cvv: paymentDetails.cvv,
                 }),
             });
-    
+
             const creditCardData = await creditCardResponse.json();
             if (creditCardData.status !== "success") {
                 setPurchaseStatus(`Error: ${creditCardData.message}`);
                 return false;
             }
-    
-            // Step 2: Process Purchase with `Purchase.php`
+
+            // Step 2: Process Purchase
             const cartData = cartItems.map((item) => ({
                 id: item.id,
                 quantity: item.quantity,
             }));
-    
-            const purchaseResponse = await fetch("http://localhost/Purchase.php", {
+
+            const purchaseResponse = await fetch("http://localhost:3000/purchase", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     cartItems: cartData,
                     paymentDetails: {
@@ -128,15 +127,22 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                     },
                 }),
             });
-    
+
             const purchaseData = await purchaseResponse.json();
             if (purchaseData.status === "success") {
                 setPurchaseStatus("Purchase successful! 🎉");
+                setReceiptDetails({
+                    items: cartItems,
+                    totalWeight,
+                    totalPrice,
+                    shippingFee,
+                    finalPrice,
+                });
                 localStorage.removeItem("cartItems");
                 setCartItems([]);
-                updateCartCount(0); // Update cart count to zero
-                setIsModalOpen(false); // Close the payment modal
-                setIsSuccessModalOpen(true); // Open the success modal
+                updateCartCount(0);
+                setIsModalOpen(false);
+                setIsSuccessModalOpen(true);
                 return true;
             } else {
                 setPurchaseStatus(`Error: ${purchaseData.message}`);
@@ -148,8 +154,6 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
         }
     };
 
-    
-
     return (
         <div className={styles.cartContainer}>
             <div className={styles.cartItemsContainer}>
@@ -160,33 +164,22 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                             <div key={item.id} className={styles.cartItem}>
                                 <div className={styles.itemLeft}>
                                     <div className={styles.imageContainer}>
-                                        <img
-                                            src={item.image}
-                                            alt={item.title}
-                                            className={styles.itemImage}
-                                        />
+                                        <img src={item.image} alt={item.title} className={styles.itemImage} />
                                     </div>
                                     <div className={styles.itemDetails}>
                                         <h3 className={styles.itemName}>{item.title}</h3>
                                         <div className={styles.quantityControl}>
                                             <button
                                                 onClick={() =>
-                                                    handleQuantityChange(
-                                                        item.id,
-                                                        Math.max(1, item.quantity - 1)
-                                                    )
+                                                    handleQuantityChange(item.id, Math.max(1, item.quantity - 1))
                                                 }
                                                 className={styles.quantityButton}
                                             >
                                                 -
                                             </button>
-                                            <span className={styles.quantityDisplay}>
-                                                {item.quantity}
-                                            </span>
+                                            <span className={styles.quantityDisplay}>{item.quantity}</span>
                                             <button
-                                                onClick={() =>
-                                                    handleQuantityChange(item.id, item.quantity + 1)
-                                                }
+                                                onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                                                 className={styles.quantityButton}
                                             >
                                                 +
@@ -195,23 +188,16 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                                     </div>
                                 </div>
                                 <div className={styles.itemRight}>
-                                    <p className={styles.itemBasePrice}>
-                                        Base Price: ${item.price.toFixed(2)}
-                                    </p>
+                                    <p className={styles.itemBasePrice}>Base Price: ${item.price.toFixed(2)}</p>
                                     <p className={styles.itemTotalPrice}>
                                         Total Price: ${(item.price * item.quantity).toFixed(2)}
                                     </p>
-                                    <p className={styles.itemBaseWeight}>
-                                        Base Weight: {item.weight} lbs
-                                    </p>
+                                    <p className={styles.itemBaseWeight}>Base Weight: {item.weight} lbs</p>
                                     <p className={styles.itemTotalWeight}>
                                         Total Weight: {(item.weight * item.quantity).toFixed(2)} lbs
                                     </p>
                                 </div>
-                                <button
-                                    onClick={() => handleRemoveItem(item.id)}
-                                    className={styles.removeButton}
-                                >
+                                <button onClick={() => handleRemoveItem(item.id)} className={styles.removeButton}>
                                     Remove
                                 </button>
                             </div>
@@ -219,11 +205,7 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                     </div>
                 ) : (
                     <div className={styles.emptyCartContainer}>
-                        <img
-                            src={Cart[0].image}
-                            alt="Empty Cart"
-                            className={styles.emptyCartImage}
-                        />
+                        <img src={Cart[0].image} alt="Empty Cart" className={styles.emptyCartImage} />
                         <p className={styles.emptyCartMessage}>Your cart is empty</p>
                         <p className={styles.sadMessage}>Add something to make me happy!!!</p>
                         <button
@@ -238,9 +220,7 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
             {cartItems.length > 0 && (
                 <div className={styles.cartSummaryContainer}>
                     <h3>Cart Summary</h3>
-                    <p className={styles.shippingNote}>
-                        * Orders over 20 lbs incur a $5 shipping fee.
-                    </p>
+                    <p className={styles.shippingNote}>* Orders over 20 lbs incur a $5 shipping fee.</p>
                     <p>Total Items: {totalQuantity}</p>
                     <p>Total Weight: {totalWeight.toFixed(2)} lbs</p>
                     <p>Total Price: ${totalPrice.toFixed(2)}</p>
@@ -267,7 +247,6 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                             }}
                         >
                             Pay NOW!
-                            
                         </button>
                         <span className={styles.orText}>OR</span>
                         <button
@@ -287,6 +266,13 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
             <SuccessModal
                 isOpen={isSuccessModalOpen}
                 onClose={() => setIsSuccessModalOpen(false)}
+                onShowReceipt={() => setIsReceiptModalOpen(true)} // Pass function to open receipt
+                receiptDetails={receiptDetails} // Pass receipt details to SuccessModal
+            />
+            <ReceiptModal
+                isOpen={isReceiptModalOpen}
+                onClose={() => setIsReceiptModalOpen(false)}
+                receiptDetails={receiptDetails}
             />
         </div>
     );

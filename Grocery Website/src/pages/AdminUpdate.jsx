@@ -20,7 +20,7 @@ export default function AdminUpdate() {
   useEffect(() => {
     // Function to fetch the backend data
     const fetchStockData = () => {
-      fetch("http://localhost/Storage.php", {
+      fetch("http://localhost:3000/storage", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +171,7 @@ export default function AdminUpdate() {
     }
   
     try {
-      const response = await fetch("http://localhost/Storage.php", {
+      const response = await fetch("http://localhost:3000/storage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

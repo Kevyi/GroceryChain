@@ -41,7 +41,7 @@ export default function LoginRegister({ setLoggedInUser }) {
     e.preventDefault();
     clearMessages(); // Clear previous messages
     try {
-      const response = await fetch("http://localhost/Login.php", {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export default function LoginRegister({ setLoggedInUser }) {
     e.preventDefault();
     clearMessages(); // Clear previous messages
     try {
-      const response = await fetch("http://localhost/Register.php", {
+      const response = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

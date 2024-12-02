@@ -453,7 +453,7 @@ export default function Description({
         // Fetch dynamic availability based on productId
         const fetchAvailability = async () => {
             try {
-                const response = await fetch("http://localhost/Storage.php", {
+                const response = await fetch("http://localhost:3000/storage", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

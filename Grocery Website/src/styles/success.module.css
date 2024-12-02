@@ -88,3 +88,57 @@
         transform: scale(1);
     }
 }
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.continueShoppingButton {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.continueShoppingButton:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.viewReceiptButton {
+    background-color: #17a2b8;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewReceiptButton:hover {
+    background-color: #138496;
+    transform: scale(1.05);
+}
+
+.viewReceiptButton:focus,
+.continueShoppingButton:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
