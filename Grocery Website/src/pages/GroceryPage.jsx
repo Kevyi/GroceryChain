@@ -321,56 +321,103 @@ export default function GroceryPage({ updateCartCount }) {
                 </div>
 
                 <div className={styles["product-grid"]}>
-                    {sortProducts(filterProducts()).map((product) => (
-                        <div key={product.id} className={styles["product-card"]}>
-                            <div className={styles["image-container"]}>
-                                {product.isOrganic && (
-                                    <img
-                                        src={indicator[0].image}
-                                        alt="Organic Symbol"
-                                        className={styles["organic-symbol"]}
-                                    />
-                                )}
-                                {product.isVegetable && (
-                                    <img
-                                        src={indicator[1].image}
-                                        alt="Vegetable Symbol"
-                                        className={product.isOrganic ? styles["vegetable-symbol-below"] : styles["organic-symbol"]}
-                                    />
-                                )}
-                                <img
-                                    src={product.image}
-                                    alt={product.title}
-                                    className={styles["product-image"]}
-                                    onClick={() => openModal(product.id)}
-                                />
-                            </div>
-                            <h3 className={styles["product-title"]}>{product.title}</h3>
-                            <p className={styles["product-price"]}>Price: ${product.price.toFixed(2)}</p>
-                            <p className={styles["product-weight"]}>Weight: {product.weight} lb</p>
-                            
+            {sortProducts(filterProducts()).map((product) => (
+                <div
+                    key={product.id}
+                    className={`${styles["product-card"]} ${
+                        product.count === 0 ? styles["out-of-stock"] : ""
+                    }`}
+                    onClick={() => openModal(product.id)} // Allow modal to open regardless of product availability
+                >
+                    <div className={styles["image-container"]}>
+                        {product.isOrganic && (
+                            <img
+                                src={indicator[0].image}
+                                alt="Organic Symbol"
+                                className={styles["organic-symbol"]}
+                            />
+                        )}
+                        {product.isVegetable && (
+                            <img
+                                src={indicator[1].image}
+                                alt="Vegetable Symbol"
+                                className={
+                                    product.isOrganic
+                                        ? styles["vegetable-symbol-below"]
+                                        : styles["organic-symbol"]
+                                }
+                            />
+                        )}
+                        <img
+                            src={product.image}
+                            alt={product.title}
+                            className={styles["product-image"]}
+                        />
+                    </div>
+                    <h3 className={styles["product-title"]}>{product.title}</h3>
+                    <p className={styles["product-price"]}>
+                        Price: ${product.price.toFixed(2)}
+                    </p>
+                    <p className={styles["product-weight"]}>
+                        Weight: {product.weight} lb
+                    </p>
 
+                    {product.count === 0 ? ( // If product count is 0, show "Out of Stock"
+                        <p className={styles["out-of-stock-message"]}>Out of Stock</p>
+                    ) : (
+                        <>
                             <div className={styles["quantity-selector"]}>
-                                <button onClick={() => decrementQuantity(product.id)} className={styles["quantity-button"]}>-</button>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent triggering modal on button click
+                                        decrementQuantity(product.id);
+                                    }}
+                                    className={styles["quantity-button"]}
+                                >
+                                    -
+                                </button>
                                 <input
                                     type="number"
                                     min="1"
                                     value={quantities[product.id] || 1}
-                                    onChange={(e) => setQuantities({
-                                        ...quantities,
-                                        [product.id]: Math.max(1, parseInt(e.target.value) || 1)
-                                    })}
+                                    onClick={(e) => e.stopPropagation()} // Prevent triggering modal on input click
+                                    onChange={(e) =>
+                                        setQuantities({
+                                            ...quantities,
+                                            [product.id]: Math.max(
+                                                1,
+                                                parseInt(e.target.value) || 1
+                                            ),
+                                        })
+                                    }
                                     className={styles["quantity-input"]}
                                 />
-                                <button onClick={() => incrementQuantity(product.id)} className={styles["quantity-button"]}>+</button>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent triggering modal on button click
+                                        incrementQuantity(product.id);
+                                    }}
+                                    className={styles["quantity-button"]}
+                                >
+                                    +
+                                </button>
                             </div>
 
-                            <button onClick={() => handleAddToCart(product)} className={styles["add-to-cart-button"]}>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent triggering modal on button click
+                                    handleAddToCart(product);
+                                }}
+                                className={styles["add-to-cart-button"]}
+                            >
                                 Add to Cart
                             </button>
-                        </div>
-                    ))}
+                        </>
+                    )}
                 </div>
+            ))}
+        </div>
+
             </div>
 
             {selectedProductId && (
