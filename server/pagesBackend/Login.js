@@ -15,68 +15,76 @@ const dbConfig = {
 };
 const pool = mysql.createPool(dbConfig);
 
-router.get("/login", (req, res) => {
-  console.log("GET /login - Login route is active");
-  res.send("Login route is active. Use POST to submit login details.");
-});
-
 // Login route
-router.post("/login", (req, res) => {
-  const { username, password, isAdmin } = req.body;
-
-  console.log("POST /login called");
-  console.log("Request Body:", req.body);
+router.post("/login", async (req, res) => {
+  const { username, password, isAdmin } = req.body; // Include `isAdmin` flag from the frontend
 
   if (!username || !password) {
-    console.log("Validation Error: Missing username or password");
     return res
       .status(400)
-      .json({ status: "fail", message: "Username and password are required." });
+      .json({ status: "error", message: "Username and password are required." });
   }
 
-  const table = isAdmin ? "adminaccount" : "loginregister";
-  console.log("Determined Table:", table);
+  try {
+    if (isAdmin) {
+      // Check if the user is an admin
+      const [adminResults] = await pool.promise().query(
+        `SELECT * FROM adminaccount WHERE username = ? AND password = ?`,
+        [username, password]
+      );
 
-  const query = `SELECT password FROM ${table} WHERE username = ?`;
-  console.log("Constructed Query:", query);
+      if (adminResults.length > 0) {
+        const admin = adminResults[0];
 
-  pool.execute(query, [username], (err, results) => {
-    if (err) {
-      console.error("SQL Error:", err.message);
-      return res
-        .status(500)
-        .json({ status: "error", message: `SQL error: ${err.message}` });
-    }
+        // Check approval status
+        if (admin.isApproved === 0) {
+          return res.status(403).json({
+            status: "error",
+            message: "Your admin account is not approved yet. Please wait for approval.",
+          });
+        }
 
-    console.log("Query Results:", results);
-
-    if (results.length > 0) {
-      const dbPassword = results[0].password;
-      console.log("Database Password:", dbPassword);
-      console.log("Provided Password:", password);
-
-      if (password === dbPassword) {
-        // Determine role and respond accordingly
-        return res.json({
+        // Admin login success
+        return res.status(200).json({
           status: "success",
-          message: isAdmin
-            ? "Admin login successful"
-            : "Customer login successful",
-          isAdmin, // Pass admin status to frontend
+          message: "Admin login successful.",
+          isAdmin: true,
+          username: admin.username,
         });
-      } else {
-        console.log("Password Mismatch: Login failed");
-        return res
-          .status(401)
-          .json({ status: "fail", message: "Incorrect password." });
       }
+
+      // If no admin match is found
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid admin username or password." });
     } else {
-      const message = isAdmin ? "Admin not found." : "User not found.";
-      console.log("User Not Found:", message);
-      return res.status(404).json({ status: "fail", message });
+      // Check if the user is a regular user
+      const [userResults] = await pool.promise().query(
+        `SELECT * FROM loginregister WHERE username = ? AND password = ?`,
+        [username, password]
+      );
+
+      if (userResults.length > 0) {
+        const user = userResults[0];
+        return res.status(200).json({
+          status: "success",
+          message: "Login successful.",
+          isAdmin: false,
+          username: user.username,
+        });
+      }
+
+      // If no regular user match is found
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid username or password." });
     }
-  });
+  } catch (error) {
+    console.error("Error during login:", error.message);
+    return res.status(500).json({ status: "error", message: "Database error." });
+  }
 });
+
 
 // Admin: Update cart endpoint
 router.post("/admin/cart", (req, res) => {

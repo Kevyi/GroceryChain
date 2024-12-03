@@ -40,6 +40,7 @@ export default function LoginRegister({ setLoggedInUser }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     clearMessages(); // Clear previous messages
+  
     try {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
@@ -48,21 +49,22 @@ export default function LoginRegister({ setLoggedInUser }) {
         },
         body: JSON.stringify(loginData),
       });
-
+  
       const result = await response.json();
+  
       if (result.status === "success") {
         setLoginMessage({ type: "success", text: "Login successful!" });
         setLoggedInUser({
           username: loginData.username,
           isAdmin: result.isAdmin, // Store if user is admin
-        }); // Update shared logged-in user state
+        });
         localStorage.setItem(
           "loggedInUser",
           JSON.stringify({ username: loginData.username, isAdmin: result.isAdmin })
-        ); // Save in localStorage
-        navigate(result.isAdmin ? "/home" : "/"); // Navigate based on user type
+        );
+        navigate(result.isAdmin ? "/home" : "/");
       } else {
-        setLoginMessage({ type: "error", text: result.message || "Login failed." });
+        setLoginMessage({ type: "error", text: result.message });
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -74,37 +76,60 @@ export default function LoginRegister({ setLoggedInUser }) {
     e.preventDefault();
     clearMessages(); // Clear previous messages
     try {
-      const response = await fetch("http://localhost:3000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(registerData),
-      });
+        const response = await fetch("http://localhost:3000/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(registerData),
+        });
 
-      const result = await response.json();
-      if (result.status === "success") {
-        setRegisterMessage({ type: "success", text: "Registration successful! You can now log in." });
-        setRegisterData({
-          username: "",
-          email: "",
-          password: "",
-          date_of_birth: "",
-          country: "",
-          isAdmin: false, // Reset admin field
-        }); // Clear input fields
-        setTimeout(() => {
-          setIsRegisterOpen(false); // Switch to login form after delay
-          clearMessages(); // Clear success message after switching
-        }, 2000);
-      } else {
-        setRegisterMessage({ type: "error", text: result.message || "Registration failed." });
-      }
+        const result = await response.json();
+
+        if (result.status === "pending") {
+            // Handle pending admin registration case
+            setRegisterMessage({
+                type: "info",
+                text: "Your admin request is pending approval. Please wait for an administrator to approve your account.",
+            });
+            setRegisterData({
+                username: "",
+                email: "",
+                password: "",
+                date_of_birth: "",
+                country: "",
+                isAdmin: false, // Reset admin field
+            }); // Clear input fields
+        } else if (result.status === "success") {
+            // Handle successful user registration
+            setRegisterMessage({
+                type: "success",
+                text: "Registration successful! You can now log in.",
+            });
+            setRegisterData({
+                username: "",
+                email: "",
+                password: "",
+                date_of_birth: "",
+                country: "",
+                isAdmin: false, // Reset admin field
+            }); // Clear input fields
+            setTimeout(() => {
+                setIsRegisterOpen(false); // Switch to login form after delay
+                clearMessages(); // Clear success message after switching
+            }, 2000);
+        } else {
+            // Handle registration failure
+            setRegisterMessage({
+                type: "error",
+                text: result.message || "Registration failed.",
+            });
+        }
     } catch (error) {
-      console.error("Error during registration:", error);
-      setRegisterMessage({ type: "error", text: "An error occurred. Please try again." });
+        console.error("Error during registration:", error);
+        setRegisterMessage({ type: "error", text: "An error occurred. Please try again." });
     }
-  };
+};
 
   useEffect(() => {
     const savedUser = localStorage.getItem("loggedInUser");

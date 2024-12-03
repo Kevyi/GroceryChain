@@ -6,6 +6,7 @@ import { FaBars } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import HistoryModal from "../pages/HistoryModal";
+import AdminApprovalModal from "../pages/AdminApprovalModal"; // Import AdminApprovalModal
 
 export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -17,36 +18,37 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     const [logoutMessage, setLogoutMessage] = useState(""); // Message for inactivity logout
     const [isInactiveLogout, setIsInactiveLogout] = useState(false); // Track if logout is due to inactivity
     const [ShowHistoryModal, setShowHistoryModal] = useState(false);
+    const [ShowAdminApprovalModal, setShowAdminApprovalModal] = useState(false); // State for Admin Approval Modal
+    const [adminRequests, setAdminRequests] = useState([]); // Store pending admin requests
 
     useEffect(() => {
-        // Check if user is logged in or restore from localStorage
+        // Restore user data from localStorage or update with loggedInUser prop
         const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
         if (storedUser) {
-            setUserData(storedUser); // Restore user data from localStorage
+            setUserData(storedUser);
         } else if (loggedInUser) {
-            setUserData(loggedInUser); // Update with loggedInUser if provided
-            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser)); // Persist in localStorage
+            setUserData(loggedInUser);
+            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
         }
-    }, [loggedInUser]); // Refresh when loggedInUser changes
+    }, [loggedInUser]);
 
     useEffect(() => {
-        // Check if the URL contains a search query on component mount
+        // Check if a search query exists in the URL
         const urlParams = new URLSearchParams(window.location.search);
         const searchQuery = urlParams.get("search");
         if (searchQuery) {
-            setSearchTerm(searchQuery); // Populate the search term from the URL
-            setIsSearched(true); // Show reset button
+            setSearchTerm(searchQuery);
+            setIsSearched(true);
         }
     }, []);
 
     useEffect(() => {
         let timer;
         if (userData.username && isActive) {
-            // Start countdown if user is active and logged in
             timer = setInterval(() => {
                 setCountdown((prev) => {
                     if (prev === 1) {
-                        handleInactiveLogout(); // Log out due to inactivity
+                        handleInactiveLogout();
                         clearInterval(timer);
                         return 0;
                     }
@@ -54,43 +56,78 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                 });
             }, 1000);
         }
-        return () => clearInterval(timer); // Cleanup timer on unmount
+        return () => clearInterval(timer);
     }, [userData.username, isActive]);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
+    // Fetch admin requests for the Admin Approval Modal
+    useEffect(() => {
+        if (ShowAdminApprovalModal && userData.isAdmin) {
+            fetch("http://localhost:3000/pending-admins") // Fetch pending admin requests
+                .then((response) => response.json())
+                .then((data) => setAdminRequests(data.data || []))
+                .catch((error) => console.error("Error fetching admin requests:", error));
+        }
+    }, [ShowAdminApprovalModal, userData.isAdmin]);
+
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
     const handleInactiveLogout = () => {
-        setIsInactiveLogout(true); // Mark as inactive logout
+        setIsInactiveLogout(true);
         handleLogOffUser();
-        setLogoutMessage("You have been logged out due to being inactive."); // Set logout message
+        setLogoutMessage("You have been logged out due to inactivity.");
     };
 
     const handleLogOffUser = () => {
-        handleLogOff(); // Call external log-off function
-        setUserData({ username: "", isAdmin: false }); // Clear user data state
-        localStorage.removeItem("loggedInUser"); // Clear localStorage
-        if (!isInactiveLogout) {
-            setLogoutMessage(""); // Clear logout message for manual logouts
-        }
+        handleLogOff();
+        setUserData({ username: "", isAdmin: false });
+        localStorage.removeItem("loggedInUser");
+        if (!isInactiveLogout) setLogoutMessage("");
     };
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            console.log("Search submitted:", searchTerm); // Debug log
-            // Redirect to the grocery page with the search term as a query parameter
             window.location.href = `/grocery-page?search=${encodeURIComponent(searchTerm.trim())}`;
-            setIsSearched(true); // Mark as searched
+            setIsSearched(true);
         }
     };
 
     const handleReset = () => {
-        console.log("Reset clicked"); // Debug log
-        setSearchTerm(""); // Clear the search term
-        setIsSearched(false); // Reset the search state
-        window.location.href = "/grocery-page"; // Redirect to the grocery page without query params
+        setSearchTerm("");
+        setIsSearched(false);
+        window.location.href = "/grocery-page";
+    };
+
+    const handleApproveRequest = (adminId) => {
+        fetch("http://localhost:3000/approve-admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adminId, action: "approve" }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === "success") {
+                    setAdminRequests((prev) => prev.filter((admin) => admin.id !== adminId));
+                    alert(data.message);
+                }
+            })
+            .catch((error) => console.error("Error approving admin:", error));
+    };
+
+    const handleRejectRequest = (adminId) => {
+        fetch("http://localhost:3000/approve-admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adminId, action: "reject" }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === "success") {
+                    setAdminRequests((prev) => prev.filter((admin) => admin.id !== adminId));
+                    alert(data.message);
+                }
+            })
+            .catch((error) => console.error("Error rejecting admin:", error));
     };
 
     return (
@@ -104,10 +141,8 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                     </a>
                 </div>
 
-                <form
-                    className={styles["search"]}
-                    onSubmit={handleSearchSubmit}
-                >
+                {/* Search Bar */}
+                <form className={styles["search"]} onSubmit={handleSearchSubmit}>
                     <input
                         className={styles["field"]}
                         placeholder="Search FreshBite"
@@ -115,16 +150,10 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     {isSearched ? (
-                        // Show Reset button only after a search has been executed
-                        <button
-                            type="button"
-                            className={styles["reset-button"]}
-                            onClick={handleReset}
-                        >
+                        <button type="button" className={styles["reset-button"]} onClick={handleReset}>
                             X
                         </button>
                     ) : (
-                        // Show Search button when no search has been executed
                         <button type="submit">
                             <FaSearch className={styles["search-icon"]} />
                         </button>
@@ -161,15 +190,30 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                                 <span className={styles["username"]}>
                                     {userData.username} ({userData.isAdmin ? "Admin" : "Customer"})
                                 </span>
+
                                 {isDropdownOpen && (
                                     <div className={styles["dropdown-menu"]}>
-                                        {/* View Purchase History Option */}
-                                        <button
-                                            onClick={() => setShowHistoryModal(true)} // Open the History Modal
-                                            className={styles["dropdown-item"]}
-                                        >
-                                            View Purchase History
-                                        </button>
+                                        {userData.isAdmin ? (
+                                            <>
+                                                {/* Admin Requests Option */}
+                                                <button
+                                                    onClick={() => setShowAdminApprovalModal(true)} // Open Admin Approval Modal
+                                                    className={styles["dropdown-item"]}
+                                                >
+                                                    Admin Accounts Approvals
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                {/* View Purchase History Option */}
+                                                <button
+                                                    onClick={() => setShowHistoryModal(true)} // Open History Modal
+                                                    className={styles["dropdown-item"]}
+                                                >
+                                                    View Purchase History
+                                                </button>
+                                            </>
+                                        )}
 
                                         {/* Log Off Option */}
                                         <button
@@ -203,12 +247,23 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                     isOpen={ShowHistoryModal}
                     historyDetails={{
                         history: JSON.parse(localStorage.getItem(userData.username)) || [],
-                        totalWeight: 0, // Calculate dynamically if needed
-                        totalPrice: 0, // Calculate dynamically if needed
-                        shippingFee: 0, // Adjust based on logic
-                        finalPrice: 0, // Adjust based on logic
+                        totalWeight: 0,
+                        totalPrice: 0,
+                        shippingFee: 0,
+                        finalPrice: 0,
                     }}
                     onClose={() => setShowHistoryModal(false)}
+                />
+            )}
+
+            {/* Admin Approval Modal */}
+            {ShowAdminApprovalModal && (
+                <AdminApprovalModal
+                    isOpen={ShowAdminApprovalModal}
+                    adminRequests={adminRequests}
+                    onApprove={handleApproveRequest}
+                    onReject={handleRejectRequest}
+                    onClose={() => setShowAdminApprovalModal(false)}
                 />
             )}
         </>
