@@ -163,10 +163,17 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                 {/* Menu */}
                 <div className={styles["menu"]}>
                     <div className={styles["menu-links"]}>
-                        <a href="/grocery-page">
-                            <FaBars />
-                            <div>Shop</div>
-                        </a>
+                    {userData.isAdmin ? (
+                            <a href="/dashboard">
+                                <FaBars />
+                                <div>Dashboard</div>
+                            </a>
+                        ) : (
+                            <a href="/grocery-page">
+                                <FaBars />
+                                <div>Shop</div>
+                            </a>
+                        )}
 
                         <a
                             href={userData.isAdmin ? "/admin-update" : "/shopping-cart"}

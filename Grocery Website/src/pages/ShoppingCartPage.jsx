@@ -149,6 +149,16 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                 const updatedHistory = [...existingHistory, newPurchase];
                 localStorage.setItem(userHistoryKey, JSON.stringify(updatedHistory));
     
+                // Update popular items tracker
+                const popularItemsKey = "popularItems";
+                const existingPopularItems = JSON.parse(localStorage.getItem(popularItemsKey)) || {};
+    
+                cartData.forEach((item) => {
+                    existingPopularItems[item.title] = (existingPopularItems[item.title] || 0) + item.quantity;
+                });
+    
+                localStorage.setItem(popularItemsKey, JSON.stringify(existingPopularItems));
+    
                 setPurchaseStatus("Purchase successful! 🎉");
                 setReceiptDetails({
                     items: cartItems,
@@ -172,6 +182,7 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
             return false;
         }
     };
+    
     
    
     return (

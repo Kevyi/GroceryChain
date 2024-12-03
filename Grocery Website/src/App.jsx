@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import Register from "./pages/Register.jsx";
 import AdminUpdate from "./pages/AdminUpdate.jsx";
 import PaymentPage from "./pages/Payment.jsx";
-import BarChartPage from "./pages/BarChartPage.jsx";
+import DashboardPage from "./pages/DashBoard.jsx";
 
 function App() {
     const [totalCartItems, setTotalCartItems] = useState(0);
@@ -73,7 +73,7 @@ function App() {
                     <Route path="/grocery-page" element={<GroceryPage updateCartCount={updateCartCount} />} />
                     <Route path="/payment" element={<PaymentPage />} />
                     <Route path="/admin-update" element={<AdminUpdate />} />
-                    <Route path="/bar-chart" element={<BarChartPage />} />
+                    <Route path="/dashboard" element={<DashboardPage />} />
                    
                     <Route
                         path="/shopping-cart"
