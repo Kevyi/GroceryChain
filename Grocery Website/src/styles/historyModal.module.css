@@ -1,0 +1,145 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Darker background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modalContent {
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  border-radius: 20px;
+  padding: 35px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 80%; /* Set a maximum height for the modal */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+  overflow-y: auto; /* Enable vertical scrolling */
+  animation: slideIn 0.4s ease-in-out;
+  font-family: 'Arial', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #222;
+  border-bottom: 3px solid #e0e0e0;
+  padding-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.historyTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+.historyTable th,
+.historyTable td {
+  padding: 16px;
+  text-align: center;
+  font-size: 1rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.historyTable th {
+  background-color: #f1f3f6;
+  color: #333;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.historyTable td {
+  color: #444;
+  vertical-align: middle;
+}
+
+.historyTable tr:nth-child(even) {
+  background-color: #fbfbfb; /* Lighter alternating row color */
+}
+
+.historyTable tr:hover {
+  background-color: #eef5ff; /* Highlight effect */
+}
+
+.historyTable .itemDetails {
+  text-align: left;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.summary {
+  font-size: 1.4rem;
+  color: #333;
+  margin-top: 25px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.summary span {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.noHistoryMessage {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #888;
+  margin: 30px 0;
+  font-style: italic;
+}
+
+.closeButton {
+  display: block;
+  width: 50%;
+  max-width: 200px;
+  margin: 40px auto 0;
+  padding: 14px 22px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.closeButton:hover {
+  background-color: #0056b3;
+  transform: translateY(-4px) scale(1.07); /* Hover effect */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

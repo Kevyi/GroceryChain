@@ -5,6 +5,7 @@ import { GiForkKnifeSpoon } from "react-icons/gi";
 import { FaBars } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
+import HistoryModal from "../pages/HistoryModal";
 
 export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -15,6 +16,7 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     const [isActive, setIsActive] = useState(true); // Track user activity state
     const [logoutMessage, setLogoutMessage] = useState(""); // Message for inactivity logout
     const [isInactiveLogout, setIsInactiveLogout] = useState(false); // Track if logout is due to inactivity
+    const [ShowHistoryModal, setShowHistoryModal] = useState(false);
 
     useEffect(() => {
         // Check if user is logged in or restore from localStorage
@@ -35,24 +37,6 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
             setSearchTerm(searchQuery); // Populate the search term from the URL
             setIsSearched(true); // Show reset button
         }
-    }, []);
-
-    useEffect(() => {
-        // Reset countdown on user activity
-        const handleUserActivity = () => {
-            setCountdown(600); // Reset countdown to 60 seconds
-            setIsActive(true);
-        };
-
-        // Attach event listeners for user activity
-        window.addEventListener("mousemove", handleUserActivity);
-        window.addEventListener("keydown", handleUserActivity);
-
-        // Cleanup event listeners on unmount
-        return () => {
-            window.removeEventListener("mousemove", handleUserActivity);
-            window.removeEventListener("keydown", handleUserActivity);
-        };
     }, []);
 
     useEffect(() => {
@@ -179,6 +163,15 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                                 </span>
                                 {isDropdownOpen && (
                                     <div className={styles["dropdown-menu"]}>
+                                        {/* View Purchase History Option */}
+                                        <button
+                                            onClick={() => setShowHistoryModal(true)} // Open the History Modal
+                                            className={styles["dropdown-item"]}
+                                        >
+                                            View Purchase History
+                                        </button>
+
+                                        {/* Log Off Option */}
                                         <button
                                             onClick={handleLogOffUser}
                                             className={styles["dropdown-item"]}
@@ -190,7 +183,6 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                             </div>
                         ) : (
                             <a href="/login-page">
-                                <IoPerson />
                                 <div>Sign In / Register</div>
                             </a>
                         )}
@@ -203,6 +195,21 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                 <div className={styles["logout-message"]} onClick={() => setLogoutMessage("")}>
                     <p>{logoutMessage}</p>
                 </div>
+            )}
+
+            {/* History Modal */}
+            {ShowHistoryModal && (
+                <HistoryModal
+                    isOpen={ShowHistoryModal}
+                    historyDetails={{
+                        history: JSON.parse(localStorage.getItem(userData.username)) || [],
+                        totalWeight: 0, // Calculate dynamically if needed
+                        totalPrice: 0, // Calculate dynamically if needed
+                        shippingFee: 0, // Adjust based on logic
+                        finalPrice: 0, // Adjust based on logic
+                    }}
+                    onClose={() => setShowHistoryModal(false)}
+                />
             )}
         </>
     );

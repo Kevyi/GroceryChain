@@ -71,12 +71,12 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
             setPurchaseStatus("Error: Please log in to proceed with the payment.");
             return false;
         }
-
+    
         if (cartItems.length === 0) {
             setPurchaseStatus("Error: Your cart is empty.");
             return false;
         }
-
+    
         try {
             // Step 1: Validate Credit Card
             const creditCardResponse = await fetch("http://localhost:3000/creditcard", {
@@ -95,19 +95,22 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                     cvv: paymentDetails.cvv,
                 }),
             });
-
+    
             const creditCardData = await creditCardResponse.json();
             if (creditCardData.status !== "success") {
                 setPurchaseStatus(`Error: ${creditCardData.message}`);
                 return false;
             }
-
+    
             // Step 2: Process Purchase
             const cartData = cartItems.map((item) => ({
                 id: item.id,
+                title: item.title,
                 quantity: item.quantity,
+                price: item.price,
+                weight: item.weight,
             }));
-
+    
             const purchaseResponse = await fetch("http://localhost:3000/purchase", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -127,9 +130,25 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
                     },
                 }),
             });
-
+    
             const purchaseData = await purchaseResponse.json();
             if (purchaseData.status === "success") {
+                const username = loggedInUser?.username || JSON.parse(localStorage.getItem("loggedInUser"))?.username || "Guest";
+                const userHistoryKey = `history_${username}`;
+                const existingHistory = JSON.parse(localStorage.getItem(userHistoryKey)) || [];
+    
+                // Add the new purchase to the history
+                const newPurchase = {
+                    date: new Date().toLocaleString(),
+                    items: cartData,
+                    totalPrice,
+                    shippingFee,
+                    finalPrice,
+                };
+    
+                const updatedHistory = [...existingHistory, newPurchase];
+                localStorage.setItem(userHistoryKey, JSON.stringify(updatedHistory));
+    
                 setPurchaseStatus("Purchase successful! 🎉");
                 setReceiptDetails({
                     items: cartItems,
@@ -153,7 +172,8 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
             return false;
         }
     };
-
+    
+   
     return (
         <div className={styles.cartContainer}>
             <div className={styles.cartItemsContainer}>
