@@ -211,3 +211,128 @@
 .checkboxContainer:hover .checkboxLabel {
     color: #00bfff; /* Light blue on hover for better visibility */
 }
+
+/* Loading spinner container */
+.loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Space above the spinner */
+}
+
+/* Spinner animation */
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Light border */
+    border-top: 4px solid #007bff; /* Blue border for the active part */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Fade In and Out for the main container */
+@keyframes fadeInAnimation {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOutAnimation {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  .fadeIn {
+    animation: fadeInAnimation 0.5s ease-in;
+  }
+  
+  .fadeOut {
+    animation: fadeOutAnimation 0.5s ease-out;
+  }
+  
+  /* Slide In for the login modal */
+  @keyframes slideInAnimation {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .slideIn {
+    animation: slideInAnimation 0.6s ease-in-out;
+  }
+
+  /* Transition container */
+.transitionContainer {
+    position: relative;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .registerActive .transitionContainer {
+    animation-name: fadeInRegister;
+  }
+  
+  .loginActive .transitionContainer {
+    animation-name: fadeInLogin;
+  }
+  
+  /* Keyframes for transitions */
+  @keyframes fadeInRegister {
+    from {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInLogin {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Slide in animation */
+  .slideIn {
+    animation: slideIn 0.6s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }

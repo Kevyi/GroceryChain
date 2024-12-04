@@ -23,6 +23,7 @@ export default function LoginRegister({ setLoggedInUser }) {
 
   const [loginMessage, setLoginMessage] = useState({ type: "", text: "" });
   const [registerMessage, setRegisterMessage] = useState({ type: "", text: "" });
+  const [loading, setLoading] = useState(false); // State to track loading status
 
   const handleChange = (e, setData) => {
     const { name, value } = e.target;
@@ -40,37 +41,41 @@ export default function LoginRegister({ setLoggedInUser }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     clearMessages(); // Clear previous messages
-  
+    setLoading(true); // Start loading animation
+
     try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginData),
-      });
-  
-      const result = await response.json();
-  
-      if (result.status === "success") {
-        setLoginMessage({ type: "success", text: "Login successful!" });
-        setLoggedInUser({
-          username: loginData.username,
-          isAdmin: result.isAdmin, // Store if user is admin
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
         });
-        localStorage.setItem(
-          "loggedInUser",
-          JSON.stringify({ username: loginData.username, isAdmin: result.isAdmin })
-        );
-        navigate(result.isAdmin ? "/home" : "/");
-      } else {
-        setLoginMessage({ type: "error", text: result.message });
-      }
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+            setLoginMessage({ type: "success", text: "Login successful!" });
+            setLoggedInUser({
+                username: loginData.username,
+                isAdmin: result.isAdmin, // Store if user is admin
+            });
+            localStorage.setItem(
+                "loggedInUser",
+                JSON.stringify({ username: loginData.username, isAdmin: result.isAdmin })
+            );
+            window.scrollTo(0, 0);
+            navigate(result.isAdmin ? "/home" : "/");
+        } else {
+            setLoginMessage({ type: "error", text: result.message });
+        }
     } catch (error) {
-      console.error("Error during login:", error);
-      setLoginMessage({ type: "error", text: "An error occurred. Please try again." });
+        console.error("Error during login:", error);
+        setLoginMessage({ type: "error", text: "An error occurred. Please try again." });
+    } finally {
+        setLoading(false); // Stop loading animation
     }
-  };
+};
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -139,156 +144,158 @@ export default function LoginRegister({ setLoggedInUser }) {
   }, [setLoggedInUser]);
 
   return (
-    <div className={styles.main}>
-      <h1 className={styles.welcomeMessage}>Welcome to GoodEats</h1>
+    <div className={`${styles.main} ${isRegisterOpen ? styles.registerActive : styles.loginActive}`}>
+  <h1 className={styles.welcomeMessage}>Welcome to GoodEats</h1>
 
-      {!isRegisterOpen ? (
-        <div className={styles.modalContent}>
-          <h2 className={styles.centerRegistration}>Login</h2>
-          <form onSubmit={handleLogin} className={styles.spacingForTextBlocks}>
+  <div className={`${styles.modalContent} ${styles.transitionContainer}`}>
+    {isRegisterOpen ? (
+      <div className={styles.slideIn}>
+        <h2 className={styles.centerRegistration}>Register</h2>
+        <form onSubmit={handleRegister} className={styles.spacingForTextBlocks}>
+          <input
+            type="text"
+            name="username"
+            className={styles.inputBox}
+            value={registerData.username}
+            onChange={(e) => handleChange(e, setRegisterData)}
+            placeholder="Enter your username"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            className={styles.inputBox}
+            value={registerData.email}
+            onChange={(e) => handleChange(e, setRegisterData)}
+            placeholder="Enter your email"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            className={styles.inputBox}
+            value={registerData.password}
+            onChange={(e) => handleChange(e, setRegisterData)}
+            placeholder="Enter your password"
+            required
+          />
+          <input
+            type="date"
+            name="date_of_birth"
+            className={styles.inputBox}
+            value={registerData.date_of_birth}
+            onChange={(e) => handleChange(e, setRegisterData)}
+          />
+          <input
+            type="text"
+            name="country"
+            className={styles.inputBox}
+            value={registerData.country}
+            onChange={(e) => handleChange(e, setRegisterData)}
+            placeholder="Enter your country"
+          />
+          <label className={styles.checkboxLabel}>
             <input
-              type="text"
-              name="username"
-              className={styles.inputBox}
-              value={loginData.username}
-              onChange={(e) => handleChange(e, setLoginData)}
-              placeholder="Enter your username"
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              className={styles.inputBox}
-              value={loginData.password}
-              onChange={(e) => handleChange(e, setLoginData)}
-              placeholder="Enter your password"
-              required
-            />
-            <label className={styles.checkboxLabel}>
-              <input
-                type="checkbox"
-                name="isAdmin"
-                checked={loginData.isAdmin}
-                onChange={(e) =>
-                  setLoginData((prevData) => ({
-                    ...prevData,
-                    isAdmin: e.target.checked,
-                  }))
-                }
-              />
-              Login as Admin
-            </label>
-            <button className={styles.submitButton} type="submit">
-              Login
-            </button>
-          </form>
-          {loginMessage.text && (
-            <p
-              className={
-                loginMessage.type === "success"
-                  ? styles.successMessage
-                  : styles.errorMessage
+              type="checkbox"
+              name="isAdmin"
+              checked={registerData.isAdmin}
+              onChange={(e) =>
+                setRegisterData((prevData) => ({
+                  ...prevData,
+                  isAdmin: e.target.checked,
+                }))
               }
-            >
-              {loginMessage.text}
-            </p>
-          )}
+            />
+            Register as Admin
+          </label>
+          <button className={styles.submitButton} type="submit">
+            Register
+          </button>
+        </form>
+        {registerMessage.text && (
           <p
-            className={styles.inLineText}
-            onClick={() => {
-              setIsRegisterOpen(true);
-              clearMessages();
-            }}
+            className={
+              registerMessage.type === "success"
+                ? styles.successMessage
+                : styles.errorMessage
+            }
           >
-            New user? Click here to register.
+            {registerMessage.text}
           </p>
-        </div>
-      ) : (
-        <div className={styles.modalContent}>
-          <h2 className={styles.centerRegistration}>Register</h2>
-          <form onSubmit={handleRegister} className={styles.spacingForTextBlocks}>
+        )}
+        <p
+          className={styles.inLineText}
+          onClick={() => {
+            setIsRegisterOpen(false);
+            clearMessages();
+          }}
+        >
+          Returning user? Click here to login.
+        </p>
+      </div>
+    ) : (
+      <div className={styles.slideIn}>
+        <h2 className={styles.centerRegistration}>Login</h2>
+        <form onSubmit={handleLogin} className={styles.spacingForTextBlocks}>
+          <input
+            type="text"
+            name="username"
+            className={styles.inputBox}
+            value={loginData.username}
+            onChange={(e) => handleChange(e, setLoginData)}
+            placeholder="Enter your username"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            className={styles.inputBox}
+            value={loginData.password}
+            onChange={(e) => handleChange(e, setLoginData)}
+            placeholder="Enter your password"
+            required
+          />
+          <label className={styles.checkboxLabel}>
             <input
-              type="text"
-              name="username"
-              className={styles.inputBox}
-              value={registerData.username}
-              onChange={(e) => handleChange(e, setRegisterData)}
-              placeholder="Enter your username"
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              className={styles.inputBox}
-              value={registerData.email}
-              onChange={(e) => handleChange(e, setRegisterData)}
-              placeholder="Enter your email"
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              className={styles.inputBox}
-              value={registerData.password}
-              onChange={(e) => handleChange(e, setRegisterData)}
-              placeholder="Enter your password"
-              required
-            />
-            <input
-              type="date"
-              name="date_of_birth"
-              className={styles.inputBox}
-              value={registerData.date_of_birth}
-              onChange={(e) => handleChange(e, setRegisterData)}
-            />
-            <input
-              type="text"
-              name="country"
-              className={styles.inputBox}
-              value={registerData.country}
-              onChange={(e) => handleChange(e, setRegisterData)}
-              placeholder="Enter your country"
-            />
-            <label className={styles.checkboxLabel}>
-              <input
-                type="checkbox"
-                name="isAdmin"
-                checked={registerData.isAdmin}
-                onChange={(e) =>
-                  setRegisterData((prevData) => ({
-                    ...prevData,
-                    isAdmin: e.target.checked,
-                  }))
-                }
-              />
-              Register as Admin
-            </label>
-            <button className={styles.submitButton} type="submit">
-              Register
-            </button>
-          </form>
-          {registerMessage.text && (
-            <p
-              className={
-                registerMessage.type === "success"
-                  ? styles.successMessage
-                  : styles.errorMessage
+              type="checkbox"
+              name="isAdmin"
+              checked={loginData.isAdmin}
+              onChange={(e) =>
+                setLoginData((prevData) => ({
+                  ...prevData,
+                  isAdmin: e.target.checked,
+                }))
               }
-            >
-              {registerMessage.text}
-            </p>
-          )}
+            />
+            Login as Admin
+          </label>
+          <button className={styles.submitButton} type="submit">
+            Login
+          </button>
+        </form>
+        {loginMessage.text && (
           <p
-            className={styles.inLineText}
-            onClick={() => {
-              setIsRegisterOpen(false);
-              clearMessages();
-            }}
+            className={
+              loginMessage.type === "success"
+                ? styles.successMessage
+                : styles.errorMessage
+            }
           >
-            Returning user? Click here to login.
+            {loginMessage.text}
           </p>
-        </div>
-      )}
-    </div>
+        )}
+        <p
+          className={styles.inLineText}
+          onClick={() => {
+            setIsRegisterOpen(true);
+            clearMessages();
+          }}
+        >
+          New user? Click here to register.
+        </p>
+      </div>
+    )}
+  </div>
+</div>
   );
 }

@@ -104,6 +104,81 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Edit Account Route
+router.put("/edit-account", async (req, res) => {
+  const { username, email, currentPassword, newPassword } = req.body;
+
+  if (!username || !email || !currentPassword || !newPassword) {
+    return res.status(400).json({
+      status: "error",
+      message: "All fields (username, email, currentPassword, newPassword) are required.",
+    });
+  }
+
+  try {
+    // First, check the loginregister table
+    const [userResults] = await pool
+      .promise()
+      .query(`SELECT * FROM loginregister WHERE username = ?`, [username]);
+
+    let user = userResults.length > 0 ? userResults[0] : null;
+    let isAdmin = false;
+
+    // If the user is not found in loginregister, check the adminaccount table
+    if (!user) {
+      const [adminResults] = await pool
+        .promise()
+        .query(`SELECT * FROM adminaccount WHERE username = ?`, [username]);
+
+      if (adminResults.length > 0) {
+        user = adminResults[0];
+        isAdmin = true; // Flag to indicate the user is an admin
+      }
+    }
+
+    // If no user is found in either table, return an error
+    if (!user) {
+      return res.status(404).json({ status: "error", message: "User not found." });
+    }
+
+    // Validate the current password
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Current password is incorrect." });
+    }
+
+    // Hash the new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's email and password in the appropriate table
+    const updateQuery = isAdmin
+      ? `UPDATE adminaccount SET email = ?, password = ? WHERE username = ?`
+      : `UPDATE loginregister SET email = ?, password = ? WHERE username = ?`;
+
+    const [updateResult] = await pool
+      .promise()
+      .query(updateQuery, [email, hashedNewPassword, username]);
+
+    if (updateResult.affectedRows > 0) {
+      return res
+        .status(200)
+        .json({ status: "success", message: "Account updated successfully." });
+    } else {
+      return res
+        .status(500)
+        .json({ status: "error", message: "Failed to update account." });
+    }
+  } catch (error) {
+    console.error("Error during account update:", error.message);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Database error." });
+  }
+});
+
+
 
 // Admin: Update cart endpoint
 router.post("/admin/cart", (req, res) => {

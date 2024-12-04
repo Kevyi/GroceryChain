@@ -7,19 +7,21 @@ import { FaSearch } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import HistoryModal from "../pages/HistoryModal";
 import AdminApprovalModal from "../pages/AdminApprovalModal"; // Import AdminApprovalModal
+import EditAccountModal from "../pages/EditAccountModal"; // Import EditAccountModal
 
 export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearched, setIsSearched] = useState(false); // Track if a search has been executed
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [userData, setUserData] = useState({ username: "", isAdmin: false }); // Persisted user data
-    const [countdown, setCountdown] = useState(600); // Inactivity timeout countdown in seconds
+    const [countdown, setCountdown] = useState(30); // Inactivity timeout countdown in seconds
     const [isActive, setIsActive] = useState(true); // Track user activity state
     const [logoutMessage, setLogoutMessage] = useState(""); // Message for inactivity logout
     const [isInactiveLogout, setIsInactiveLogout] = useState(false); // Track if logout is due to inactivity
     const [ShowHistoryModal, setShowHistoryModal] = useState(false);
     const [ShowAdminApprovalModal, setShowAdminApprovalModal] = useState(false); // State for Admin Approval Modal
     const [adminRequests, setAdminRequests] = useState([]); // Store pending admin requests
+    const [ShowEditAccountModal, setShowEditAccountModal] = useState(false); // State for Edit Account Modal
 
     useEffect(() => {
         // Restore user data from localStorage or update with loggedInUser prop
@@ -43,21 +45,45 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     }, []);
 
     useEffect(() => {
-        let timer;
-        if (userData.username && isActive) {
-            timer = setInterval(() => {
+        const resetInactivityTimer = () => {
+            if (userData.username) {
+                // Reset countdown only if user is logged in
+                setIsActive(true); // User is active
+                setCountdown(30); // Reset the countdown timer
+            }
+        };
+    
+        // Event listeners to detect user activity
+        const handleUserActivity = () => {
+            resetInactivityTimer();
+        };
+    
+        // Attach event listeners for mouse and keyboard activity
+        window.addEventListener("mousemove", handleUserActivity);
+        window.addEventListener("keydown", handleUserActivity);
+    
+        // Timer to check inactivity and trigger logout
+        const inactivityTimer = setInterval(() => {
+            if (userData.username && isActive) {
+                // Only decrement countdown and check inactivity if user is logged in
                 setCountdown((prev) => {
                     if (prev === 1) {
                         handleInactiveLogout();
-                        clearInterval(timer);
+                        clearInterval(inactivityTimer); // Stop the timer on logout
                         return 0;
                     }
                     return prev - 1;
                 });
-            }, 1000);
-        }
-        return () => clearInterval(timer);
-    }, [userData.username, isActive]);
+            }
+        }, 1000); // Decrease countdown every second
+    
+        return () => {
+            // Cleanup event listeners and timer on unmount
+            window.removeEventListener("mousemove", handleUserActivity);
+            window.removeEventListener("keydown", handleUserActivity);
+            clearInterval(inactivityTimer);
+        };
+    }, [isActive, userData.username]);
 
     // Fetch admin requests for the Admin Approval Modal
     useEffect(() => {
@@ -72,19 +98,34 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
     const handleInactiveLogout = () => {
-        setIsInactiveLogout(true);
-        handleLogOffUser();
-        setLogoutMessage("You have been logged out due to inactivity.");
+        if (userData.username) {
+            // Proceed only if the user is logged in
+            setIsInactiveLogout(true);
+            setUserData({ username: "", isAdmin: false }); // Clear user data
+            localStorage.removeItem("loggedInUser");
+            localStorage.removeItem("cartItems"); // Clear localStorage items
+            setLogoutMessage("You have been logged out due to inactivity."); // Set logout message
+    
+            // Automatically fade out the message after a few seconds
+            setTimeout(() => {
+                setLogoutMessage(""); // Clear the message
+                setIsInactiveLogout(false); // Reset inactivity state
+            }, 3000); // 3-second timeout for fade-out
+        }
     };
-
-    const handleLogOffUser = () => {
+    
+    const handleLogOffUser = (shouldRefresh = true) => {
         handleLogOff();
         setUserData({ username: "", isAdmin: false });
         localStorage.removeItem("loggedInUser");
         localStorage.removeItem("cartItems"); // Clear the cart items from localStorage
         if (!isInactiveLogout) setLogoutMessage("");
-        window.location.href = "/home";
-        updateCartCount(0); // Reset the cart count to 0
+    
+        if (shouldRefresh) {
+            window.location.href = "/home";
+        } else {
+            updateCartCount(0); // Reset the cart count to 0 without refresh
+        }
     };
 
     const handleSearchSubmit = (e) => {
@@ -225,6 +266,14 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                                             </>
                                         )}
 
+                                        {/* Edit Account Option */}
+                                        <button
+                                            onClick={() => setShowEditAccountModal(true)} // Open Edit Account Modal
+                                            className={styles["dropdown-item"]}
+                                        >
+                                            Edit Account
+                                        </button>
+
                                         {/* Log Off Option */}
                                         <button
                                             onClick={handleLogOffUser}
@@ -274,6 +323,16 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
                     onApprove={handleApproveRequest}
                     onReject={handleRejectRequest}
                     onClose={() => setShowAdminApprovalModal(false)}
+                />
+            )}
+
+            {/* Edit Account Modal */}
+            {ShowEditAccountModal && (
+                <EditAccountModal
+                    isOpen={ShowEditAccountModal}
+                    userData={userData}
+                    onClose={() => setShowEditAccountModal(false)}
+                    onSave={(updatedData) => setUserData(updatedData)} // Update user data after save
                 />
             )}
         </>
