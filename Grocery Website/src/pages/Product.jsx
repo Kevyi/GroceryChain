@@ -1,3 +1,5 @@
+// src/pages/Product.js
+
 const products = [
     {
         id: "001",
@@ -7,7 +9,10 @@ const products = [
         price: 2.99,
         weight: 1,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "002",
@@ -17,7 +22,10 @@ const products = [
         price: 0.75,
         weight: 0.33,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "003",
@@ -27,7 +35,10 @@ const products = [
         price: 0.70,
         weight: 0.33,
         isOrganic: false,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "004",
@@ -37,7 +48,10 @@ const products = [
         price: 0.25,
         weight: 0.25,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "005",
@@ -47,7 +61,10 @@ const products = [
         price: 6.00,
         weight: 10,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "006",
@@ -57,7 +74,10 @@ const products = [
         price: 1.50,
         weight: 1,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "007",
@@ -67,7 +87,10 @@ const products = [
         price: 1.20,
         weight: 0.33,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Tomatoes are botanically fruits but often categorized as vegetables in culinary contexts
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "008",
@@ -77,7 +100,10 @@ const products = [
         price: 0.89,
         weight: 0.5,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: true,    // Cucumbers are botanically fruits but often categorized as vegetables
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "009",
@@ -87,7 +113,10 @@ const products = [
         price: 0.60,
         weight: 0.4,
         isOrganic: false,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "010",
@@ -97,7 +126,10 @@ const products = [
         price: 3.50,
         weight: 2.5,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "011",
@@ -107,7 +139,10 @@ const products = [
         price: 1.10,
         weight: 0.25,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "012",
@@ -117,7 +152,10 @@ const products = [
         price: 0.50,
         weight: 0.5,
         isOrganic: false,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "013",
@@ -127,7 +165,10 @@ const products = [
         price: 4.00,
         weight: 0.2,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "014",
@@ -138,7 +179,9 @@ const products = [
         weight: 0.5,
         isOrganic: false,
         isVegetable: false,
-        isOther: true
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: true      // Added
     },
     {
         id: "015",
@@ -148,7 +191,10 @@ const products = [
         price: 1.99,
         weight: 0.3,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "016",
@@ -158,7 +204,10 @@ const products = [
         price: 1.25,
         weight: 0.33,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "017",
@@ -168,7 +217,10 @@ const products = [
         price: 1.50,
         weight: 0.5,
         isOrganic: false,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "018",
@@ -178,7 +230,10 @@ const products = [
         price: 0.60,
         weight: 0.5,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "019",
@@ -188,7 +243,10 @@ const products = [
         price: 3.99,
         weight: 0.4,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "020",
@@ -198,7 +256,10 @@ const products = [
         price: 1.00,
         weight: 0.4,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "021",
@@ -208,7 +269,10 @@ const products = [
         price: 1.80,
         weight: 0.5,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "022",
@@ -218,7 +282,10 @@ const products = [
         price: 2.50,
         weight: 0.6,
         isOrganic: false,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "023",
@@ -228,7 +295,10 @@ const products = [
         price: 1.25,
         weight: 1.0,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "024",
@@ -238,7 +308,10 @@ const products = [
         price: 1.30,
         weight: 0.7,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "025",
@@ -248,7 +321,10 @@ const products = [
         price: 0.90,
         weight: 0.5,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "026",
@@ -259,7 +335,9 @@ const products = [
         weight: 0.4,
         isOrganic: false,
         isVegetable: false,
-        isOther: true
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: true      // Added
     },
     {
         id: "027",
@@ -269,7 +347,10 @@ const products = [
         price: 4.20,
         weight: 0.3,
         isOrganic: true,
-        isVegetable: false
+        isVegetable: false,
+        isFruit: true,     // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "028",
@@ -279,7 +360,10 @@ const products = [
         price: 0.99,
         weight: 0.2,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "029",
@@ -289,7 +373,10 @@ const products = [
         price: 3.75,
         weight: 5.0,
         isOrganic: true,
-        isVegetable: true
+        isVegetable: true,
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: false     // Added
     },
     {
         id: "030",
@@ -300,22 +387,24 @@ const products = [
         weight: 0.5,
         isOrganic: true,
         isVegetable: false,
-        isOther: true
+        isFruit: false,    // Added
+        isMeat: false,     // Added
+        isOther: true      // Added
     },
   
     {
-      id: "031",
-      title: "Chicken",
-      description: "Fresh and tender chicken meat, perfect for grilling, roasting, or frying. A high-protein option, ideal for a healthy meal. Carefully selected for its quality and flavor.",
-      image: "images/chicken.jpg",  // Add the path to the image of chicken
-      price: 5.00,
-      weight: 1.5,
-      isOrganic: false,  // You can change this to true if it's organic
-      isVegetable: false,
-      isOther: false,
-      isMeat: true,  // Chicken is a meat product
+        id: "031",
+        title: "Chicken",
+        description: "Fresh and tender chicken meat, perfect for grilling, roasting, or frying. A high-protein option, ideal for a healthy meal. Carefully selected for its quality and flavor.",
+        image: "images/chicken.jpg",  // Ensure this path is correct
+        price: 5.00,
+        weight: 1.5,
+        isOrganic: false,  // Change to true if applicable
+        isVegetable: false,
+        isFruit: false,    // Added
+        isMeat: true,      // Added
+        isOther: false     // Added
     }
-  ];
-  
-  export default products;
-  
+];
+
+export default products;
