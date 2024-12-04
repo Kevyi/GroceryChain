@@ -36,9 +36,11 @@ export default function EditAccountPage({ isOpen, onClose }) {
       if (response.data.status === "success") {
         setSuccessMessage("Account updated successfully!");
         setErrorMessage("");
-      } else {
-        setErrorMessage(response.data.message || "Failed to update account.");
-      }
+      } else if (response.data.message === "User not found.") {
+        setErrorMessage("The user account does not exist.");
+        } else {
+            setErrorMessage(response.data.message || "Failed to update account.");
+        }
     } catch (error) {
       setErrorMessage(
         error.response?.data?.message || "An error occurred while updating the account."
