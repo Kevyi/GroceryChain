@@ -81,7 +81,10 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
         handleLogOff();
         setUserData({ username: "", isAdmin: false });
         localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("cartItems"); // Clear the cart items from localStorage
         if (!isInactiveLogout) setLogoutMessage("");
+        window.location.href = "/home";
+        updateCartCount(0); // Reset the cart count to 0
     };
 
     const handleSearchSubmit = (e) => {

@@ -251,6 +251,11 @@ export default function GroceryPage({ updateCartCount }) {
   const handleAddToCart = (product) => {
     const quantityToAdd = quantities[product.id] || 1;
 
+
+    if (product.count < quantityToAdd) {
+      alert(`Only ${product.count} units of ${product.title} are available in stock.`);
+      return;
+  }
     setCartItems((prevCartItems) => {
       const updatedCart = prevCartItems.map(item =>
         item.id === product.id
