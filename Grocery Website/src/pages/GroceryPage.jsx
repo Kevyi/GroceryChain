@@ -239,20 +239,22 @@ export default function GroceryPage({ updateCartCount }) {
   const handleAddToCart = (product) => {
     const quantityToAdd = quantities[product.id] || 1;
 
+
     if (product.count < quantityToAdd) {
       alert(`Only ${product.count} units of ${product.title} are available in stock.`);
       return;
-    }
-
+  }
     setCartItems((prevCartItems) => {
-      const existingItemIndex = prevCartItems.findIndex(item => item.id === product.id);
-      let updatedCart;
+      const updatedCart = prevCartItems.map(item =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + quantityToAdd }
+          : item
+      );
 
-      if (existingItemIndex !== -1) {
-        updatedCart = [...prevCartItems];
-        updatedCart[existingItemIndex].quantity += quantityToAdd;
-      } else {
-        updatedCart = [...prevCartItems, { ...product, quantity: quantityToAdd }];
+      const itemExists = updatedCart.some(item => item.id === product.id);
+
+      if (!itemExists) {
+        updatedCart.push({ ...product, quantity: quantityToAdd });
       }
 
       localStorage.setItem('cartItems', JSON.stringify(updatedCart));
@@ -266,6 +268,7 @@ export default function GroceryPage({ updateCartCount }) {
     }));
     alert(`${quantityToAdd}x ${product.title} has been added to your shopping cart!`);
   };
+
 
   const updateQuantityManually = (productId, quantity) => {
     setQuantities((prevQuantities) => ({
