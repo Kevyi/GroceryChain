@@ -141,6 +141,14 @@ router.put("/edit-account", async (req, res) => {
       return res.status(404).json({ status: "error", message: "User not found." });
     }
 
+    // Validate the provided email matches the one in the database
+    if (user.email !== email) {
+      return res.status(401).json({
+        status: "error",
+        message: "Provided email does not match our records.",
+      });
+    }
+
     // Validate the current password
     const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
     if (!isPasswordValid) {
@@ -152,23 +160,23 @@ router.put("/edit-account", async (req, res) => {
     // Hash the new password
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-    // Update the user's email and password in the appropriate table
+    // Update only the password in the appropriate table
     const updateQuery = isAdmin
-      ? `UPDATE adminaccount SET email = ?, password = ? WHERE username = ?`
-      : `UPDATE loginregister SET email = ?, password = ? WHERE username = ?`;
+      ? `UPDATE adminaccount SET password = ? WHERE username = ?`
+      : `UPDATE loginregister SET password = ? WHERE username = ?`;
 
     const [updateResult] = await pool
       .promise()
-      .query(updateQuery, [email, hashedNewPassword, username]);
+      .query(updateQuery, [hashedNewPassword, username]);
 
     if (updateResult.affectedRows > 0) {
       return res
         .status(200)
-        .json({ status: "success", message: "Account updated successfully." });
+        .json({ status: "success", message: "Password updated successfully." });
     } else {
       return res
         .status(500)
-        .json({ status: "error", message: "Failed to update account." });
+        .json({ status: "error", message: "Failed to update password." });
     }
   } catch (error) {
     console.error("Error during account update:", error.message);
@@ -177,8 +185,6 @@ router.put("/edit-account", async (req, res) => {
       .json({ status: "error", message: "Database error." });
   }
 });
-
-
 
 // Admin: Update cart endpoint
 router.post("/admin/cart", (req, res) => {
