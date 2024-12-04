@@ -24,7 +24,7 @@ export default function DashboardPage() {
     const [totalSpending, setTotalSpending] = useState(0);
     const [totalProductsSold, setTotalProductsSold] = useState(0);
 
-    const lowStockThreshold = 5;
+    const lowStockThreshold = 10;
 
     useEffect(() => {
         fetchProductData();
