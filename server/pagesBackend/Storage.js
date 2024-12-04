@@ -51,7 +51,6 @@ router.get("/storage", async (req, res) => {
   }
 });
 
-// POST: Update product stock
 router.post("/storage", async (req, res) => {
   const { product_id, quantity } = req.body;
 
@@ -70,22 +69,27 @@ router.post("/storage", async (req, res) => {
 
     const currentStock = productRows[0].Count;
 
-    // Validate requested quantity
-    if (quantity > currentStock) {
+    // Validate requested quantity for decrementing stock
+    if (quantity < 0 && Math.abs(quantity) > currentStock) {
       return res.status(400).json({
         status: "error",
-        message: `Requested quantity exceeds available stock. Available stock: ${currentStock}.`,
+        message: `Insufficient stock. Available stock: ${currentStock}.`,
       });
     }
 
-    // Update stock in the database
-    const query = "UPDATE products SET Count = Count - ? WHERE id = ?";
+    // Update stock in the database (increment or decrement)
+    const query = "UPDATE products SET Count = Count + ? WHERE id = ?";
     const [result] = await pool.query(query, [quantity, product_id]);
 
     if (result.affectedRows > 0) {
-      res.status(200).json({ status: "success", message: "Stock updated successfully." });
+      const newStock = currentStock + quantity; // Calculate new stock after update
+      res.status(200).json({
+        status: "success",
+        message: `Stock updated successfully.`,
+        updatedStock: newStock,
+      });
     } else {
-      res.status(404).json({ status: "error", message: "Failed to update stock." });
+      res.status(500).json({ status: "error", message: "Failed to update stock." });
     }
   } catch (error) {
     console.error("Error updating stock:", error.message);
