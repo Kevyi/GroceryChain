@@ -3,7 +3,7 @@ import products from '../pages/Product.jsx';
 import styles from './componentsStyle/carousel.module.css';
 
 export default function Carousel() {
-    const limitedProducts = [...products.slice(0,8)];
+    const limitedProducts = [...products.slice(4,12)];
     const carouselRef = useRef(null);
 
     const scrollLeft = () => {
