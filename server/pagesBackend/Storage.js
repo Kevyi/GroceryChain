@@ -56,19 +56,36 @@ router.post("/storage", async (req, res) => {
   const { product_id, quantity } = req.body;
 
   // Validate request body
-  if (!product_id || !quantity) {
+  if (!product_id || quantity === undefined) {
     return res.status(400).json({ status: "error", message: "Missing product_id or quantity." });
   }
 
-  const query = "UPDATE products SET Count = Count + ? WHERE id = ?";
-
   try {
+    // Fetch current stock
+    const [productRows] = await pool.query("SELECT Count FROM products WHERE id = ?", [product_id]);
+
+    if (productRows.length === 0) {
+      return res.status(404).json({ status: "error", message: "Product not found." });
+    }
+
+    const currentStock = productRows[0].Count;
+
+    // Validate requested quantity
+    if (quantity > currentStock) {
+      return res.status(400).json({
+        status: "error",
+        message: `Requested quantity exceeds available stock. Available stock: ${currentStock}.`,
+      });
+    }
+
+    // Update stock in the database
+    const query = "UPDATE products SET Count = Count - ? WHERE id = ?";
     const [result] = await pool.query(query, [quantity, product_id]);
 
     if (result.affectedRows > 0) {
       res.status(200).json({ status: "success", message: "Stock updated successfully." });
     } else {
-      res.status(404).json({ status: "error", message: "Product not found." });
+      res.status(404).json({ status: "error", message: "Failed to update stock." });
     }
   } catch (error) {
     console.error("Error updating stock:", error.message);

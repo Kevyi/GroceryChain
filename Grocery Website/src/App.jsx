@@ -21,7 +21,7 @@ function App() {
     const updateCartCount = () => {
         const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
         const total = savedCartItems.reduce((acc, item) => acc + item.quantity, 0);
-        setTotalCartItems(total);
+        setTotalCartItems(total); // Update the cart count in the UI
     };
 
     // Fetch data from the API on initial render

@@ -19,32 +19,138 @@ export default function ShoppingCartPage({ updateCartCount, loggedInUser }) {
     const location = useLocation();
 
     useEffect(() => {
-        const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-        setCartItems(savedCartItems);
-        updateCartSummary(savedCartItems);
+        const fetchStockData = async () => {
+            const alertedItems = new Set(); // Track items that have already triggered an alert
+    
+            try {
+                // Fetch product data from the database
+                const response = await fetch("http://localhost:3000/storage");
+                const data = await response.json();
+    
+                if (data.status === "success") {
+                    const stockData = data.data; // Array of products with stock info
+    
+                    // Get saved cart items from localStorage
+                    const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    
+                    // Validate saved cart items against database stock
+                    const validatedItems = savedCartItems.map((item) => {
+                        const productStock = stockData.find((product) => product.product_id === item.id);
+    
+                        if (!productStock) {
+                            console.warn(`Product with ID ${item.id} not found in the database.`);
+                            return null; // Exclude items not found in the database
+                        }
+    
+                        if (item.quantity > productStock.quantity) {
+                            if (!alertedItems.has(item.id)) {
+                                // Alert only once per item
+                                alert(
+                                    `The quantity of ${productStock.product_name} has been adjusted to the available stock of ${productStock.quantity}.`
+                                );
+                                alertedItems.add(item.id); // Mark this item as alerted
+                            }
+                            return {
+                                ...item,
+                                quantity: productStock.quantity,
+                                name: productStock.product_name, // Correctly link the product name
+                            };
+                        }
+    
+                        return {
+                            ...item,
+                            name: productStock.product_name, // Ensure name is added
+                        };
+                    }).filter(Boolean); // Remove null values (items not found in the database)
+    
+                    console.log("Loaded and validated cart items:", validatedItems);
+    
+                    // Update cart state, summary, and count
+                    setCartItems(validatedItems); // Update cart items state
+                    updateCartCount(validatedItems.length); // Update cart count badge
+                    updateCartSummary(validatedItems); // Update summary (price, quantity, weight, etc.)
+    
+                    // Save validated items back to localStorage
+                    localStorage.setItem("cartItems", JSON.stringify(validatedItems));
+                } else {
+                    console.error("Failed to fetch product data from the database.");
+                }
+            } catch (error) {
+                console.error("Error fetching stock data:", error.message);
+            }
+        };
+    
+        fetchStockData();
+    
         if (location.state && location.state.success) {
             setPurchaseStatus("Purchase successful!");
         }
     }, [location.state]);
-
+    
+    
+    
     const saveCartItems = (items) => {
         setCartItems(items);
         localStorage.setItem("cartItems", JSON.stringify(items));
         updateCartCount(items.length);
         updateCartSummary(items);
     };
-
+    
     const handleRemoveItem = (productId) => {
         const updatedCart = cartItems.filter((item) => item.id !== productId);
+    
+        console.log(`Removing item with ID ${productId}. Updated cart:`, updatedCart);
+    
         saveCartItems(updatedCart);
     };
-
-    const handleQuantityChange = (productId, newQuantity) => {
-        const updatedCart = cartItems.map((item) =>
-            item.id === productId ? { ...item, quantity: newQuantity } : item
-        );
-        saveCartItems(updatedCart);
+    
+    const handleQuantityChange = async (productId, newQuantity) => {
+        const product = cartItems.find((item) => item.id === productId);
+    
+        if (!product) {
+            console.error(`Product with ID ${productId} not found.`);
+            return;
+        }
+    
+        try {
+            // Fetch the product's stock from the database
+            const response = await fetch("http://localhost:3000/storage");
+            const data = await response.json();
+    
+            if (data.status === "success") {
+                const productStock = data.data.find((product) => product.product_id === productId);
+    
+                if (!productStock) {
+                    alert(`Product not found in the database.`);
+                    return;
+                }
+    
+                // Validate the new quantity
+                if (newQuantity > productStock.quantity) {
+                    alert(`You cannot add more than ${productStock.quantity} items for ${product.title}.`);
+                    return;
+                }
+    
+                if (newQuantity < 0) {
+                    alert("Quantity cannot be negative.");
+                    return;
+                }
+    
+                console.log(`Updating quantity for ${product.name}:`, newQuantity);
+    
+                const updatedCart = cartItems.map((item) =>
+                    item.id === productId ? { ...item, quantity: newQuantity } : item
+                );
+    
+                saveCartItems(updatedCart);
+            } else {
+                console.error("Failed to fetch product data from the database.");
+            }
+        } catch (error) {
+            console.error("Error fetching stock data:", error.message);
+        }
     };
+    
 
     const [totalQuantity, setTotalQuantity] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
