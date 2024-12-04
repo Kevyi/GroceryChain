@@ -284,17 +284,30 @@
   position: relative;
 }
 
-/* Container for filter and products */
+/* Parent container for the layout */
 .content-container {
   display: flex;
-  gap: 20px; /* Adjust space between filter and product grid */
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  flex-direction: row; /* Arrange children horizontally */
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full width of the screen */
 }
 
+/* Filter container to take up left vertical space */
 .filter-container {
-  width: 200px; /* Set a fixed width for the filter section */
+  width: 250px; /* Fixed width for the filter */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  height: 100%; /* Full height of the parent container */
+}
+
+/* Main content area */
+.main-content {
+  flex-grow: 1; /* Take up remaining space */
+  background-color: #f8f9fa; /* Light background color for contrast */
+  padding: 20px;
 }
 
 .product-grid {
@@ -334,35 +347,40 @@
 }
 
 
-/* Container for the filter options */
+/* Container styling for the filter box */
 .filter-container {
-  width: 200px; /* Slightly wider to accommodate larger checkboxes */
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  font-family: Arial, sans-serif;
+  width: 250px; /* Adjust width for the desired size */
+  padding: 20px; /* Add padding for spacing */
+  border: 1px solid #ccc; /* Add border for separation */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
 }
 
-/* Header styling for filter section */
+/* Header styling */
 .filter-header {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
+  margin-bottom: 15px; /* Space below the header */
 }
 
 .filter-icon {
-  font-size: 1.5rem;
-  margin-right: 8px;
-  color: #333;
+  font-size: 20px; /* Adjust icon size */
+  margin-right: 10px; /* Space between icon and title */
 }
 
 .filter-title {
-  font-size: 1.1rem;
+  font-size: 18px;
   font-weight: bold;
-  color: #333;
+  margin: 0;
+}
+
+.extra-content {
+  margin-bottom: 15px; /* Space for optional extra content above the list */
+  text-align: center; /* Center the text if needed */
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* Adjust the color */
 }
 
 /* Checkbox label and alignment */
@@ -448,3 +466,4 @@
   transform: scale(1.02);
   transition: transform 0.2s ease-in-out;
 }
+

@@ -21,7 +21,7 @@ const products = [
     },
     {
         id: "003",
-        title: "Apple",
+        title: "Honeycrisp Apple",
         description: "Fresh apple",
         image: "images/apples_honeycrisp.png",
         price: 0.70,

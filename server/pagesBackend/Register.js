@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql2");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
@@ -29,6 +30,9 @@ router.post("/register", async (req, res) => {
   }
 
   try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
+
     if (isAdmin) {
       // Check if the username or email already exists in the `adminaccount` table
       const [checkResults] = await pool.promise().query(
@@ -43,7 +47,7 @@ router.post("/register", async (req, res) => {
       // Add to `adminaccount` with `isApproved = 0`
       const [insertAdmin] = await pool.promise().query(
         `INSERT INTO adminaccount (username, email, password, date_of_birth, country, isApproved) VALUES (?, ?, ?, ?, ?, 0)`,
-        [username, email, password, date_of_birth, country]
+        [username, email, hashedPassword, date_of_birth, country]
       );
 
       if (insertAdmin.affectedRows > 0) {
@@ -68,7 +72,7 @@ router.post("/register", async (req, res) => {
       // Add to `loginregister` table
       const [insertUser] = await pool.promise().query(
         `INSERT INTO loginregister (username, email, password, date_of_birth, country) VALUES (?, ?, ?, ?, ?)`,
-        [username, email, password, date_of_birth, country]
+        [username, email, hashedPassword, date_of_birth, country]
       );
 
       if (insertUser.affectedRows > 0) {

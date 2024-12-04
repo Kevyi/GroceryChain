@@ -82,7 +82,7 @@ export default function DashboardPage() {
         labels: trendingItems.map((item) => item.product_name),
         datasets: [
             {
-                label: "Sales Count",
+                label: "Count",
                 data: trendingItems.map((item) => item.quantity),
                 backgroundColor: ["#4BC0C0", "#36A2EB", "#FF6384", "#FFCE56", "#9966FF", "#FFA07A"],
                 borderColor: ["#4BC0C0", "#36A2EB", "#FF6384", "#FFCE56", "#9966FF", "#FFA07A"],

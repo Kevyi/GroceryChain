@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql2");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
@@ -29,12 +30,20 @@ router.post("/login", async (req, res) => {
     if (isAdmin) {
       // Check if the user is an admin
       const [adminResults] = await pool.promise().query(
-        `SELECT * FROM adminaccount WHERE username = ? AND password = ?`,
-        [username, password]
+        `SELECT * FROM adminaccount WHERE username = ?`,
+        [username]
       );
 
       if (adminResults.length > 0) {
         const admin = adminResults[0];
+
+        // Compare hashed password
+        const isPasswordValid = await bcrypt.compare(password, admin.password);
+        if (!isPasswordValid) {
+          return res
+            .status(401)
+            .json({ status: "error", message: "Invalid admin username or password." });
+        }
 
         // Check approval status
         if (admin.isApproved === 0) {
@@ -60,12 +69,22 @@ router.post("/login", async (req, res) => {
     } else {
       // Check if the user is a regular user
       const [userResults] = await pool.promise().query(
-        `SELECT * FROM loginregister WHERE username = ? AND password = ?`,
-        [username, password]
+        `SELECT * FROM loginregister WHERE username = ?`,
+        [username]
       );
 
       if (userResults.length > 0) {
         const user = userResults[0];
+
+        // Compare hashed password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+          return res
+            .status(401)
+            .json({ status: "error", message: "Invalid username or password." });
+        }
+
+        // Regular user login success
         return res.status(200).json({
           status: "success",
           message: "Login successful.",

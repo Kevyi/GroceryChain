@@ -306,7 +306,7 @@ export default function GroceryPage({ updateCartCount }) {
                 <div className={styles["filter-container"]}>
                     <div className={styles["filter-header"]}>
                         <FaFilter className={styles["filter-icon"]} />
-                        <h3 className={styles["filter-title"]}>Filtered Product</h3>
+                        <h3 className={styles["filter-title"]}>Category Selector</h3>
                     </div>
                     {["All", "Fruit", "Vegetable", "Meat", "Organic", "Other"].map((filter) => (
                         <label key={filter} className={styles["filter-checkbox"]}>
