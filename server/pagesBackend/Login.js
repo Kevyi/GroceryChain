@@ -16,9 +16,8 @@ const dbConfig = {
 };
 const pool = mysql.createPool(dbConfig);
 
-// Login route
 router.post("/login", async (req, res) => {
-  const { username, password, isAdmin } = req.body; // Include `isAdmin` flag from the frontend
+  const { username, password, isAdmin } = req.body;
 
   if (!username || !password) {
     return res
@@ -28,7 +27,6 @@ router.post("/login", async (req, res) => {
 
   try {
     if (isAdmin) {
-      // Check if the user is an admin
       const [adminResults] = await pool.promise().query(
         `SELECT * FROM adminaccount WHERE username = ?`,
         [username]
@@ -37,7 +35,6 @@ router.post("/login", async (req, res) => {
       if (adminResults.length > 0) {
         const admin = adminResults[0];
 
-        // Compare hashed password
         const isPasswordValid = await bcrypt.compare(password, admin.password);
         if (!isPasswordValid) {
           return res
@@ -45,7 +42,6 @@ router.post("/login", async (req, res) => {
             .json({ status: "error", message: "Invalid admin username or password." });
         }
 
-        // Check approval status
         if (admin.isApproved === 0) {
           return res.status(403).json({
             status: "error",
@@ -62,12 +58,10 @@ router.post("/login", async (req, res) => {
         });
       }
 
-      // If no admin match is found
       return res
         .status(401)
         .json({ status: "error", message: "Invalid admin username or password." });
     } else {
-      // Check if the user is a regular user
       const [userResults] = await pool.promise().query(
         `SELECT * FROM loginregister WHERE username = ?`,
         [username]
@@ -76,7 +70,6 @@ router.post("/login", async (req, res) => {
       if (userResults.length > 0) {
         const user = userResults[0];
 
-        // Compare hashed password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
           return res
@@ -93,7 +86,6 @@ router.post("/login", async (req, res) => {
         });
       }
 
-      // If no regular user match is found
       return res
         .status(401)
         .json({ status: "error", message: "Invalid username or password." });
@@ -101,6 +93,58 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Error during login:", error.message);
     return res.status(500).json({ status: "error", message: "Database error." });
+  }
+});
+
+router.get("/verify-admin", async (req, res) => {
+  const { username, isAdmin } = JSON.parse(req.headers.username || "{}");
+
+  console.log("Username received in headers:", username);
+  console.log("isAdmin received in headers:", isAdmin);
+
+  // Ensure both `username` and `isAdmin` are provided
+  if (!username || isAdmin !== true) {
+    return res.status(401).json({
+      status: "error",
+      message: "You must be logged in as an admin to access this resource.",
+    });
+  }
+
+  try {
+    // Query the `adminaccount` table for the user
+    const [adminResults] = await pool
+      .promise()
+      .query(`SELECT is_admin, isApproved FROM adminaccount WHERE username = ?`, [username]);
+
+    console.log("Admin query results:", adminResults);
+
+    if (adminResults.length > 0) {
+      const { is_admin, isApproved } = adminResults[0];
+
+      // Check if the user is an admin and is approved
+      if (is_admin === 1 && isApproved === 1) {
+        return res.status(200).json({
+          status: "success",
+          message: "Admin access granted.",
+          isAdmin: true,
+          isApproved: true,
+        });
+      }
+    }
+
+    // Deny access if user is not an admin or not approved
+    return res.status(403).json({
+      status: "fail",
+      message: "Access denied. Admin privileges required.",
+      isAdmin: false,
+      isApproved: false,
+    });
+  } catch (error) {
+    console.error("Error verifying admin:", error.message);
+    return res.status(500).json({
+      status: "error",
+      message: "Database error occurred during verification.",
+    });
   }
 });
 

@@ -182,3 +182,37 @@
   background: rgba(0, 0, 0, 0.6); /* Darker background on hover */
 }
 
+.error-message {
+  color: white;
+  background-color: red;
+  border: 2px solid darkred;
+  padding: 15px;
+  margin: 20px auto;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  opacity: 0; /* Start hidden */
+  animation: fade-in-out 5s ease-in-out;
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0; /* Fully transparent */
+    transform: scale(0.95);
+  }
+  10% {
+    opacity: 1; /* Fully visible */
+    transform: scale(1);
+  }
+  90% {
+    opacity: 1; /* Fully visible */
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0; /* Fully transparent */
+    transform: scale(0.95);
+  }
+}
