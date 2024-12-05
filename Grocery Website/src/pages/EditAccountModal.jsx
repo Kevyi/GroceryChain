@@ -265,6 +265,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 name="zip_code"
                 value={formData.zip_code}
                 onChange={handleChange}
+                maxLength={5}
                 required
               />
               <label htmlFor="card_name">Card Name:</label>
@@ -283,6 +284,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 name="card_number"
                 value={formData.card_number}
                 onChange={handleChange}
+                maxLength={16}
                 required
               />
               <label htmlFor="exp_month">Expiration Month:</label>
@@ -293,6 +295,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 value={formData.exp_month}
                 className={formData.exp_month_error ? "inputError" : ""}
                 onChange={handleChange}
+                maxLength={2}
                 required
               />
               <label htmlFor="exp_year">Expiration Year:</label>
@@ -302,6 +305,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 name="exp_year"
                 value={formData.exp_year}
                 onChange={handleChange}
+                maxLength={2}
                 required
               />
               <label htmlFor="cvv">CVV:</label>
@@ -311,6 +315,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 name="cvv"
                 value={formData.cvv}
                 onChange={handleChange}
+                maxLength={3}
                 required
               />
             </div>
