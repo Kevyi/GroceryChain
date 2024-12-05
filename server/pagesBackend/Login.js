@@ -148,8 +148,8 @@ router.get("/verify-admin", async (req, res) => {
   }
 });
 
-// Edit Account Route
-router.put("/edit-account", async (req, res) => {
+// Edit Password Route
+router.put("/update-password", async (req, res) => {
   const { username, email, currentPassword, newPassword } = req.body;
 
   if (!username || !email || !currentPassword || !newPassword) {
@@ -229,6 +229,101 @@ router.put("/edit-account", async (req, res) => {
       .json({ status: "error", message: "Database error." });
   }
 });
+
+router.put("/update-email", async (req, res) => {
+  const { username, email, password, newEmail } = req.body;
+
+  if (!username || !email || !password || !newEmail) {
+    return res.status(400).json({
+      status: "error",
+      message: "All fields (username, email, password, newEmail) are required.",
+    });
+  }
+
+  try {
+    // First, check the loginregister table
+    const [userResults] = await pool
+      .promise()
+      .query(`SELECT * FROM loginregister WHERE username = ?`, [username]);
+
+    let user = userResults.length > 0 ? userResults[0] : null;
+    let isAdmin = false;
+
+    // If the user is not found in loginregister, check the adminaccount table
+    if (!user) {
+      const [adminResults] = await pool
+        .promise()
+        .query(`SELECT * FROM adminaccount WHERE username = ?`, [username]);
+
+      if (adminResults.length > 0) {
+        user = adminResults[0];
+        isAdmin = true; // Flag to indicate the user is an admin
+      }
+    }
+
+    // If no user is found in either table, return an error
+    if (!user) {
+      return res.status(404).json({ status: "error", message: "User not found." });
+    }
+
+    // Validate the provided email matches the one in the database
+    if (user.email !== email) {
+      return res.status(401).json({
+        status: "error",
+        message: "Provided email does not match our records.",
+      });
+    }
+
+    // Validate the current password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Password is incorrect." });
+    }
+
+    // Check if the new email already exists in the appropriate table
+    const [existingEmailCheck] = await pool
+      .promise()
+      .query(
+        isAdmin
+          ? `SELECT * FROM adminaccount WHERE email = ?`
+          : `SELECT * FROM loginregister WHERE email = ?`,
+        [newEmail]
+      );
+
+    if (existingEmailCheck.length > 0) {
+      return res
+        .status(409)
+        .json({ status: "error", message: "New email is already in use." });
+    }
+
+    // Update the email in the appropriate table
+    const updateQuery = isAdmin
+      ? `UPDATE adminaccount SET email = ? WHERE username = ?`
+      : `UPDATE loginregister SET email = ? WHERE username = ?`;
+
+    const [updateResult] = await pool
+      .promise()
+      .query(updateQuery, [newEmail, username]);
+
+    if (updateResult.affectedRows > 0) {
+      return res
+        .status(200)
+        .json({ status: "success", message: "Email updated successfully." });
+    } else {
+      return res
+        .status(500)
+        .json({ status: "error", message: "Failed to update email." });
+    }
+  } catch (error) {
+    console.error("Error during email update:", error.message);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Database error." });
+  }
+});
+
 
 // Admin: Update cart endpoint
 router.post("/admin/cart", (req, res) => {
