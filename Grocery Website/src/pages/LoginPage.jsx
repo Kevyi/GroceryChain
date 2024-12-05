@@ -194,9 +194,10 @@ export default function LoginRegister({ setLoggedInUser }) {
             onChange={(e) => handleChange(e, setRegisterData)}
             placeholder="Enter your country"
           />
-          <label className={styles.checkboxLabel}>
+          <label className={styles.checkboxContainer}>
             <input
               type="checkbox"
+              className={styles.checkbox}
               name="isAdmin"
               checked={registerData.isAdmin}
               onChange={(e) =>
@@ -206,7 +207,7 @@ export default function LoginRegister({ setLoggedInUser }) {
                 }))
               }
             />
-            Register as Admin
+            <span className={styles.checkboxLabel}>Register as Admin</span>
           </label>
           <button className={styles.submitButton} type="submit">
             Register
@@ -255,9 +256,10 @@ export default function LoginRegister({ setLoggedInUser }) {
             placeholder="Enter your password"
             required
           />
-          <label className={styles.checkboxLabel}>
+          <label className={styles.checkboxContainer}>
             <input
               type="checkbox"
+              className={styles.checkbox}
               name="isAdmin"
               checked={loginData.isAdmin}
               onChange={(e) =>
@@ -267,7 +269,7 @@ export default function LoginRegister({ setLoggedInUser }) {
                 }))
               }
             />
-            Login as Admin
+            <span className={styles.checkboxLabel}>Login as Admin</span>
           </label>
           <button className={styles.submitButton} type="submit">
             Login
