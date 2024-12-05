@@ -143,6 +143,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="username"
                 name="username"
+                placeholder="Enter your username" 
                 value={formData.username}
                 onChange={handleChange}
                 required
@@ -152,6 +153,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="email"
                 id="email"
                 name="email"
+                placeholder="Enter your email" 
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -161,6 +163,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="password"
                 id="currentPassword"
                 name="currentPassword"
+                placeholder="Enter your current password" 
                 value={formData.currentPassword}
                 onChange={handleChange}
                 required
@@ -170,6 +173,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="password"
                 id="newPassword"
                 name="newPassword"
+                placeholder="Enter your new password" 
                 value={formData.newPassword}
                 onChange={handleChange}
                 required
@@ -185,6 +189,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="username"
                 name="username"
+                placeholder="Enter your username" 
                 value={formData.username}
                 onChange={handleChange}
                 required
@@ -194,6 +199,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="email"
                 id="email"
                 name="email"
+                placeholder="Enter your current email" 
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -203,6 +209,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="email"
                 id="newEmail"
                 name="newEmail"
+                placeholder="Enter your new email" 
                 value={formData.newEmail}
                 onChange={handleChange}
                 required
@@ -212,6 +219,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="password"
                 id="password"
                 name="password"
+                placeholder="Enter your password" 
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -227,6 +235,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="full_name"
                 name="full_name"
+                placeholder="Enter the name, eg: John Doe"
                 value={formData.full_name}
                 onChange={handleChange}
                 required
@@ -236,6 +245,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="address"
                 name="address"
+                 placeholder="Enter the address"
                 value={formData.address}
                 onChange={handleChange}
                 required
@@ -245,6 +255,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="city"
                 name="city"
+                 placeholder="Enter the city, eg: San Jose"
                 value={formData.city}
                 onChange={handleChange}
                 required
@@ -254,6 +265,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="state"
                 name="state"
+                placeholder="Enter the state, eg: California"
                 value={formData.state}
                 onChange={handleChange}
                 required
@@ -263,6 +275,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="zip_code"
                 name="zip_code"
+                placeholder="Must be 5 digits, eg: 11111"
                 value={formData.zip_code}
                 onChange={handleChange}
                 maxLength={5}
@@ -273,6 +286,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="card_name"
                 name="card_name"
+                placeholder="Enter the name, eg: John Doe"
                 value={formData.card_name}
                 onChange={handleChange}
                 required
@@ -282,6 +296,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="card_number"
                 name="card_number"
+                placeholder="Must be 16 digits card number"
                 value={formData.card_number}
                 onChange={handleChange}
                 maxLength={16}
@@ -293,6 +308,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 id="exp_month"
                 name="exp_month"
                 value={formData.exp_month}
+                placeholder="Enter the month; must be 2 digits"
                 className={formData.exp_month_error ? "inputError" : ""}
                 onChange={handleChange}
                 maxLength={2}
@@ -303,6 +319,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="exp_year"
                 name="exp_year"
+                placeholder="Enter the year; must be 2 digits"
                 value={formData.exp_year}
                 onChange={handleChange}
                 maxLength={2}
@@ -313,6 +330,7 @@ export default function EditAccountPage({ isOpen, onClose }) {
                 type="text"
                 id="cvv"
                 name="cvv"
+                placeholder="3 digits back of your card" 
                 value={formData.cvv}
                 onChange={handleChange}
                 maxLength={3}
