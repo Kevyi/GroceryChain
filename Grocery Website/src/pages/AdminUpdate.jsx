@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/Admin.module.css";
 import products from './Product'; // Static product data
 import { FaFilter } from 'react-icons/fa';
+import axios from "axios";
 
 export default function AdminUpdate() {
   const [groceryItems, setGroceryItems] = useState([]); // Combined static and dynamic data
@@ -16,6 +18,31 @@ export default function AdminUpdate() {
     Other: false,
   });
   const [sortOption, setSortOption] = useState('id-asc');
+  const [isAuthorized, setIsAuthorized] = useState(null); // Admin access state
+  const navigate = useNavigate();
+
+    // Verify admin access
+    useEffect(() => {
+      const verifyAdminAccess = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/verify-admin", {
+            headers: { username: localStorage.getItem("loggedInUser") },
+          });
+    
+          if (response.status === 200 && response.data.isAdmin && response.data.isApproved) {
+            setIsAuthorized(true); // Admin access granted
+          } else {
+            throw new Error("Unauthorized"); // Any other case
+          }
+        } catch (error) {
+          console.error("Admin access denied:", error.message);
+          setIsAuthorized(false);
+          navigate("/home", { state: { message: "Access denied. Admin account only" } }); // Pass message
+        }
+      };
+    
+      verifyAdminAccess();
+    }, [navigate]);
 
   useEffect(() => {
     // Function to fetch the backend data
@@ -209,7 +236,14 @@ export default function AdminUpdate() {
       alert("Failed to update stock.");
     }
   };
-  
+
+  if (isAuthorized === null) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthorized) {
+    return <div>Access denied.</div>;
+  }
   
   return (
     <div className={styles["page"]}>
