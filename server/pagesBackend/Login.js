@@ -324,6 +324,64 @@ router.put("/update-email", async (req, res) => {
   }
 });
 
+router.put("/update-creditcard", async (req, res) => {
+  const {
+    full_name,
+    address,
+    city,
+    state,
+    zip_code,
+    card_name,
+    card_number,
+    exp_month,
+    exp_year,
+    cvv,
+  } = req.body;
+
+  try {
+    // Update the creditcardinfo table with the provided fields
+    const updateQuery = `
+      UPDATE creditcardinfo
+      SET 
+        full_name = ?,
+        address = ?,
+        city = ?,
+        state = ?,
+        zip_code = ?,
+        card_name = ?,
+        card_number = ?,
+        exp_month = ?,
+        exp_year = ?,
+        cvv = ?`;
+
+    const [updateResult] = await pool
+      .promise()
+      .query(updateQuery, [
+        full_name,
+        address,
+        city,
+        state,
+        zip_code,
+        card_name,
+        card_number,
+        exp_month,
+        exp_year,
+        cvv,
+      ]);
+
+    return res.status(200).json({
+      status: "success",
+      message: "Credit card information updated successfully.",
+    });
+  } catch (error) {
+    console.error("Error updating credit card info:", error.message);
+    return res.status(500).json({
+      status: "error",
+      message: "Database error while updating credit card info.",
+    });
+  }
+});
+
 
 // Admin: Update cart endpoint
 router.post("/admin/cart", (req, res) => {

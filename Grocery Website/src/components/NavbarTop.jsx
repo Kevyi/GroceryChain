@@ -14,7 +14,7 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
     const [isSearched, setIsSearched] = useState(false); // Track if a search has been executed
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [userData, setUserData] = useState({ username: "", isAdmin: false }); // Persisted user data
-    const [countdown, setCountdown] = useState(50); // Inactivity timeout countdown in seconds
+    const [countdown, setCountdown] = useState(600); // Inactivity timeout countdown in seconds
     const [isActive, setIsActive] = useState(true); // Track user activity state
     const [logoutMessage, setLogoutMessage] = useState(""); // Message for inactivity logout
     const [isInactiveLogout, setIsInactiveLogout] = useState(false); // Track if logout is due to inactivity
@@ -49,7 +49,7 @@ export default function NavbarTop({ totalCartItems, handleLogOff, loggedInUser }
             if (userData.username) {
                 // Reset countdown only if user is logged in
                 setIsActive(true); // User is active
-                setCountdown(50); // Reset the countdown timer
+                setCountdown(600); // Reset the countdown timer
             }
         };
     
